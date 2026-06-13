@@ -1,0 +1,50 @@
+.poster {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-16);
+	padding: var(--space-12);
+	max-width: 1280px;
+	margin-inline: auto;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.heading {
+	font-family: var(--font-serif);
+	font-size: var(--text-3xl);
+	font-weight: var(--font-weight-normal);
+	letter-spacing: var(--letter-spacing-normal);
+	margin: var(--space-0);
+	color: var(--color-text);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: var(--space-8) var(--space-6);
+	align-items: start;
+}
+
+.cell {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	min-width: 0;
+}
+
+.label {
+	font-family: var(--font-mono);
+	font-size: var(--text-xs);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--color-text-subtle);
+}
+
+.demo {
+	display: flex;
+	min-height: 56px;
+}

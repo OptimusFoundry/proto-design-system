@@ -1,0 +1,80 @@
+// =============================================================================
+// TYPOGRAPHY TOKENS
+// =============================================================================
+// Single-family sans system:
+//   • Geist — UI, body, headings, all titles
+//   • Geist Mono — eyebrows, counts, code, tabular data
+// Fraunces (the previous serif display family) was retired. The legacy
+// `--font-family-display` and `--font-family-serif` tokens are kept as
+// aliases for `--font-family-sans` so existing component styles keep
+// working without per-file edits. Any leftover `font-variation-settings`
+// referencing Fraunces axes (`opsz`, `SOFT`) become no-ops on Geist —
+// safe, just ignored.
+@import "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap";
+
+:root {
+	// Font families -----------------------------------------------------------
+	--font-family-sans:    "Geist", sans-serif;
+	--font-family-mono:    "Geist Mono", "JetBrains Mono", "SF Mono", "Fira Code", consolas, "Courier New", monospace;
+	--font-family-serif:   var(--font-family-sans); // legacy alias — single-family system
+	--font-family-display: var(--font-family-sans); // legacy alias — single-family system
+
+	// Variable-font setting aliases (Fraunces-era, kept as no-ops) -------------
+	// Geist ignores opsz/SOFT axes — these resolve to defaults. Existing rules
+	// referencing var(--fvs-display) etc. continue to compile but have no
+	// visual effect.
+	--fvs-display:   "wght" 600;
+	--fvs-editorial: "wght" 400;
+	--fvs-tight:     "wght" 600;
+
+	// Font sizes — compact UI scale -------------------------------------------
+	// Display sizes pulled in dramatically from the previous editorial scale.
+	// Page titles are now 22px (was 36px); hero is 32px (was 64px). Body
+	// sizes unchanged.
+	--font-size-xxs:  0.625rem;   // 10px - micro labels, spec meta captions
+	--font-size-xs:   0.75rem;    // 12px - eyebrows, metadata, captions
+	--font-size-sm:   0.8125rem;  // 13px - secondary labels
+	--font-size-base: 0.9375rem;  // 15px - body text
+	--font-size-md:   1rem;       // 16px - emphasized body
+	--font-size-lg:   1.0625rem;  // 17px - lede / subheads
+	--font-size-xl:   1.125rem;   // 18px - card titles
+	--font-size-2xl:  1.25rem;    // 20px - section headers
+	--font-size-3xl:  1.375rem;   // 22px - page titles
+	--font-size-4xl:  1.75rem;    // 28px - large headings (rare)
+	--font-size-5xl:  2rem;       // 32px - hero / stat value
+	--font-size-6xl:  2.5rem;     // 40px - oversized display (rare)
+	--font-size-7xl:  3rem;       // 48px - cover
+	--font-size-8xl:  3.5rem;     // 56px - cover XL
+
+	// Font weights -------------------------------------------------------------
+	--font-weight-thin:       100;
+	--font-weight-extralight: 200;
+	--font-weight-light:      300;
+	--font-weight-normal:     400;
+	--font-weight-medium:     500;
+	--font-weight-semibold:   600;
+	--font-weight-bold:       700;
+	--font-weight-extrabold:  800;
+	--font-weight-black:      900;
+
+	// Line heights -------------------------------------------------------------
+	--line-height-none:    1;
+	--line-height-tight:   1.15;
+	--line-height-snug:    1.25;
+	--line-height-normal:  1.5;
+	--line-height-relaxed: 1.7;
+	--line-height-loose:   2;
+
+	// Letter spacing -----------------------------------------------------------
+	--letter-spacing-tightest: -0.04em;
+	--letter-spacing-tighter:  -0.03em;
+	--letter-spacing-tight:    -0.015em;
+	--letter-spacing-normal:   -0.005em;
+	--letter-spacing-wide:      0.02em;
+	--letter-spacing-wider:     0.08em;
+	--letter-spacing-widest:    0.18em;
+
+	// Text decoration ----------------------------------------------------------
+	--text-decoration-thickness: 1px;
+	--text-underline-offset:     3px;
+}

@@ -1,0 +1,162 @@
+// =============================================================================
+// CARD COMPONENT STYLES
+// =============================================================================
+@use "../../../mixins" as *;
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  @include transition-colors;
+}
+
+// =============================================================================
+// VARIANTS
+// =============================================================================
+
+.elevated {
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-md);
+  transition:
+    box-shadow var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.outlined {
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+
+.filled {
+  background-color: var(--color-base-100);
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+// Editorial "spec" card — surface chrome with a divided header for showcasing
+// a labelled component or content block (mirrors ui_kit catalog .spec).
+.spec {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+
+// =============================================================================
+// PADDING
+// =============================================================================
+
+.padding-none {
+  padding: 0;
+}
+
+.padding-sm {
+  padding: var(--space-3);
+}
+
+// J-5.1 breathable card density default: 24px.
+.padding-md {
+  padding: var(--space-5);
+}
+
+.padding-lg {
+  padding: var(--space-5);
+}
+
+// =============================================================================
+// INTERACTIVE
+// =============================================================================
+
+.interactive {
+  cursor: pointer;
+  user-select: none;
+
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--color-border-hover);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  @include reduced-motion {
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// =============================================================================
+// SUB-COMPONENTS
+// =============================================================================
+
+// J-4.2 — no divider between card header and body. The 24px gap does the work.
+// Spec variant gets its divided look via .specHeader explicitly setting one.
+.header {
+  padding: var(--space-5);
+}
+
+// Editorial header used by the `spec` variant: serif name on the left
+// (with optional italic em accent), uppercase mono meta caption on the right.
+.specHeader {
+  align-items: baseline;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-6);
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+}
+
+.specName {
+  color: var(--color-base-content);
+  font-family: var(--font-family-display, var(--font-family-serif));
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
+
+  em {
+    color: var(--color-primary);
+    font-style: italic;
+    font-weight: var(--font-weight-normal);
+  }
+}
+
+.specMeta {
+  color: var(--color-base-content-tertiary);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xxs);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.body {
+  flex: 1;
+  padding: var(--space-5);
+}
+
+// J-4.1 — footer top-border sells the "footer" role.
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-5);
+}
