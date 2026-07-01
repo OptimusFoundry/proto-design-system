@@ -1,10 +1,10 @@
 // =============================================================================
 // MONO THEME
 // =============================================================================
-// A true monochrome sibling of Light/Ember: one ink, no hue anywhere. The brand
-// is near-black on white; every chromatic token collapses to grayscale, and the
-// semantic colours are separated by LIGHTNESS rather than hue (error darkest →
-// warning lightest). All fills clear WCAG AA with white text.
+// A monochrome-BRAND sibling of Light/Ember: the brand (primary/secondary/
+// accent) is near-black grayscale on white, but the functional status colours
+// stay vibrant — the one splash of hue — so success/warning/error/info remain
+// instantly readable. All fills clear WCAG AA on their content text.
 
 [data-theme="mono"] {
   color-scheme: light;
@@ -52,27 +52,28 @@
   --color-accent-active:  oklch(16% 0 0deg);
   --color-accent-content: oklch(100% 0 0deg);
   --color-accent-bg:      oklch(94% 0 0deg);
-  // Semantics — grayscale, separated by lightness (error darkest, warning lightest).
-  --color-success:         oklch(36% 0 0deg);
-  --color-success-hover:   oklch(30% 0 0deg);
-  --color-success-active:  oklch(24% 0 0deg);
-  --color-success-bg:      oklch(95% 0 0deg);
-  --color-success-content: oklch(99% 0 0deg);
-  --color-warning:         oklch(52% 0 0deg);
-  --color-warning-hover:   oklch(46% 0 0deg);
-  --color-warning-active:  oklch(40% 0 0deg);
-  --color-warning-bg:      oklch(95% 0 0deg);
-  --color-warning-content: oklch(99% 0 0deg);
-  --color-error:         oklch(28% 0 0deg);
-  --color-error-hover:   oklch(22% 0 0deg);
-  --color-error-active:  oklch(16% 0 0deg);
-  --color-error-bg:      oklch(95% 0 0deg);
-  --color-error-content: oklch(99% 0 0deg);
-  --color-info:         oklch(45% 0 0deg);
-  --color-info-hover:   oklch(39% 0 0deg);
-  --color-info-active:  oklch(33% 0 0deg);
-  --color-info-bg:      oklch(95% 0 0deg);
-  --color-info-content: oklch(99% 0 0deg);
+  // Semantics — vibrant functional status colours (the one splash of hue in an
+  // otherwise monochrome theme); maxed to their in-gamut chroma, all AA.
+  --color-success:         oklch(50% 0.22 150deg);
+  --color-success-hover:   oklch(45% 0.22 150deg);
+  --color-success-active:  oklch(40% 0.21 150deg);
+  --color-success-bg:      oklch(95% 0.065 150deg);
+  --color-success-content: oklch(99% 0.02 150deg);
+  --color-warning:         oklch(79% 0.21 82deg);
+  --color-warning-hover:   oklch(73% 0.21 82deg);
+  --color-warning-active:  oklch(67% 0.20 82deg);
+  --color-warning-bg:      oklch(96% 0.08 82deg);
+  --color-warning-content: oklch(28% 0.06 82deg);
+  --color-error:         oklch(54% 0.28 22deg);
+  --color-error-hover:   oklch(48% 0.29 22deg);
+  --color-error-active:  oklch(43% 0.28 22deg);
+  --color-error-bg:      oklch(96% 0.065 22deg);
+  --color-error-content: oklch(99% 0.02 22deg);
+  --color-info:         oklch(50% 0.19 215deg);
+  --color-info-hover:   oklch(44% 0.20 215deg);
+  --color-info-active:  oklch(39% 0.19 215deg);
+  --color-info-bg:      oklch(96% 0.07 215deg);
+  --color-info-content: oklch(99% 0.02 215deg);
   --shadow-color:        oklch(0% 0 0deg / 0.08);
   --shadow-color-strong: oklch(0% 0 0deg / 0.15);
   --shadow-xs: 0 1px 2px 0 oklch(0% 0 0deg / 0.05);
