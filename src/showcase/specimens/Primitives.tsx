@@ -20,7 +20,7 @@ export function PrimitivesSpecimens() {
 		<>
 			<Spec
 				name="Button"
-				description="The primary action trigger. Six variants, three sizes, plus loading, disabled, and icon affordances."
+				description="The primary action trigger. Seven variants, three sizes, plus loading, disabled, and icon affordances."
 			>
 				<SpecRow label="Variants">
 					<SpecItem label="default">
@@ -31,6 +31,9 @@ export function PrimitivesSpecimens() {
 					</SpecItem>
 					<SpecItem label="secondary">
 						<Button variant="secondary">Secondary</Button>
+					</SpecItem>
+					<SpecItem label="accent">
+						<Button variant="accent">Accent</Button>
 					</SpecItem>
 					<SpecItem label="ghost">
 						<Button variant="ghost">Ghost</Button>
@@ -85,7 +88,7 @@ export function PrimitivesSpecimens() {
 
 			<Spec
 				name="Badge"
-				description="Compact status and count labels in seven variants and three sizes."
+				description="Compact status and count labels in eight variants and three sizes."
 			>
 				<SpecRow label="Variants">
 					<SpecItem label="default">
@@ -96,6 +99,9 @@ export function PrimitivesSpecimens() {
 					</SpecItem>
 					<SpecItem label="secondary">
 						<Badge variant="secondary">Secondary</Badge>
+					</SpecItem>
+					<SpecItem label="accent">
+						<Badge variant="accent">Accent</Badge>
 					</SpecItem>
 					<SpecItem label="success">
 						<Badge variant="success">Success</Badge>
