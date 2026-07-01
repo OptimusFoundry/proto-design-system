@@ -14,6 +14,10 @@
   --font-family-mono:    var(--font-family-sans);
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
+  // 2027 vibrant refresh: clean neutral grayscale (no hue tint) carrying a
+  // high-chroma chromatic set — all the vibrancy comes from the brand and
+  // semantic colours, the surfaces/ink stay a crisp true gray. Filled semantic
+  // colours are tuned to clear WCAG AA (4.5:1) for their text.
   --color-background: oklch(100% 0 0deg);
   --color-base-50:  oklch(99% 0 0deg);
   --color-base-100: oklch(97% 0 0deg);
@@ -26,8 +30,7 @@
   --color-base-800: oklch(22% 0 0deg);
   --color-base-900: oklch(15% 0 0deg);
   --color-base-950: oklch(8%  0 0deg);
-  // Text ramp softened a step to balance the heavier weights — bolder type
-  // carries more ink, so slightly lower contrast reads cleaner. Still AA-safe.
+  // Text ramp — lightness tuned for the heavier weights; still AA-safe.
   --color-base-content:           oklch(29% 0 0deg);   // primary body/headings
   --color-base-content-soft:      color-mix(in oklch, var(--color-base-content), var(--color-base-content-secondary));
   --color-base-content-secondary: oklch(45% 0 0deg);   // secondary copy
@@ -38,39 +41,47 @@
   --color-surface-overlay:  oklch(0% 0 0deg / 0.5);
   --color-border:       oklch(92% 0 0deg);
   --color-border-hover: oklch(82% 0 0deg);
-  --color-primary:         oklch(62% 0.25 255deg);
-  --color-primary-hover:   oklch(56% 0.25 255deg);
-  --color-primary-active:  oklch(50% 0.24 255deg);
+  // Primary — electric cobalt (deep + highly saturated; white text at 5.8:1).
+  --color-primary:         oklch(50% 0.24 250deg);
+  --color-primary-hover:   oklch(44% 0.25 250deg);
+  --color-primary-active:  oklch(39% 0.23 250deg);
   --color-primary-content: oklch(100% 0 0deg);
+  // Secondary — neutral gray (the quiet, non-brand action).
   --color-secondary:         oklch(45% 0 0deg);
   --color-secondary-hover:   oklch(35% 0 0deg);
   --color-secondary-active:  oklch(28% 0 0deg);
   --color-secondary-content: oklch(100% 0 0deg);
-  --color-accent:         oklch(55% 0 0deg);
-  --color-accent-hover:   oklch(42% 0 0deg);
-  --color-accent-active:  oklch(35% 0 0deg);
+  // Accent — coral (the warm complementary to cobalt blue per Figma's colour
+  // guide; sits in the open orange gap between error-red and warning-gold).
+  // White text clears AA (~5:1).
+  --color-accent:         oklch(56% 0.17 40deg);
+  --color-accent-hover:   oklch(50% 0.18 40deg);
+  --color-accent-active:  oklch(45% 0.17 40deg);
   --color-accent-content: oklch(100% 0 0deg);
-  --color-accent-bg:      oklch(94% 0 0deg);
-  --color-success:         oklch(58% 0.18 145deg);
-  --color-success-hover:   oklch(53% 0.20 145deg);
-  --color-success-active:  oklch(48% 0.18 145deg);
-  --color-success-bg:      oklch(96% 0.03 145deg);
-  --color-success-content: oklch(98% 0.010 145deg);
-  --color-warning:         oklch(78% 0.16 85deg);
-  --color-warning-hover:   oklch(72% 0.18 85deg);
-  --color-warning-active:  oklch(66% 0.16 85deg);
-  --color-warning-bg:      oklch(96% 0.03 85deg);
-  --color-warning-content: oklch(25% 0.05 85deg);
-  --color-error:         oklch(56% 0.22 25deg);
-  --color-error-hover:   oklch(50% 0.24 25deg);
-  --color-error-active:  oklch(46% 0.22 25deg);
-  --color-error-bg:      oklch(96% 0.03 25deg);
-  --color-error-content: oklch(98% 0.010 25deg);
-  --color-info:         oklch(55% 0.18 240deg);
-  --color-info-hover:   oklch(50% 0.20 240deg);
-  --color-info-active:  oklch(46% 0.18 240deg);
-  --color-info-bg:      oklch(96% 0.03 240deg);
-  --color-info-content: oklch(98% 0.010 240deg);
+  --color-accent-bg:      oklch(96% 0.04 40deg);
+  // Semantics maxed to their in-gamut chroma ceiling — all AA on their content.
+  // (success sits at the sRGB green limit; the rest carry heavier chroma.)
+  --color-success:         oklch(50% 0.22 150deg);
+  --color-success-hover:   oklch(45% 0.22 150deg);
+  --color-success-active:  oklch(40% 0.21 150deg);
+  --color-success-bg:      oklch(95% 0.065 150deg);
+  --color-success-content: oklch(99% 0.02 150deg);
+  --color-warning:         oklch(79% 0.21 82deg);
+  --color-warning-hover:   oklch(73% 0.21 82deg);
+  --color-warning-active:  oklch(67% 0.20 82deg);
+  --color-warning-bg:      oklch(96% 0.08 82deg);
+  --color-warning-content: oklch(28% 0.06 82deg);
+  --color-error:         oklch(54% 0.28 22deg);
+  --color-error-hover:   oklch(48% 0.29 22deg);
+  --color-error-active:  oklch(43% 0.28 22deg);
+  --color-error-bg:      oklch(96% 0.065 22deg);
+  --color-error-content: oklch(99% 0.02 22deg);
+  // Info — vivid cyan, pulled off the primary's blue hue so the two stay distinct.
+  --color-info:         oklch(50% 0.19 215deg);
+  --color-info-hover:   oklch(44% 0.20 215deg);
+  --color-info-active:  oklch(39% 0.19 215deg);
+  --color-info-bg:      oklch(96% 0.07 215deg);
+  --color-info-content: oklch(99% 0.02 215deg);
   --shadow-color:        oklch(0% 0 0deg / 0.08);
   --shadow-color-strong: oklch(0% 0 0deg / 0.15);
   --shadow-xs: 0 1px 2px 0 oklch(0% 0 0deg / 0.05);
@@ -78,8 +89,9 @@
   --shadow-md: 0 8px 16px -4px oklch(0% 0 0deg / 0.08), 0 2px 4px -2px oklch(0% 0 0deg / 0.04);
   --shadow-lg: 0 20px 32px -8px oklch(0% 0 0deg / 0.10), 0 4px 8px -4px oklch(0% 0 0deg / 0.05);
   --shadow-xl: 0 32px 48px -12px oklch(0% 0 0deg / 0.14), 0 8px 16px -8px oklch(0% 0 0deg / 0.06);
-  --shadow-primary: 0 8px 24px 0 oklch(62% 0.25 255deg / 0.30);
-  --shadow-accent:  0 8px 24px 0 oklch(0% 0 0deg / 0.15);
-  --focus-ring-color: oklch(62% 0.25 255deg / 0.40);
+  // Vibrant coloured glows — primary + accent cast their own hue.
+  --shadow-primary: 0 8px 24px 0 oklch(50% 0.24 250deg / 0.32);
+  --shadow-accent:  0 8px 24px 0 oklch(56% 0.17 40deg / 0.28);
+  --focus-ring-color: oklch(50% 0.24 250deg / 0.40);
   --color-header-bg: var(--color-base-100);
 }
