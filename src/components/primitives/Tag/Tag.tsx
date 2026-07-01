@@ -117,7 +117,7 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
 		const tagClasses = cn(
 			styles.tag,
 			styles[variant],
-			styles[size],
+			styles[`size-${size}`],
 			selectable && styles.selectable,
 			isSelected && styles.selected,
 			disabled && styles.disabled,

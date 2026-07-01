@@ -59,7 +59,7 @@
   }
 
   .value {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     min-width: var(--space-6);
     padding: 0 var(--space-1);
   }
@@ -72,7 +72,7 @@
   }
 
   .value {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
     min-width: var(--space-7);
     padding: 0 var(--space-2);
   }
@@ -85,7 +85,7 @@
   }
 
   .value {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
     min-width: var(--space-8);
     padding: 0 var(--space-3);
   }

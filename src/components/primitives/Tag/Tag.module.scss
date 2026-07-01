@@ -47,7 +47,7 @@
 // SIZES
 // =============================================================================
 
-.sm {
+.size-sm {
   font-size: var(--font-size-xs);
   padding: var(--space-1) var(--space-2);
 
@@ -63,7 +63,7 @@
   }
 }
 
-.md {
+.size-md {
   font-size: var(--font-size-sm);
   padding: var(--space-1) var(--space-3);
 
@@ -79,7 +79,7 @@
   }
 }
 
-.lg {
+.size-lg {
   font-size: var(--font-size-base);
   padding: var(--space-2) var(--space-3);
 

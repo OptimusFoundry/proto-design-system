@@ -149,7 +149,7 @@
 // SIZES
 // =============================================================================
 
-.sm {
+.size-sm {
   --_btn-padding-x: var(--space-3);
   --_btn-padding-y: var(--space-1);
   --_btn-font-size: var(--font-size-xs);
@@ -158,7 +158,7 @@
   gap: var(--space-2);
 }
 
-.lg {
+.size-lg {
   --_btn-padding-x: var(--space-5);
   --_btn-padding-y: var(--space-3);
   --_btn-font-size: var(--font-size-base);

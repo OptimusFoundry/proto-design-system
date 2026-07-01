@@ -157,13 +157,13 @@
 
 .size-sm {
   .trigger {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     height: var(--space-6);
     padding: 0 var(--space-3);
   }
 
   .menu {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
   }
 
   .item {
@@ -178,13 +178,13 @@
 
 .size-md {
   .trigger {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
     height: var(--space-7);
     padding: 0 var(--space-3);
   }
 
   .menu {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
   }
 
   .item {
@@ -199,13 +199,13 @@
 
 .size-lg {
   .trigger {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
     height: var(--space-8);
     padding: 0 var(--space-4);
   }
 
   .menu {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
   }
 
   .item {

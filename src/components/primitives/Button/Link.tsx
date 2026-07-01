@@ -71,7 +71,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
 		const linkClasses = cn(
 			styles.link,
 			styles[variant],
-			styles[size],
+			styles[`size-${size}`],
 			underlineOnHover && styles.underlineOnHover,
 			className,
 		);

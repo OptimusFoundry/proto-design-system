@@ -129,7 +129,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
 		return (
 			<div
 				ref={ref}
-				className={cn(styles.dropdownMenu, styles[size], className)}
+				className={cn(styles.dropdownMenu, styles[`size-${size}`], className)}
 				role="menu"
 				onKeyDown={handleKeyDown}
 			>
@@ -193,7 +193,7 @@ function DropdownMenuItem({ item, size, onClick }: DropdownMenuItemProps) {
 			type="button"
 			className={cn(
 				styles.item,
-				styles[size],
+				styles[`size-${size}`],
 				isActive && styles.active,
 				isDisabled && styles.disabled,
 			)}
