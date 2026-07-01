@@ -11,6 +11,8 @@ import { type ComponentType, useEffect, useState } from "react";
 import { Compositions } from "./showcase/Compositions";
 import { Foundations } from "./showcase/foundations/Foundations";
 import { Hero } from "./showcase/Hero";
+import { type LabSize, SizeLab } from "./showcase/SizeLab";
+import { SizeToggle } from "./showcase/SizeToggle";
 import { CompositeSpecimens } from "./showcase/specimens/Composite";
 import { DataSpecimens } from "./showcase/specimens/Data";
 import { FeedbackSpecimens } from "./showcase/specimens/Feedback";
@@ -125,6 +127,8 @@ function ChapterHead({
 
 function UIKit() {
 	const [theme, setTheme] = useState<ThemeName>("light");
+	const [labSize, setLabSize] = useState<LabSize>("md");
+	const [patternsSize, setPatternsSize] = useState<LabSize>("sm");
 
 	// Capture the document's prior theme once, restore it on unmount so the
 	// catalog never leaks its theme selection into other Storybook stories.
@@ -171,6 +175,7 @@ function UIKit() {
 					title="Components"
 					lede={`All ${COMPONENT_COUNT} components, each with its full set of variants, sizes, and states.`}
 				/>
+				<SizeLab size={labSize} onSizeChange={setLabSize} />
 				<div className={styles.categories}>
 					{CATEGORIES.map(({ id, label, count, Specimens }) => (
 						<section key={id} id={id} className={styles.category}>
@@ -193,7 +198,15 @@ function UIKit() {
 					title="Patterns"
 					lede="The primitives composed into the product surfaces you actually ship."
 				/>
-				<Compositions />
+				<div className={styles.patternsToolbar}>
+					<span className={styles.patternsToolbarLabel}>Render at</span>
+					<SizeToggle
+						value={patternsSize}
+						onChange={setPatternsSize}
+						ariaLabel="Patterns size"
+					/>
+				</div>
+				<Compositions size={patternsSize} />
 			</section>
 		</div>
 	);

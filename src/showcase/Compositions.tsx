@@ -35,6 +35,7 @@ import { Badge } from "../components/primitives/Badge/Badge";
 import { Button } from "../components/primitives/Button/Button";
 import { Text } from "../components/primitives/Text/Text";
 import styles from "./Compositions.module.scss";
+import type { LabSize } from "./SizeToggle";
 
 interface PanelProps {
 	caption: string;
@@ -51,7 +52,7 @@ function Panel({ caption, children, wide }: PanelProps) {
 	);
 }
 
-function AnalyticsPanel() {
+function AnalyticsPanel({ size }: { size: LabSize }) {
 	return (
 		<Card variant="elevated" padding="lg">
 			<div className={styles.cardHead}>
@@ -63,7 +64,7 @@ function AnalyticsPanel() {
 						Last 30 days
 					</Text>
 				</div>
-				<Badge variant="success" dot>
+				<Badge size={size} variant="success" dot>
 					Live
 				</Badge>
 			</div>
@@ -101,10 +102,10 @@ function AnalyticsPanel() {
 						72%
 					</Text>
 				</div>
-				<Progress value={72} aria-label="Quarterly goal" />
+				<Progress size={size} value={72} aria-label="Quarterly goal" />
 			</div>
 
-			<Table size="sm">
+			<Table size={size}>
 				<TableHeader>
 					<TableRow>
 						<TableHead>Customer</TableHead>
@@ -116,31 +117,54 @@ function AnalyticsPanel() {
 					<TableRow>
 						<TableCell>Acme Inc.</TableCell>
 						<TableCell>
-							<Badge variant="primary">Scale</Badge>
+							<Badge size={size} variant="primary">
+								Scale
+							</Badge>
 						</TableCell>
 						<TableCell>$1,200</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Globex</TableCell>
 						<TableCell>
-							<Badge>Growth</Badge>
+							<Badge size={size}>Growth</Badge>
 						</TableCell>
 						<TableCell>$540</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Soylent</TableCell>
 						<TableCell>
-							<Badge variant="outline">Starter</Badge>
+							<Badge size={size} variant="outline">
+								Starter
+							</Badge>
 						</TableCell>
 						<TableCell>$120</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
+
+			<div className={styles.upgrade}>
+				<div className={styles.upgradeText}>
+					<div className={styles.upgradeTitle}>
+						<Badge size={size} variant="accent">
+							Pro
+						</Badge>
+						<Text size="sm" weight="semibold">
+							Unlock revenue forecasting
+						</Text>
+					</div>
+					<Text size="sm" color="muted">
+						Upgrade to Pro for predictive analytics and CSV exports.
+					</Text>
+				</div>
+				<Button size={size} variant="accent" rightIcon={<ArrowUpRight />}>
+					Upgrade
+				</Button>
+			</div>
 		</Card>
 	);
 }
 
-function AuthPanel() {
+function AuthPanel({ size }: { size: LabSize }) {
 	return (
 		<Card variant="elevated" padding="lg">
 			<div className={styles.authHead}>
@@ -154,28 +178,35 @@ function AuthPanel() {
 
 			<div className={styles.fieldStack}>
 				<TextField
+					size={size}
 					label="Email"
 					type="email"
 					placeholder="you@company.com"
 					leftElement={<Mail />}
 				/>
 				<TextField
+					size={size}
 					label="Password"
 					type="password"
 					placeholder="••••••••"
 					leftElement={<Lock />}
 				/>
 				<div className={styles.authRow}>
-					<Checkbox label="Remember me" />
-					<Button variant="ghost" size="sm">
+					<Checkbox size={size} label="Remember me" />
+					<Button variant="ghost" size={size}>
 						Forgot password?
 					</Button>
 				</div>
-				<Button variant="primary" isFullWidth>
+				<Button variant="primary" size={size} isFullWidth>
 					Sign in
 				</Button>
 				<Divider>or</Divider>
-				<Button variant="outline" isFullWidth leftIcon={<KeyRound />}>
+				<Button
+					variant="outline"
+					size={size}
+					isFullWidth
+					leftIcon={<KeyRound />}
+				>
 					Continue with SSO
 				</Button>
 			</div>
@@ -183,13 +214,13 @@ function AuthPanel() {
 	);
 }
 
-function SettingsPanel() {
+function SettingsPanel({ size }: { size: LabSize }) {
 	const [volume, setVolume] = useState("60");
 	return (
 		<Card variant="elevated" padding="lg">
 			<div className={styles.cardHead}>
 				<div className={styles.teamHead}>
-					<Avatar initials="JD" />
+					<Avatar size={size} initials="JD" />
 					<div>
 						<Text size="md" weight="semibold">
 							Jamie Doe
@@ -199,22 +230,25 @@ function SettingsPanel() {
 						</Text>
 					</div>
 				</div>
-				<Button variant="ghost" size="sm" rightIcon={<ArrowUpRight />}>
+				<Button variant="ghost" size={size} rightIcon={<ArrowUpRight />}>
 					Profile
 				</Button>
 			</div>
 
 			<div className={styles.fieldStack}>
 				<Switch
+					size={size}
 					label="Email notifications"
 					description="Product updates and weekly digests"
 					defaultChecked
 				/>
 				<Switch
+					size={size}
 					label="Two-factor authentication"
 					description="Require a code at every sign-in"
 				/>
 				<Select
+					size={size}
 					label="Digest frequency"
 					defaultValue="weekly"
 					options={[
@@ -224,6 +258,7 @@ function SettingsPanel() {
 					]}
 				/>
 				<Slider
+					size={size}
 					label="Notification volume"
 					value={volume}
 					onChange={(e) => setVolume(e.target.value)}
@@ -235,24 +270,28 @@ function SettingsPanel() {
 			</Toast>
 
 			<div className={styles.actions}>
-				<Button variant="ghost">Cancel</Button>
-				<Button variant="primary">Save changes</Button>
+				<Button variant="ghost" size={size}>
+					Cancel
+				</Button>
+				<Button variant="primary" size={size}>
+					Save changes
+				</Button>
 			</div>
 		</Card>
 	);
 }
 
-export function Compositions() {
+export function Compositions({ size = "md" }: { size?: LabSize }) {
 	return (
 		<div className={styles.grid}>
 			<Panel caption="Analytics dashboard" wide>
-				<AnalyticsPanel />
+				<AnalyticsPanel size={size} />
 			</Panel>
 			<Panel caption="Authentication">
-				<AuthPanel />
+				<AuthPanel size={size} />
 			</Panel>
 			<Panel caption="Account settings">
-				<SettingsPanel />
+				<SettingsPanel size={size} />
 			</Panel>
 		</div>
 	);

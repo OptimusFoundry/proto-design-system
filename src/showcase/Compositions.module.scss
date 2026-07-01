@@ -94,3 +94,33 @@
 	gap: var(--space-3);
 	margin-top: var(--space-5);
 }
+
+// Accent upsell banner — the one moment the accent colour earns its keep.
+.upgrade {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	margin-top: var(--space-5);
+	padding: var(--space-4) var(--space-5);
+	border-radius: var(--radius-lg);
+	background: var(--color-accent-bg);
+
+	@media (max-width: 560px) {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
+
+.upgradeText {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	min-width: 0;
+}
+
+.upgradeTitle {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}

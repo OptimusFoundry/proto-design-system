@@ -116,6 +116,22 @@
 	color: var(--color-base-content-secondary);
 }
 
+// Patterns size toolbar --------------------------------------------------------
+.patternsToolbar {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	margin-top: var(--space-6);
+}
+
+.patternsToolbarLabel {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
+	letter-spacing: var(--letter-spacing-wide);
+	text-transform: uppercase;
+	color: var(--color-base-content-tertiary);
+}
+
 // Component categories ---------------------------------------------------------
 .categories {
 	display: flex;
