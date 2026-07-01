@@ -13,6 +13,7 @@
 export type ThemeName =
 	| "editorial"
 	| "light"
+	| "ember"
 	| "dark"
 	| "brutal"
 	| "cosmos"
@@ -50,6 +51,7 @@ export interface Theme {
 export const themes: Record<ThemeName, Theme> = {
 	editorial: { name: "editorial", label: "Editorial", colorScheme: "light" },
 	light: { name: "light", label: "Light", colorScheme: "light" },
+	ember: { name: "ember", label: "Ember", colorScheme: "light" },
 	dark: { name: "dark", label: "Dark", colorScheme: "dark" },
 	brutal: { name: "brutal", label: "Brutal", colorScheme: "light" },
 	cosmos: { name: "cosmos", label: "Cosmos", colorScheme: "dark" },
