@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../Button";
 import { Spinner } from "./Spinner";
 
@@ -108,8 +108,10 @@ export const White: Story = {
 	args: {
 		variant: "white",
 	},
-	parameters: {
-		backgrounds: { default: "dark" },
+	globals: {
+		backgrounds: {
+			value: "dark",
+		},
 	},
 };
 
