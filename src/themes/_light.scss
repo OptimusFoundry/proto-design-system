@@ -9,7 +9,9 @@
 
   
   --font-family-sans:    "Geist", sans-serif;
-  --font-family-mono:    "Geist Mono", "JetBrains Mono", monospace;
+  // Single-family system: mono aliases to Geist (no monospace). Other themes
+  // still carry Geist Mono — they get migrated when we expand past light.
+  --font-family-mono:    var(--font-family-sans);
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
   --color-background: oklch(100% 0 0deg);
@@ -24,11 +26,13 @@
   --color-base-800: oklch(22% 0 0deg);
   --color-base-900: oklch(15% 0 0deg);
   --color-base-950: oklch(8%  0 0deg);
-  --color-base-content:           oklch(32% 0 0deg);
+  // Text ramp softened a step to balance the heavier weights — bolder type
+  // carries more ink, so slightly lower contrast reads cleaner. Still AA-safe.
+  --color-base-content:           oklch(29% 0 0deg);   // primary body/headings
   --color-base-content-soft:      color-mix(in oklch, var(--color-base-content), var(--color-base-content-secondary));
-  --color-base-content-secondary: oklch(48% 0 0deg);
-  --color-base-content-tertiary:  oklch(60% 0 0deg);
-  --color-muted:                  oklch(65% 0 0deg);
+  --color-base-content-secondary: oklch(45% 0 0deg);   // secondary copy
+  --color-base-content-tertiary:  oklch(54% 0 0deg);   // captions / eyebrows
+  --color-muted:                  oklch(58% 0 0deg);   // muted / placeholder
   --color-surface:          oklch(100% 0 0deg);
   --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay:  oklch(0% 0 0deg / 0.5);

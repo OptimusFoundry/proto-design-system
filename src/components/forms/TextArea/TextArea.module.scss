@@ -43,7 +43,7 @@
 .textarea {
   appearance: none;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-base-content);
   font-family: var(--font-family-sans);
@@ -69,7 +69,7 @@
 
 .size-sm {
   font-size: var(--font-size-sm);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-3);
 }
 
 .size-md {
@@ -111,7 +111,7 @@
 
   &:focus {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 3px oklch(from var(--color-error) l c h / 0.2);
+    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-error);
   }
 }
 

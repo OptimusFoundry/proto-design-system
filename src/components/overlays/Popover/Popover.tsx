@@ -11,6 +11,7 @@ import {
 	useState,
 } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Popover.module.scss";
 
@@ -107,7 +108,7 @@ export function Popover({
 	const contentVariants = getAnimationVariants();
 	const transition = prefersReducedMotion
 		? { duration: 0 }
-		: { duration: 0.15, ease: [0, 0, 0.2, 1] as const };
+		: { duration: DURATION.fast, ease: EASE_OUT };
 
 	const setOpen = useCallback(
 		(value: boolean) => {

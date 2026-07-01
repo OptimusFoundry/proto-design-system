@@ -9,6 +9,7 @@ import {
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Banner.module.scss";
 
@@ -82,7 +83,7 @@ export function Banner({
 	const transition =
 		prefersReducedMotion || !animate
 			? { duration: 0 }
-			: { duration: 0.2, ease: [0, 0, 0.2, 1] as const };
+			: { duration: DURATION.normal, ease: EASE_OUT };
 
 	const iconElement = icon || typeIcons[type];
 

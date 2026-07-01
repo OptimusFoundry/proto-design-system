@@ -6,6 +6,7 @@ import {
 	type ReactNode,
 } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import { type Responsive, resolveResponsive } from "../../../utils/responsive";
 import styles from "./Stack.module.scss";
@@ -102,7 +103,7 @@ const itemVariants: Variants = {
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: { duration: 0.25, ease: [0, 0, 0.2, 1] as const },
+		transition: { duration: DURATION.normal, ease: EASE_OUT },
 	},
 };
 

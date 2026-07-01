@@ -18,20 +18,24 @@
 // =============================================================================
 
 .elevated {
-  border: 1px solid transparent;
-  box-shadow: var(--shadow-md);
-  transition:
-    box-shadow var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+  border: var(--border-width-card) solid transparent;
+  box-shadow: var(--shadow-card);
+
+  // Compose the shadow/transform transition with the color transition in a
+  // single declaration — two separate `transition:` shorthand declarations
+  // can't coexist (the latter silently overwrites the former), which used to
+  // make elevated cards lose their color transition entirely.
+  @include transition(
+    (box-shadow, transform, background-color, border-color, color),
+    var(--duration-fast)
+  );
 
   &:hover {
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-
+  @include reduced-motion {
     &:hover {
       transform: none;
     }
@@ -39,13 +43,13 @@
 }
 
 .outlined {
-  border: 1px solid var(--color-border);
+  border: var(--border-width-card) solid var(--color-border);
   box-shadow: none;
 }
 
 .filled {
   background-color: var(--color-base-100);
-  border: 1px solid transparent;
+  border: var(--border-width-card) solid transparent;
   box-shadow: none;
 }
 
@@ -53,8 +57,8 @@
 // a labelled component or content block (mirrors ui_kit catalog .spec).
 .spec {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: var(--border-width-card) solid var(--color-border);
+  border-radius: var(--radius-card);
   box-shadow: none;
 }
 
@@ -72,11 +76,11 @@
 
 // J-5.1 breathable card density default: 24px.
 .padding-md {
-  padding: var(--space-5);
+  padding: var(--space-card);
 }
 
 .padding-lg {
-  padding: var(--space-5);
+  padding: var(--space-6);
 }
 
 // =============================================================================
@@ -119,7 +123,7 @@
 .specHeader {
   align-items: baseline;
   background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: var(--border-width-sm) solid var(--color-border);
   display: flex;
   gap: var(--space-6);
   justify-content: space-between;
@@ -157,6 +161,6 @@
 
 // J-4.1 — footer top-border sells the "footer" role.
 .footer {
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-width-sm) solid var(--color-border);
   padding: var(--space-5);
 }

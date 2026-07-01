@@ -10,7 +10,7 @@
 // working without per-file edits. Any leftover `font-variation-settings`
 // referencing Fraunces axes (`opsz`, `SOFT`) become no-ops on Geist —
 // safe, just ignored.
-@import "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500;600&display=swap";
 
 :root {
 	// Font families -----------------------------------------------------------
@@ -31,29 +31,34 @@
 	// Display sizes pulled in dramatically from the previous editorial scale.
 	// Page titles are now 22px (was 36px); hero is 32px (was 64px). Body
 	// sizes unchanged.
-	--font-size-xxs:  0.625rem;   // 10px - micro labels, spec meta captions
+	// Refined scale — distinct, meaningful steps. UI range (xxs–md) stays
+	// compact; the heading range (lg–8xl) is spaced into a real ladder so
+	// titles read as a clear hierarchy rather than 15–22px mush.
+	--font-size-xxs:  0.6875rem;  // 11px - micro labels, spec meta captions
 	--font-size-xs:   0.75rem;    // 12px - eyebrows, metadata, captions
-	--font-size-sm:   0.8125rem;  // 13px - secondary labels
+	--font-size-sm:   0.8125rem;  // 13px - dense UI / secondary labels
 	--font-size-base: 0.9375rem;  // 15px - body text
 	--font-size-md:   1rem;       // 16px - emphasized body
-	--font-size-lg:   1.0625rem;  // 17px - lede / subheads
-	--font-size-xl:   1.125rem;   // 18px - card titles
-	--font-size-2xl:  1.25rem;    // 20px - section headers
-	--font-size-3xl:  1.375rem;   // 22px - page titles
-	--font-size-4xl:  1.75rem;    // 28px - large headings (rare)
-	--font-size-5xl:  2rem;       // 32px - hero / stat value
-	--font-size-6xl:  2.5rem;     // 40px - oversized display (rare)
-	--font-size-7xl:  3rem;       // 48px - cover
-	--font-size-8xl:  3.5rem;     // 56px - cover XL
+	--font-size-lg:   1.125rem;   // 18px - lede / subheads
+	--font-size-xl:   1.25rem;    // 20px - card titles
+	--font-size-2xl:  1.5rem;     // 24px - section headers
+	--font-size-3xl:  1.75rem;    // 28px - page titles
+	--font-size-4xl:  2.125rem;   // 34px - large headings
+	--font-size-5xl:  2.5rem;     // 40px - hero / stat value
+	--font-size-6xl:  3rem;       // 48px - display
+	--font-size-7xl:  3.75rem;    // 60px - cover
+	--font-size-8xl:  4.5rem;     // 72px - cover XL
 
 	// Font weights -------------------------------------------------------------
 	--font-weight-thin:       100;
 	--font-weight-extralight: 200;
 	--font-weight-light:      300;
-	--font-weight-normal:     400;
-	--font-weight-medium:     500;
-	--font-weight-semibold:   600;
-	--font-weight-bold:       700;
+	// Calm content, confident headings: body + labels stay light so dense UI
+	// (forms, tables, settings) reads clean, while headings keep the bold punch.
+	--font-weight-normal:     400;   // body copy
+	--font-weight-medium:     500;   // labels, buttons, UI emphasis
+	--font-weight-semibold:   700;   // headings / titles
+	--font-weight-bold:       700;   // alias — "bold" == heaviest loaded
 	--font-weight-extrabold:  800;
 	--font-weight-black:      900;
 

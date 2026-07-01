@@ -15,7 +15,7 @@
   display: block;
 
   @include reduced-motion {
-    animation: pulse var(--duration-slower) ease-in-out infinite;
+    animation: pulse var(--duration-slower) var(--ease-in-out) infinite;
   }
 }
 

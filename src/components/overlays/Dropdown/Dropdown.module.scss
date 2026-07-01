@@ -83,11 +83,11 @@
 
 .default {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   color: var(--color-base-content);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-base-50);
+    background-color: var(--color-base-100);
     border-color: var(--color-border-hover);
   }
 
@@ -98,7 +98,7 @@
 
 .outline {
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   color: var(--color-base-content);
 
   &:hover:not(:disabled) {
@@ -116,7 +116,7 @@
   color: var(--color-base-content);
 
   &:hover:not(:disabled) {
-    background-color: oklch(from var(--color-base-content) l c h / 0.08);
+    background-color: var(--color-hover-overlay-strong);
   }
 }
 
@@ -183,7 +183,7 @@
 
 .menu {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   list-style: none;
@@ -237,15 +237,16 @@
   width: 100%;
 
   @include transition-colors;
+  @include focus-ring;
 
   &:hover:not(.disabled),
   &.focused {
-    background-color: oklch(from var(--color-base-content) l c h / 0.08);
+    background-color: var(--color-hover-overlay-strong);
   }
 }
 
 .selected {
-  background-color: oklch(from var(--color-primary) l c h / 0.1);
+  background-color: var(--color-overlay-primary);
   color: var(--color-primary);
 }
 
@@ -259,7 +260,7 @@
 
   &:hover:not(.disabled),
   &.focused {
-    background-color: oklch(from var(--color-error) l c h / 0.1);
+    background-color: var(--color-overlay-error);
   }
 }
 
@@ -289,7 +290,7 @@
 
 .itemDescription {
   color: var(--color-muted);
-  font-size: 0.85em;
+  font-size: var(--font-size-xs);
   line-height: var(--line-height-tight);
 }
 

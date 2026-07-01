@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Drawer.module.scss";
 
@@ -117,7 +118,7 @@ export function Drawer({
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.18 }}
+						transition={{ duration: DURATION.fast, ease: EASE_OUT }}
 					/>
 					<motion.aside
 						className={cn(styles.panel, styles[`size-${size}`], className)}
@@ -136,7 +137,7 @@ export function Drawer({
 										animate: { y: 0, x: 0 },
 										exit: { y: "100%", x: 0 },
 									}))}
-						transition={{ duration: 0.24, ease: [0.2, 0, 0, 1] as const }}
+						transition={{ duration: DURATION.normal, ease: EASE_OUT }}
 					>
 						{(title || showCloseButton) && (
 							<header className={styles.header}>

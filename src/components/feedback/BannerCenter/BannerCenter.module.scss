@@ -38,9 +38,9 @@
 }
 
 .skeletonBar {
-  background-color: oklch(from var(--color-base-content) l c h / 0.15);
+  background-color: var(--color-active-overlay);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  height: 4px;
+  height: var(--space-1);
 
   &:nth-child(1) {
     width: 92%;

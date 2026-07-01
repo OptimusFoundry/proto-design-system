@@ -21,7 +21,8 @@
   align-items: center;
   display: flex;
   flex-shrink: 0;
-  height: var(--line-height-normal);
+  height: 1em;
+  width: 1em;
 
   svg {
     display: block;

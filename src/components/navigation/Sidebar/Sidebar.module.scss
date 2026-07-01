@@ -5,7 +5,7 @@
 
 .sidebar {
   background-color: var(--color-background);
-  border-right: 1px solid var(--color-border);
+  border-right: var(--border-width-sm) solid var(--color-border);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -47,7 +47,7 @@
 // =============================================================================
 
 .backdrop {
-  background-color: oklch(0 0 0 / 0.5);
+  background-color: var(--color-surface-overlay);
   inset: 0;
   position: fixed;
   z-index: var(--z-modal);
@@ -67,7 +67,7 @@
 }
 
 .mobile {
-  border-right: 1px solid var(--color-border);
+  border-right: var(--border-width-sm) solid var(--color-border);
   box-shadow: var(--shadow-xl);
   height: 100%;
   left: 0;
@@ -225,7 +225,7 @@
   font-family: var(--font-family-sans);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wider);
   padding: var(--space-2) var(--space-3);
   text-transform: uppercase;
 }
@@ -272,7 +272,7 @@
   color: var(--color-primary-content);
 
   &:hover {
-    background-color: oklch(from var(--color-primary) calc(l - 0.05) c h);
+    background-color: var(--color-primary-hover);
     color: var(--color-primary-content);
   }
 }

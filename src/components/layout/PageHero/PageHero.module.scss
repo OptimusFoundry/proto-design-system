@@ -19,7 +19,7 @@
   --page-hero-description-family: var(--font-family-sans);
   --page-hero-eyebrow-size: var(--font-size-xs);
   --page-hero-eyebrow-tracking: var(--letter-spacing-widest);
-  --page-hero-description-max-width: 62ch;
+  --page-hero-description-max-width: var(--max-width-prose);
 
   display: flex;
   align-items: flex-start;

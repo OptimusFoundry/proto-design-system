@@ -265,7 +265,7 @@
   color: var(--color-primary-content);
 
   &:hover {
-    background-color: oklch(from var(--color-primary) calc(l - 0.05) c h);
+    background-color: var(--color-primary-hover);
   }
 }
 
@@ -275,5 +275,5 @@
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.3;
+  opacity: var(--opacity-disabled);
 }

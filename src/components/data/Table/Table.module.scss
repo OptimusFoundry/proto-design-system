@@ -112,14 +112,14 @@
 
 // Hover only on body rows, not header (target 4)
 .body .row:hover {
-  background-color: var(--color-base-100);
+  background-color: var(--color-row-hover);
 }
 
 .selected {
-  background-color: oklch(from var(--color-primary) l c h / 0.08);
+  background-color: var(--color-overlay-primary);
 
   &:hover {
-    background-color: oklch(from var(--color-primary) l c h / 0.12);
+    background-color: var(--color-overlay-primary-strong);
   }
 }
 
@@ -131,7 +131,7 @@
 }
 
 .expanded {
-  background-color: var(--color-base-100);
+  background-color: var(--color-row-hover);
 }
 
 // =============================================================================

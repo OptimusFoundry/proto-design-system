@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 
 export type PageTransitionType = "fade" | "slide" | "scale" | "slideUp";
 
@@ -58,14 +59,14 @@ export function PageTransition({
 	pageKey,
 	children,
 	type = "fade",
-	duration = 0.2,
+	duration = DURATION.normal,
 	className,
 }: PageTransitionProps) {
 	const prefersReducedMotion = useReducedMotion();
 
 	const transition = prefersReducedMotion
 		? { duration: 0 }
-		: { duration, ease: [0, 0, 0.2, 1] as const };
+		: { duration, ease: EASE_OUT };
 
 	return (
 		<AnimatePresence mode="wait">

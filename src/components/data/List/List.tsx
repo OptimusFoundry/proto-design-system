@@ -1,6 +1,7 @@
 import { motion, type Variants } from "motion/react";
 import { Children, type ReactNode } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./List.module.scss";
 
@@ -36,7 +37,7 @@ const itemVariants: Variants = {
 	visible: {
 		opacity: 1,
 		x: 0,
-		transition: { duration: 0.2, ease: [0, 0, 0.2, 1] as const },
+		transition: { duration: DURATION.normal, ease: EASE_OUT },
 	},
 };
 

@@ -46,7 +46,7 @@
 // T-7.1 — mono uppercase eyebrow
 .eyebrow {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-xxs); // 10px — tighter than xs for eyebrow
+  font-size: var(--font-size-xs); // unified with PageHero eyebrow
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-widest); // 0.18em
   text-transform: uppercase;
@@ -76,7 +76,7 @@
   font-size: var(--font-size-sm); // 13px
   line-height: var(--line-height-normal);
   color: var(--color-base-content-secondary);
-  max-width: 62ch;
+  max-width: var(--max-width-prose);
   margin: var(--space-1) 0 0; // SP-3.5: title → description 4px
 }
 

@@ -13,7 +13,7 @@ export interface FilterTabItem {
 	icon?: ReactNode;
 }
 
-export type FilterTabsSize = "sm" | "md";
+export type FilterTabsSize = "sm" | "md" | "lg";
 
 export interface FilterTabsProps {
 	items: FilterTabItem[];
@@ -45,7 +45,7 @@ export function FilterTabs({
 	items,
 	value,
 	onChange,
-	size = "sm",
+	size = "md",
 	"aria-label": ariaLabel,
 	className,
 }: FilterTabsProps) {

@@ -56,7 +56,7 @@
 .radio {
   align-items: center;
   background-color: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: var(--border-width-md) solid var(--color-border);
   border-radius: var(--radius-full);
   display: flex;
   justify-content: center;
@@ -104,12 +104,12 @@
 }
 
 .size-lg {
-  height: var(--space-5);
-  width: var(--space-5);
+  height: var(--space-6);
+  width: var(--space-6);
 
   .dot {
-    height: var(--space-3);
-    width: var(--space-3);
+    height: var(--space-4);
+    width: var(--space-4);
   }
 }
 
@@ -139,15 +139,15 @@
 }
 
 .label-sm {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
 }
 
 .label-md {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
 }
 
 .label-lg {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
 }
 
 .description {

@@ -44,7 +44,7 @@
 .wrapper {
   align-items: center;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   border-radius: var(--radius-md);
   display: inline-flex;
   position: relative;
@@ -164,7 +164,7 @@
 
   &:focus-within {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 3px oklch(from var(--color-error) l c h / 0.2);
+    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-error);
   }
 }
 

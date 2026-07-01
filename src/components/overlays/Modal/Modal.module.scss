@@ -30,7 +30,7 @@
 // =============================================================================
 
 .backdrop {
-  background-color: oklch(0% 0 0 / 0.5);
+  background-color: var(--color-surface-overlay);
   inset: 0;
   position: fixed;
 }
@@ -41,7 +41,7 @@
 
 .modal {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-sm) solid var(--color-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   display: flex;
@@ -83,7 +83,7 @@
 
 .header {
   align-items: flex-start;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: var(--border-width-sm) solid var(--color-border);
   display: flex;
   flex-shrink: 0;
   gap: var(--space-4);
@@ -184,7 +184,7 @@
   @include focus-ring;
 
   &:hover {
-    background-color: oklch(from var(--color-base-content) l c h / 0.08);
+    background-color: var(--color-hover-overlay-strong);
     color: var(--color-base-content);
   }
 
@@ -210,7 +210,7 @@
 
 .footer {
   align-items: center;
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-width-sm) solid var(--color-border);
   display: flex;
   flex-shrink: 0;
   gap: var(--space-3);

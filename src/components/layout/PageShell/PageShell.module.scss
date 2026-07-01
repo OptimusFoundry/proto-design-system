@@ -43,7 +43,7 @@
 // preserve grid-column span on GridItem children.
 
 .animateFadeIn {
-  animation: pageShellFadeIn 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+  @include animate(pageShellFadeIn);
 }
 
 @keyframes pageShellFadeIn {
@@ -54,11 +54,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animateFadeIn {
-    animation: none;
   }
 }

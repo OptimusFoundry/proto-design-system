@@ -45,7 +45,7 @@ export function useMotionConfig(preset: SpringPreset = "gentle"): MotionConfig {
 
 	return {
 		springConfig,
-		duration: 200,
+		duration: 240, // mirrors --duration-normal (was a stale 200)
 		reducedMotion: false,
 	};
 }

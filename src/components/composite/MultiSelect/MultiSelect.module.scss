@@ -83,7 +83,7 @@
   @include transition-colors;
 
   &:hover {
-    background-color: oklch(from var(--color-base-content) l c h / 0.1);
+    background-color: var(--color-hover-overlay-strong);
     color: var(--color-base-content);
   }
 
@@ -270,17 +270,17 @@
   &:hover:not(.disabled),
   &:focus:not(.disabled),
   &.focused {
-    background-color: oklch(from var(--color-base-content) l c h / 0.08);
+    background-color: var(--color-hover-overlay-strong);
   }
 }
 
 .selected {
-  background-color: oklch(from var(--color-primary) l c h / 0.08);
+  background-color: var(--color-overlay-primary);
 
   &:hover:not(.disabled),
   &:focus:not(.disabled),
   &.focused {
-    background-color: oklch(from var(--color-primary) l c h / 0.12);
+    background-color: var(--color-overlay-primary-strong);
   }
 }
 
@@ -295,8 +295,8 @@
 
 .checkbox {
   align-items: center;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-xs);
+  border: var(--border-width-md) solid var(--color-border);
+  border-radius: var(--radius-sm);
   display: flex;
   flex-shrink: 0;
   height: var(--space-4);
@@ -348,7 +348,7 @@
 
 .itemDescription {
   color: var(--color-muted);
-  font-size: 0.85em;
+  font-size: var(--font-size-xs);
   line-height: var(--line-height-tight);
 }
 
