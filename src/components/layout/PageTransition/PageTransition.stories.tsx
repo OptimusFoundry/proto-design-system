@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { Button } from "../../primitives/Button";
-import { Card } from "../Card";
-import { Stack } from "../Stack";
+import { Card } from "@/proto-design-system/components/layout/Card/Card";
+import { Stack } from "@/proto-design-system/components/layout/Stack/Stack";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { PageTransition } from "./PageTransition";
 
 const meta: Meta<typeof PageTransition> = {

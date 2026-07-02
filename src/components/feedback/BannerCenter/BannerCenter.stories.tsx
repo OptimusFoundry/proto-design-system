@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bell, Gift, ShieldAlert, Zap } from "lucide-react";
 import { useEffect } from "react";
-import { Button } from "../../primitives/Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { BannerCenterProvider, useBannerCenter } from "./BannerCenter";
 
 const meta: Meta = {

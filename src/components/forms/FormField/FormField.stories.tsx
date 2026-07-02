@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Checkbox } from "../Checkbox";
-import { Input } from "../Input";
-import { Select } from "../Select";
-import { TextArea } from "../TextArea";
+import { Checkbox } from "@/proto-design-system/components/forms/Checkbox/Checkbox";
+import { Input } from "@/proto-design-system/components/forms/Input/Input";
+import { Select } from "@/proto-design-system/components/forms/Select/Select";
+import { TextArea } from "@/proto-design-system/components/forms/TextArea/TextArea";
 import { FormField } from "./FormField";
 
 const meta: Meta<typeof FormField> = {

@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import type { ReactNode } from "react";
+import { Spinner } from "@/proto-design-system/components/primitives/Spinner/Spinner";
 import { cn } from "../../../utils/cn";
-import { Spinner } from "../../primitives/Spinner";
 import styles from "./Table.module.scss";
 
 export type TableSize = "sm" | "md" | "lg";

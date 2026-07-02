@@ -7,7 +7,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../primitives/Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { Modal } from "./Modal";
 
 const meta: Meta<typeof Modal> = {

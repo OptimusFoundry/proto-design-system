@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Badge } from "../../primitives/Badge";
+import { Badge } from "@/proto-design-system/components/primitives/Badge/Badge";
 import { Label } from "./Label";
 
 const meta: Meta<typeof Label> = {

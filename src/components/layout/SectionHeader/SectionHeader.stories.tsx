@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "../../primitives/Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { SectionHeader } from "./SectionHeader";
 
 const meta: Meta<typeof SectionHeader> = {

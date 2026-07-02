@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Info, Settings } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../primitives/Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { Popover } from "./Popover";
 
 const meta: Meta<typeof Popover> = {

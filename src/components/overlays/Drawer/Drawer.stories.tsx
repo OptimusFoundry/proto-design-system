@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { Button } from "../../primitives/Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { Drawer } from "./Drawer";
 
 const meta: Meta<typeof Drawer> = {

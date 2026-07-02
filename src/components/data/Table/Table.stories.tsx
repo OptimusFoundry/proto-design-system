@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { Checkbox } from "../../forms/Checkbox";
+import { Checkbox } from "@/proto-design-system/components/forms/Checkbox/Checkbox";
 import {
 	type SortDirection,
 	Table,

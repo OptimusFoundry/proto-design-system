@@ -35,7 +35,16 @@ import { useEffect, useState } from "react";
 import {
 	BannerCenterProvider,
 	useBannerCenter,
-} from "../feedback/BannerCenter";
+} from "@/proto-design-system/components/feedback/BannerCenter/BannerCenter";
+import {
+	Card,
+	CardBody,
+	CardFooter,
+	CardHeader,
+} from "@/proto-design-system/components/layout/Card/Card";
+import { Container } from "@/proto-design-system/components/layout/Container/Container";
+import { Grid } from "@/proto-design-system/components/layout/Grid/Grid";
+import { Stack } from "@/proto-design-system/components/layout/Stack/Stack";
 import {
 	Sidebar,
 	SidebarDivider,
@@ -47,17 +56,17 @@ import {
 	SidebarSection,
 	SidebarToggle,
 	useSidebarContext,
-} from "../navigation/Sidebar";
-import { Tab, TabList, Tabs } from "../navigation/Tabs";
-import { Dropdown } from "../overlays/Dropdown";
-import { Avatar } from "../primitives/Avatar";
-import { Badge } from "../primitives/Badge";
-import { Button } from "../primitives/Button";
-import { Card, CardBody, CardFooter, CardHeader } from "./Card";
-import { Container } from "./Container";
-import { Grid } from "./Grid";
+} from "@/proto-design-system/components/navigation/Sidebar/Sidebar";
+import {
+	Tab,
+	TabList,
+	Tabs,
+} from "@/proto-design-system/components/navigation/Tabs/Tabs";
+import { Dropdown } from "@/proto-design-system/components/overlays/Dropdown/Dropdown";
+import { Avatar } from "@/proto-design-system/components/primitives/Avatar/Avatar";
+import { Badge } from "@/proto-design-system/components/primitives/Badge/Badge";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import showcaseStyles from "./LayoutShowcase.module.scss";
-import { Stack } from "./Stack";
 
 const meta: Meta = {
 	title: "Layout/Showcase",

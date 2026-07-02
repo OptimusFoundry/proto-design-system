@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "../Button";
+import { Button } from "@/proto-design-system/components/primitives/Button/Button";
 import { Spinner } from "./Spinner";
 
 const meta: Meta<typeof Spinner> = {
