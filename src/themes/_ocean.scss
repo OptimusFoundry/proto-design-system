@@ -1,16 +1,20 @@
 // =============================================================================
 // OCEAN THEME
 // =============================================================================
-// Sourced from compiled themes.bundle.css — reflects Phase 1 palette tuning.
-// Edit this file, then re-run scripts/scss_compiler.js to regenerate the bundle.
+// Targeted contrast repair pass (node scripts/theme-contrast-check.mjs):
+// accent/warning solid-fill -content pairs and the hairline border were
+// below the Lc floor for their role; --color-text-disabled was missing
+// entirely. Fixed by shifting each role's own lightness (and its hover/
+// active siblings, to keep monotonic spacing) — hue/chroma identity and
+// every other previously-tuned token are untouched.
 
 [data-theme="ocean"] {
   color-scheme: light;
 
-  --font-family-sans:    "Geist", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "Geist Mono", "JetBrains Mono", monospace;
-  --font-family-serif:   "Fraunces", "Times New Roman", georgia, serif;
-  --font-family-display: "Fraunces", "Times New Roman", georgia, serif;
+  --font-family-sans:    "DM Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Cousine", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
   --color-background: oklch(98% 0.012 220deg);
   --color-base-50:  oklch(99% 0.008 220deg);
   --color-base-100: oklch(96% 0.014 220deg);
@@ -27,10 +31,11 @@
   --color-base-content-secondary: oklch(24% 0.030 220deg);
   --color-base-content-tertiary:  oklch(46% 0.030 220deg);
   --color-muted:                  oklch(62% 0.030 220deg);
+  --color-text-disabled:          oklch(74% 0.026 220deg);
   --color-surface:          oklch(100% 0 0deg);
   --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay:  oklch(18% 0.030 220deg / 0.55);
-  --color-border:       oklch(90% 0.020 220deg);
+  --color-border:       oklch(86% 0.020 220deg);
   --color-border-hover: oklch(80% 0.025 220deg);
   --color-primary:         oklch(50% 0.20 230deg);
   --color-primary-hover:   oklch(44% 0.22 230deg);
@@ -40,9 +45,9 @@
   --color-secondary-hover:   oklch(52% 0.18 190deg);
   --color-secondary-active:  oklch(46% 0.16 190deg);
   --color-secondary-content: oklch(98% 0.010 190deg);
-  --color-accent:         oklch(68% 0.18 30deg);
-  --color-accent-hover:   oklch(62% 0.20 30deg);
-  --color-accent-active:  oklch(56% 0.18 30deg);
+  --color-accent:         oklch(62% 0.18 30deg);
+  --color-accent-hover:   oklch(56% 0.20 30deg);
+  --color-accent-active:  oklch(50% 0.18 30deg);
   --color-accent-content: oklch(98% 0.010 30deg);
   --color-accent-bg:      oklch(96% 0.04 30deg);
   --color-success:         oklch(62% 0.18 145deg);
@@ -50,11 +55,11 @@
   --color-success-active:  oklch(50% 0.18 145deg);
   --color-success-bg:      oklch(95% 0.04 145deg);
   --color-success-content: oklch(98% 0.010 145deg);
-  --color-warning:         oklch(72% 0.14 85deg);
-  --color-warning-hover:   oklch(66% 0.16 85deg);
-  --color-warning-active:  oklch(60% 0.14 85deg);
+  --color-warning:         oklch(77% 0.14 85deg);
+  --color-warning-hover:   oklch(71% 0.16 85deg);
+  --color-warning-active:  oklch(65% 0.14 85deg);
   --color-warning-bg:      oklch(95% 0.04 85deg);
-  --color-warning-content: oklch(25% 0.04 85deg);
+  --color-warning-content: oklch(15% 0.04 85deg);
   --color-error:         oklch(55% 0.20 25deg);
   --color-error-hover:   oklch(50% 0.22 25deg);
   --color-error-active:  oklch(44% 0.20 25deg);
@@ -73,7 +78,7 @@
   --shadow-lg: 0 20px 32px -8px oklch(18% 0.030 220deg / 0.10), 0 4px 8px -4px oklch(18% 0.030 220deg / 0.05);
   --shadow-xl: 0 32px 48px -12px oklch(18% 0.030 220deg / 0.14), 0 8px 16px -8px oklch(18% 0.030 220deg / 0.06);
   --shadow-primary: 0 8px 24px 0 oklch(50% 0.20 230deg / 0.30);
-  --shadow-accent:  0 8px 24px 0 oklch(68% 0.18 30deg / 0.28);
+  --shadow-accent:  0 8px 24px 0 oklch(62% 0.18 30deg / 0.28);
   --focus-ring-color: oklch(50% 0.20 230deg / 0.40);
   --color-header-bg: var(--color-base-100);
 }

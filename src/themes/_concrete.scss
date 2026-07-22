@@ -3,16 +3,14 @@
 // =============================================================================
 // Ported from SingaporeAtmosphere Design System v2 (colors_and_type.css).
 
-@import "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap";
-
 [data-theme="concrete"] {
   color-scheme: light;
 
-  --font-family-sans:    "Archivo", "Helvetica Neue", "Arial", sans-serif;
-  --font-family-mono:    "JetBrains Mono", "SF Mono", monospace;
-  --font-family-serif:   "Archivo", "Helvetica Neue", sans-serif;
-  --font-family-display: "Space Grotesk", "Archivo", "Helvetica Neue", sans-serif;
-  --color-background: oklch(82% 0.004 250deg);
+  --font-family-sans:    "Archivo", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "JetBrains Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+  --color-background: oklch(85% 0.004 250deg);
   --color-base-50: oklch(90% 0.003 250deg);
   --color-base-100: oklch(82% 0.004 250deg);
   --color-base-200: oklch(72% 0.005 250deg);
@@ -25,15 +23,16 @@
   --color-base-900: oklch(10% 0.003 250deg);
   --color-base-950: oklch(6% 0.002 250deg);
   --color-base-content: oklch(18% 0.005 250deg);
-  --color-base-content-secondary: oklch(32% 0.006 250deg);
+  --color-base-content-secondary: oklch(20% 0.006 250deg);
   --color-base-content-tertiary: oklch(48% 0.006 250deg);
-  --color-muted: oklch(62% 0.005 250deg);
+  --color-muted: oklch(52% 0.005 250deg);
+  --color-text-disabled: oklch(64% 0.005 250deg);
   --color-surface: oklch(87% 0.003 250deg);
   --color-surface-elevated: oklch(92% 0.002 250deg);
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);
   --color-border: oklch(18% 0.005 250deg);
   --color-border-hover: oklch(56% 0.18 45deg);
-  --color-primary: oklch(68% 0.22 45deg);
+  --color-primary: oklch(78% 0.130 45deg);
   --color-primary-hover: oklch(62% 0.24 45deg);
   --color-primary-active: oklch(56% 0.24 45deg);
   --color-primary-content: oklch(14% 0.02 45deg);
@@ -51,7 +50,7 @@
   --color-success-active: oklch(44% 0.18 140deg);
   --color-success-bg: oklch(86% 0.03 140deg);
   --color-success-content: oklch(96% 0.005 140deg);
-  --color-warning: oklch(68% 0.22 45deg);
+  --color-warning: oklch(78% 0.130 45deg);
   --color-warning-hover: oklch(76% 0.22 45deg);
   --color-warning-active: oklch(60% 0.22 45deg);
   --color-warning-bg: oklch(92% 0.05 70deg);

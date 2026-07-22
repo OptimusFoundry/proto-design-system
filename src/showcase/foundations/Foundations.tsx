@@ -19,6 +19,7 @@ import {
 } from "react";
 import type { ThemeName } from "../../themes/themes";
 import styles from "./Foundations.module.scss";
+import { TypeAudit } from "./TypeAudit";
 
 // These reads are DEFERRED to the next frame: the hooks live in children, whose
 // effects run before the parent's applyTheme() effect on mount — a synchronous
@@ -489,6 +490,14 @@ export function Foundations({ theme }: { theme: ThemeName }) {
 			<TypographyFoundation theme={theme} />
 			<SpacingRadiusFoundation theme={theme} />
 			<ElevationMotionFoundation theme={theme} />
+			<FoundationSection
+				id="f-contrast"
+				index="05"
+				title="Text contrast"
+				caption="The active theme's text ramp at its real sizes and weights, scored live with APCA (Lc) and WCAG 2.2."
+			>
+				<TypeAudit theme={theme} />
+			</FoundationSection>
 		</div>
 	);
 }

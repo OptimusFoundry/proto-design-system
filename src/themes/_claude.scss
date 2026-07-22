@@ -1,18 +1,114 @@
 // =============================================================================
 // CLAUDE THEME
 // =============================================================================
-// Sourced from compiled themes.bundle.css — reflects Phase 1 palette tuning.
-// Edit this file, then re-run scripts/scss_compiler.js to regenerate the bundle.
+// Reference: not literal Anthropic-brand-hex mimicry (that's `oat`'s job,
+// numerically fitted to the pampas/ivory/book-ink brand anchors) — `claude`
+// is a distinct mood: warm terracotta-clay paper (background carries the
+// theme's hue, not just the primary swatch) paired with a cool indigo-violet
+// accent as the complementary counterpoint, set in a literary serif instead
+// of the house Geist. Think unhurried, considered, hand-glazed ceramic next
+// to ink — a conversational warmth rather than a product-brand wash.
+//
+// Fonts: Petrona (full 400-700 weight range + italic, a text-legible serif —
+// NOT a thin display face) replaces the stale Geist/Fraunces pair that had
+// drifted from the house sans-only migration. Mono role is Spline Sans Mono,
+// not the brief's originally-suggested Fragment Mono: Fragment Mono ships
+// ONLY weight 400 on Google Fonts (verified live against the fonts.googleapis
+// API — requesting 500/600/700 silently returns nothing above 400), which
+// would force default `font-synthesis: weight` faux-bold at every T-7 mono
+// role that needs 500/600 (eyebrows, tier badges, stat units). Spline Sans
+// Mono covers 300-700 natively and keeps the same quiet/minimal character.
+// See fontRegistrationFlag in the audit report — no themes.ts googleFontsHref
+// field exists in this repo; the load mechanism is this file's own @import,
+// matching every other custom-font theme (botanical, archive, zen, marble...).
+//
+// 2026-07 contrast/gamut refit (computed via theme-contrast-check.mjs, not
+// eyeballed — see PR notes for before/after numbers):
+// - --color-text-disabled was missing outright (partial-theme contract bug;
+//   every pair using it silently SKIPped in the audit script). Added at 66%
+//   L, clearing the Lc30 disabled floor at Lc 52.0 (non-content, deliberately
+//   short of the muted/tertiary tier).
+// - --color-muted was a free-floating 58% L that scored Lc 63.7 / 3.95:1 on
+//   background — under WCAG AA text (4.5:1) despite being real, readable
+//   copy per J-2's role hierarchy. Now aliases -tertiary exactly (same
+//   pattern as _light.scss/_oat.scss) at Lc 76.5 / 6.04:1.
+// - --color-border was Lc 11.2 on background, under the Lc15 hairline floor
+//   (functionally invisible per the ladder). Darkened 90%->85% L; hover
+//   moved 80%->74% L to preserve a visible resting/hover step.
+// - Accepted trade-off, flagged not hidden: border-on-background now clears
+//   the Lc15 hairline floor (Lc 20.3) but still sits under WCAG 1.4.11's 3:1
+//   non-text UI-boundary ratio (1.45:1) — border IS the live rendered
+//   boundary on Input/Checkbox/Radio/Select/TextArea (grep-verified). Full
+//   1.4.11 compliance would need ~64% L (matching light.scss's own grep-
+//   driven fix to 58% L), which would read as a solid structural line, not
+//   a hairline — breaking role fidelity and this theme's stated ceramic-
+//   register brief. Kept at the same Lc15-floor target oat.scss and
+//   marble.scss both use (their border-on-background sits at an identical
+//   ~1.46-1.53:1) rather than unilaterally diverging from that established
+//   sibling convention; flagging this as a cross-theme policy question
+//   (hairline-restraint vs. strict 1.4.11) rather than a claude-only bug.
+// - Every chromatic ramp (primary/accent/success/warning/error/info, plus
+//   every near-white "-content" swatch) was authored past the sRGB gamut
+//   ceiling at its hue and silently clipped/hue-shifted at paint time.
+//   Rebuilt at the same target L/H with chroma fit to the true in-gamut max
+//   per swatch (colorjs.io, mirroring the browser's own CSS Color 4 mapping)
+//   — mirrors oat's semantic-ramp rebuild.
+// - primary-content on primary and primary-as-link-text-on-background both
+//   sat just under WCAG AA (4.48:1 / 4.21:1). Primary darkened 58%->54% L
+//   (same hue/chroma family) so both clear 4.5:1 outright — darkening one
+//   swatch fixes both directions since primary is text in one pairing and
+//   background in the other.
+// - accent-content on accent was a real failure (Lc -66.5 / 3.52:1 — near-
+//   white ivory on a 62%-L blue). Accent darkened to 50% L and re-hued
+//   264deg (from 250deg) to read as a cooler indigo-violet, deliberately
+//   separated from info's 232deg blue so the two roles stay visually
+//   distinct within this theme's own values (J-2: accent is editorial,
+//   ≤2 uses/page — it should never get mistaken for info's status blue).
+// - warning had the same failure mode oat documented: bright at 72% L, it
+//   scored Lc 43.2 / 2.32:1 as icon/text directly on canvas — under the
+//   Lc45 headline floor and the WCAG 3:1 UI floor both. Relightened down to
+//   52% L (Lc 71.6 / 5.13:1 on canvas) and switched from dark-ink content to
+//   the shared ivory content, since darkening now helps rather than hurts
+//   ink-on-warning contrast (unlike accent, which keeps a light content and
+//   so only needed re-hueing, not the content-polarity swap).
+// - All five "-content" near-whites (primary/secondary/accent/success/
+//   warning/error/info) were four-to-seven separate per-hue near-white
+//   tints, several individually out of gamut. Unified onto one shared ivory
+//   (98.5% 0.006 55deg, matching base-50/surface's own paper hue) — same
+//   "one deliberate paper tone, not a system default" call oat made.
+// - Surfaces were only keeping ~50% of the background's chroma (0.006 vs
+//   0.012), reading closer to white paper than the terracotta-clay canvas.
+//   Retuned so surface/surface-elevated keep the same hue and a comparable
+//   fraction of chroma, gamut-fit at their near-white L (oat's "surfaces
+//   keep background chroma" rule). surface-elevated was also literal
+//   oklch(100% 0 0) — pure white, a craft-rule violation for a non-
+//   monochrome theme — replaced with a near-white that still carries a hint
+//   of the paper hue.
+// - Accepted trade-off: error (hue 25) sits only 10deg from primary (hue 35)
+//   — inherited from the pre-refit file, not introduced here. Kept
+//   deliberately: error's chroma (0.19) is meaningfully higher than
+//   primary's (0.15) and its L is darker, so the two stay legible as
+//   distinct roles (muted terracotta CTA vs. vivid red-orange danger) even
+//   at a glance; a bigger hue split was not pursued because it would have
+//   pulled error toward warning's amber (hue 75) instead.
+
+@import "https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap";
 
 [data-theme="claude"] {
   color-scheme: light;
 
-  --font-family-sans:    "Geist", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "Geist Mono", "JetBrains Mono", monospace;
-  --font-family-serif:   "Fraunces", "Times New Roman", georgia, serif;
-  --font-family-display: "Fraunces", "Times New Roman", georgia, serif;
+  // 2026-07-16: replaced Petrona (serif) with Alegreya Sans — the sans
+  // companion to the Alegreya literary-serif family, keeping the same warm,
+  // considered, humanist character the brief wants without a serif face.
+  --font-family-sans:    "Alegreya Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Spline Sans Mono", "Geist Mono", "SF Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Base scale — warm terracotta-clay paper, ink drifting warmer/deeper
+  // through the ramp (unchanged from the pre-refit file; not gamut-flagged).
   --color-background: oklch(97% 0.012 55deg);
-  --color-base-50:  oklch(99% 0.006 55deg);
+  --color-base-50:  oklch(98.5% 0.006 55deg);
   --color-base-100: oklch(96% 0.012 55deg);
   --color-base-200: oklch(93% 0.015 55deg);
   --color-base-300: oklch(88% 0.018 55deg);
@@ -23,48 +119,82 @@
   --color-base-800: oklch(26% 0.020 40deg);
   --color-base-900: oklch(18% 0.020 40deg);
   --color-base-950: oklch(12% 0.018 40deg);
-  --color-base-content:           oklch(18% 0.020 40deg);
-  --color-base-content-secondary: oklch(24% 0.020 40deg);
-  --color-base-content-tertiary:  oklch(42% 0.022 42deg);
-  --color-muted:                  oklch(58% 0.018 45deg);
-  --color-surface:          oklch(99% 0.006 55deg);
-  --color-surface-elevated: oklch(100% 0 0deg);
+
+  // Text — secondary/tertiary widened off base-content for real role
+  // separation (was 18/24/42 — secondary read almost as dark as primary).
+  --color-base-content:           oklch(18% 0.020 40deg);   // Lc 99.1 / 17.22:1 on bg
+  --color-base-content-secondary: oklch(32% 0.020 42deg);   // Lc 92.6 / 11.63:1
+  --color-base-content-tertiary:  oklch(48% 0.020 46deg);   // Lc 76.5 / 6.04:1
+  --color-muted:                  oklch(48% 0.020 46deg);   // aliases tertiary — was AA-failing at 58% L
+  --color-text-disabled:          oklch(66% 0.014 48deg);   // non-content only — Lc 52.0 / 2.85:1
+
+  // Surfaces keep the background's paper hue (were reading ~50% washed out).
+  --color-surface:          oklch(98.5% 0.007 55deg);
+  --color-surface-elevated: oklch(99% 0.004 55deg);         // near-white, never pure #fff
   --color-surface-overlay:  oklch(18% 0.020 40deg / 0.55);
-  --color-border:       oklch(90% 0.015 50deg);
-  --color-border-hover: oklch(80% 0.020 50deg);
-  --color-primary:         oklch(58% 0.15 35deg);
-  --color-primary-hover:   oklch(52% 0.17 35deg);
-  --color-primary-active:  oklch(46% 0.15 35deg);
-  --color-primary-content: oklch(99% 0.005 35deg);
-  --color-secondary:         oklch(45% 0.08 45deg);
-  --color-secondary-hover:   oklch(38% 0.10 45deg);
-  --color-secondary-active:  oklch(32% 0.08 45deg);
-  --color-secondary-content: oklch(99% 0.005 45deg);
-  --color-accent:         oklch(62% 0.14 250deg);
-  --color-accent-hover:   oklch(56% 0.16 250deg);
-  --color-accent-active:  oklch(50% 0.14 250deg);
-  --color-accent-content: oklch(99% 0.010 250deg);
-  --color-accent-bg:      oklch(95% 0.03 250deg);
-  --color-success:         oklch(55% 0.14 155deg);
-  --color-success-hover:   oklch(50% 0.16 155deg);
-  --color-success-active:  oklch(44% 0.14 155deg);
-  --color-success-bg:      oklch(96% 0.03 155deg);
-  --color-success-content: oklch(99% 0.010 155deg);
-  --color-warning:         oklch(72% 0.14 75deg);
-  --color-warning-hover:   oklch(66% 0.16 75deg);
-  --color-warning-active:  oklch(60% 0.14 75deg);
-  --color-warning-bg:      oklch(96% 0.03 75deg);
-  --color-warning-content: oklch(24% 0.04 75deg);
-  --color-error:         oklch(55% 0.20 25deg);
-  --color-error-hover:   oklch(50% 0.22 25deg);
-  --color-error-active:  oklch(44% 0.20 25deg);
-  --color-error-bg:      oklch(96% 0.03 25deg);
-  --color-error-content: oklch(99% 0.010 25deg);
-  --color-info:         oklch(55% 0.16 235deg);
-  --color-info-hover:   oklch(50% 0.18 235deg);
-  --color-info-active:  oklch(44% 0.16 235deg);
-  --color-info-bg:      oklch(96% 0.03 235deg);
-  --color-info-content: oklch(99% 0.010 235deg);
+
+  // Darkened from 90%/80% L — old hairline scored Lc 11.2, under the Lc15
+  // floor (functionally invisible).
+  --color-border:       oklch(85% 0.018 50deg);              // Lc 20.3 / 1.45:1
+  --color-border-hover: oklch(74% 0.022 50deg);              // Lc 39.6 / 2.12:1 — clearly distinct step
+
+  // Primary — terracotta CTA. 54% L (down from 58%, same hue/chroma family)
+  // clears WCAG AA 4.5:1 both as link text on canvas and under its own
+  // button content. Chroma fit to true in-gamut ceiling at each L step.
+  --color-primary:         oklch(54% 0.15 35deg);            // Lc 70.0 / 4.95:1 as link on bg
+  --color-primary-hover:   oklch(48% 0.16 35deg);
+  --color-primary-active:  oklch(42% 0.14 35deg);
+  --color-primary-content: oklch(98.5% 0.006 55deg);         // shared ivory — Lc -78.0 / 5.18:1 on primary
+
+  // Secondary — quiet warm-ink action, distinct from primary's saturated
+  // terracotta (low chroma, same content-ink hue family as base-content).
+  --color-secondary:         oklch(44% 0.075 43deg);
+  --color-secondary-hover:   oklch(37% 0.085 43deg);
+  --color-secondary-active:  oklch(31% 0.075 43deg);
+  --color-secondary-content: oklch(98.5% 0.006 55deg);       // Lc -88.6 / 7.64:1 on secondary
+
+  // Accent — cool indigo-violet, the deliberate complementary counterpoint
+  // to the warm canvas (editorial use only, J-2: ≤2/page). Re-hued from
+  // 250deg->264deg and darkened 62%->50% L: the old value failed
+  // content-on-accent outright (Lc -66.5 / 3.52:1); also separates accent
+  // from info's 232deg blue so the two roles read as distinct hues.
+  --color-accent:         oklch(50% 0.15 264deg);            // Lc 74.1 / 5.62:1 as icon on bg
+  --color-accent-hover:   oklch(45% 0.16 264deg);
+  --color-accent-active:  oklch(40% 0.14 264deg);
+  --color-accent-content: oklch(98.5% 0.006 55deg);          // Lc -82.0 / 5.87:1 on accent
+  --color-accent-bg:      oklch(95% 0.020 264deg);
+
+  // Semantics — gamut-fit at each L/H to the true sRGB ceiling; content
+  // unified onto the theme's own ivory instead of four separate near-white
+  // hue tints (several of which individually clipped).
+  --color-success:         oklch(50% 0.13 150deg);           // Lc 71.5 / 5.15:1 as icon on bg
+  --color-success-hover:   oklch(45% 0.117 150deg);
+  --color-success-active:  oklch(40% 0.104 150deg);
+  --color-success-bg:      oklch(95% 0.07 150deg);
+  --color-success-content: oklch(98.5% 0.006 55deg);         // Lc -79.5 / 5.39:1 on success
+
+  // Warning relightened 72%->52% L (see header — was Lc 43.2 / 2.32:1 on
+  // canvas, under both the Lc45 and WCAG 3:1 UI floors) and switched from
+  // dark-ink to light ivory content now that it reads mid-dark, not bright.
+  --color-warning:         oklch(52% 0.104 75deg);           // Lc 71.6 / 5.13:1 as icon on bg
+  --color-warning-hover:   oklch(46% 0.092 75deg);
+  --color-warning-active:  oklch(40% 0.080 75deg);
+  --color-warning-bg:      oklch(95% 0.036 75deg);
+  --color-warning-content: oklch(98.5% 0.006 55deg);         // Lc -79.6 / 5.36:1 on warning
+
+  --color-error:         oklch(50% 0.19 25deg);              // Lc 74.6 / 6.06:1 as icon on bg
+  --color-error-hover:   oklch(45% 0.172 25deg);
+  --color-error-active:  oklch(40% 0.153 25deg);
+  --color-error-bg:      oklch(95% 0.020 25deg);
+  --color-error-content: oklch(98.5% 0.006 55deg);           // Lc -82.4 / 6.33:1 on error
+
+  --color-info:         oklch(50% 0.097 232deg);             // Lc 72.7 / 5.36:1 as icon on bg
+  --color-info-hover:   oklch(45% 0.087 232deg);
+  --color-info-active:  oklch(40% 0.077 232deg);
+  --color-info-bg:      oklch(95% 0.025 232deg);
+  --color-info-content: oklch(98.5% 0.006 55deg);            // Lc -80.6 / 5.61:1 on info
+
+  // Warm, ink-tinted shadows — one implied light source, never flat black.
   --shadow-color:        oklch(18% 0.020 40deg / 0.08);
   --shadow-color-strong: oklch(18% 0.020 40deg / 0.16);
   --shadow-xs: 0 1px 2px 0 oklch(18% 0.020 40deg / 0.06);
@@ -72,10 +202,12 @@
   --shadow-md: 0 8px 16px -4px oklch(18% 0.020 40deg / 0.08), 0 2px 4px -2px oklch(18% 0.020 40deg / 0.04);
   --shadow-lg: 0 20px 32px -8px oklch(18% 0.020 40deg / 0.10), 0 4px 8px -4px oklch(18% 0.020 40deg / 0.05);
   --shadow-xl: 0 32px 48px -12px oklch(18% 0.020 40deg / 0.14), 0 8px 16px -8px oklch(18% 0.020 40deg / 0.06);
-  --shadow-primary: 0 8px 24px 0 oklch(58% 0.15 35deg / 0.28);
-  --shadow-accent:  0 8px 24px 0 oklch(62% 0.14 250deg / 0.25);
-  --focus-ring-color: oklch(58% 0.15 35deg / 0.40);
+  --shadow-primary: 0 8px 24px 0 oklch(54% 0.15 35deg / 0.28);
+  --shadow-accent:  0 8px 24px 0 oklch(50% 0.15 264deg / 0.25);
+
+  --focus-ring-color: oklch(54% 0.15 35deg / 0.40);
   --color-header-bg: var(--color-base-100);
+
   --radius-xs: 4px; --radius-sm: 6px; --radius-md: 10px;
   --radius-lg: 16px; --radius-xl: 24px;
 }

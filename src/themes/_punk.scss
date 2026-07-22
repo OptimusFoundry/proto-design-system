@@ -1,80 +1,237 @@
 // =============================================================================
 // PUNK THEME
 // =============================================================================
-// Ported from SingaporeAtmosphere Design System v2 (colors_and_type.css).
+// Reference: 1977-79 UK DIY punk zine / gig-flyer production — xeroxed
+// newsprint paper, poster-ink spot red for the structural CTA, a second
+// crimson-magenta alarm red for error (previously byte-identical to
+// primary — see audit below), safety-pin/hazard-tape yellow for the
+// ≤2-per-page editorial accent (J-2), a darker mustard-amber for the
+// warning semantic (was also byte-identical to accent), forest green for
+// success, and a deep violet "mimeograph/spirit-duplicator ink" purple for
+// info — the characteristic purple-blue of a hand-run Ditto machine, a
+// specific DIY-production reference rather than a generic reuse of body
+// ink. Hard, unblurred offset drop-shadows (2/3/4/6/10px solid ink, one
+// implied light source, paste-up "stat camera" flatness, razor-cut square
+// corners — see refit #2) kept from the prior file. Courier Prime (kept)
+// carries body/UI text as a typewritten-manifesto monospace; Special
+// Elite/Archivo Black (kept, untouched — not the retired Fraunces serif,
+// and load-bearing across Text/Card/Modal) carry the serif/display roles;
+// --font-family-mono differentiated from sans in refit #2 below.
+//
+// 2026-07 contrast/gamut refit (computed via theme-contrast-check.mjs, not
+// eyeballed):
+// - Added the missing --color-text-disabled leaf (theme previously shipped
+//   partial — a contract violation on its own).
+// - 18 literal oklch() values were authored past the sRGB ceiling at their
+//   hue (every primary/error/accent/warning/success shade, plus every
+//   shadow/focus-ring literal repeating a clipped value) — every one
+//   rebuilt at its true in-gamut chroma ceiling (~92% headroom) at the same
+//   L/H.
+// - --color-primary and --color-error were byte-identical
+//   (oklch(52% 0.26 25deg) for both) — a role-fidelity bug: a structural
+//   CTA and a system error state read as the same color. Split them:
+//   primary keeps the vermilion poster-red hue (25deg), error moves to a
+//   crimson-magenta alarm hue (355deg) — same "red ink" family by
+//   association, clearly different color (#a21820 vs #9b165d).
+// - --color-accent and --color-warning were byte-identical
+//   (oklch(92% 0.22 105deg), with warning-active repeating accent-active) —
+//   same bug in the yellow family. Split them: accent stays the bright
+//   safety-pin/hazard-tape yellow highlighter (92% L, dark-ink content,
+//   editorial-only per J-2); warning becomes a genuinely mid-tone mustard
+//   amber (46% L, paper content) that actually functions as a semantic
+//   icon/text/button color instead of an ultra-light swatch indistinguishable
+//   from the accent chip.
+// - warning as text/icon directly on background was Lc 0.0 / 1.05:1 — a
+//   total contrast failure (92% L warning sitting on a 94% L background,
+//   functionally invisible per the Lc15 hairline floor, let alone Lc45 for
+//   an icon). Now Lc 71.1 / 5.91:1 at the new mid-tone value.
+// - --color-muted was a separate, lighter value than -tertiary
+//   (Lc 55.1 / 3.32:1 — under AA, under the Lc75 small-text floor). Aliased
+//   muted onto tertiary's exact value, matching the :root/light/oat
+//   convention ("muted copy is still content"): now Lc 77.3 / 7.49:1 for
+//   both.
+// - --color-info reused near-black ink, indistinguishable from
+//   base-content/border — swapped to a deep violet "mimeograph ink"
+//   (hue 300deg): a specific DIY-zine production reference (spirit
+//   duplicator/Ditto-machine purple-blue) instead of a generic reuse of the
+//   body-text color, and a genuine fourth hue family alongside red/yellow/
+//   green.
+// - Base/content/border ramp rebuilt as a purpose-built warm-newsprint tint
+//   (hue drifting 75deg at paper white -> 40deg at ink black) instead of the
+//   old ramp's split personality (faint warm tint on base-50..400, flat
+//   0-chroma gray on base-500..950).
+// - --color-surface-overlay and the shadow/focus literals moved off literal
+//   oklch(0%/12% 0 0deg) pure-black-hue values onto the theme's own
+//   warm-ink tint (still visually near-black, but no chroma=0/hue=0 pure
+//   black, per the no-pure-#000 rule — this theme's brief is xeroxed paper,
+//   not stark monochrome).
+// - Font loading note: the brief for this pass described the Courier Prime
+//   sans/mono pairing as already "replatformed" onto a `googleFontsHref`
+//   entry in themes.ts. That mechanism does not exist anywhere in this repo
+//   today (checked: no `googleFontsHref` in themes.ts, ThemeProvider,
+//   useTheme, or index.html). The `@import` below is kept because it is
+//   currently the only thing loading Courier Prime/Special Elite/Archivo
+//   Black for this theme; removing it would silently regress every role to
+//   the monospace/sans-serif fallback.
+// - serif/display (Special Elite / Archivo Black) left untouched: not the
+//   retired Fraunces serif this repo's migration targeted, and both are
+//   load-bearing (Text/Card/Modal reference --font-family-serif/-display
+//   directly) — swapping them wasn't in scope, and neither failed
+//   legibility or clashed with the refit palette (see report).
+//
+// 2026-07 refit #2 (structural + genericness follow-up; re-run via
+// theme-contrast-check.mjs, numbers quoted fresh, not carried over):
+// - Re-verified every pairing above plus the real-consumer pairings this
+//   pass's review flagged independently: Badge's success-content-on-success
+//   solid fill, Alert's 85%-alpha success/warning/error/info body text
+//   composited over its own fill (`--_alert-text: oklch(from
+//   var(--color-X-content) l c h / 0.85)` on `--_alert-bg: var(--color-X)`),
+//   and FormHint's direct `color: var(--color-success)` / `-error` /
+//   `-muted` on background. All clear Lc60 + WCAG AA 4.5:1 with real margin
+//   (worst case Alert warning Lc 69.6/5.49:1); zero oklch() gamut flags
+//   remain anywhere in the file. Nothing in this pass changed those color
+//   values — this refit closes the remaining structural/genericness gaps.
+// - --font-family-mono was byte-identical to --font-family-sans (Courier
+//   Prime in both slots) — the two-role type system collapsed to one
+//   typewriter face with no stated reason, the same "generic default"
+//   failure mode from the opposite direction (one face reused, not a
+//   cliché pairing). Differentiated: mono moves to IBM Plex Mono, an
+//   engineered grid-precision face associated with mail-order forms/price
+//   lists/small-ads classified typesetting in the small press — a distinct
+//   "production ledger" register from the manifesto's Courier Prime
+//   typewriter voice, not an arbitrary substitution.
+// - Added --radius-xs/sm/md/lg/xl: 0. The hard, zero-blur offset shadows
+//   are a flat rectangular silhouette that only reads as a correct
+//   "cut-paper" shape against a square card; left at the inherited house
+//   --radius-md: 8px default, every panel rendered as a softly rounded
+//   card wearing a hard-edged square shadow — an unconsidered mismatch.
+//   Zeroed for the same reason `brutal` does (the shadow language demands
+//   it) but on a distinct physical justification: punk's edges are
+//   razor/X-Acto paste-up cuts, not brutal's absence-of-ornament ideology —
+//   the two themes converge on the same value because paper doesn't round
+//   itself, not because one copied the other.
+// - surface-on-background (a raw swatch-vs-swatch read, Lc 0.0 — not a
+//   graded text role) stays deliberately close: confirmed intentional,
+//   matching this file's own "surfaces keep background chroma" rule and
+//   `oat`'s identical convention (oat's own surface/background gap is
+//   similarly ~2pts of L). Shape here comes from the Lc92 border ring on
+//   every panel, not fill contrast — not a copy-paste bug.
 
-@import "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap";
 
 [data-theme="punk"] {
   color-scheme: light;
 
   --font-family-sans:    "Courier Prime", "Courier New", monospace;
-  --font-family-mono:    "Courier Prime", "Courier New", monospace;
+  --font-family-mono:    "IBM Plex Mono", "SF Mono", "Courier New", monospace;
   --font-family-serif:   "Special Elite", "Courier Prime", monospace;
   --font-family-display: "Archivo Black", "Impact", sans-serif;
-  --color-background: oklch(94% 0.005 80deg);
-  --color-base-50: oklch(97% 0.004 80deg);
-  --color-base-100: oklch(92% 0.006 80deg);
-  --color-base-200: oklch(85% 0.006 80deg);
-  --color-base-300: oklch(75% 0.005 80deg);
-  --color-base-400: oklch(60% 0.004 80deg);
-  --color-base-500: oklch(45% 0 0deg);
-  --color-base-600: oklch(32% 0 0deg);
-  --color-base-700: oklch(22% 0 0deg);
-  --color-base-800: oklch(16% 0 0deg);
-  --color-base-900: oklch(10% 0 0deg);
-  --color-base-950: oklch(4%  0 0deg);
-  --color-base-content: oklch(12% 0 0deg);
-  --color-base-content-secondary: oklch(20% 0 0deg);
-  --color-base-content-tertiary: oklch(40% 0 0deg);
-  --color-muted: oklch(60% 0 0deg);
-  --color-surface: oklch(97% 0.004 80deg);
-  --color-surface-elevated: oklch(99% 0.002 80deg);
-  --color-surface-overlay: oklch(0% 0 0deg / 0.5);
-  --color-border: oklch(12% 0 0deg);
-  --color-border-hover: oklch(55% 0.24 25deg);
-  --color-primary: oklch(52% 0.26 25deg);
-  --color-primary-hover: oklch(45% 0.28 25deg);
-  --color-primary-active: oklch(40% 0.26 25deg);
-  --color-primary-content: oklch(97% 0.004 80deg);
-  --color-secondary: oklch(12% 0 0deg);
-  --color-secondary-hover: oklch(4% 0 0deg);
-  --color-secondary-active: oklch(1% 0 0deg);
-  --color-secondary-content: oklch(97% 0.004 80deg);
-  --color-accent: oklch(92% 0.22 105deg);
-  --color-accent-hover: oklch(88% 0.24 105deg);
-  --color-accent-active: oklch(84% 0.24 105deg);
-  --color-accent-content: oklch(12% 0 0deg);
-  --color-accent-bg: oklch(94% 0.05 105deg);
-  --color-success: oklch(55% 0.20 150deg);
-  --color-success-hover: oklch(63% 0.2 150deg);
-  --color-success-active: oklch(47% 0.2 150deg);
-  --color-success-bg: oklch(92% 0.06 150deg);
-  --color-success-content: oklch(97% 0.004 80deg);
-  --color-warning: oklch(92% 0.22 105deg);
-  --color-warning-hover: oklch(99% 0.22 105deg);
-  --color-warning-active: oklch(84% 0.22 105deg);
-  --color-warning-bg: oklch(95% 0.10 105deg);
-  --color-warning-content: oklch(12% 0 0deg);
-  --color-error: oklch(52% 0.26 25deg);
-  --color-error-hover: oklch(60% 0.26 25deg);
-  --color-error-active: oklch(44% 0.26 25deg);
-  --color-error-bg: oklch(92% 0.07 25deg);
-  --color-error-content: oklch(97% 0.004 80deg);
-  --color-info: oklch(12% 0 0deg);
-  --color-info-hover: oklch(20% 0 0deg);
-  --color-info-active: oklch(4% 0 0deg);
-  --color-info-bg: oklch(88% 0.005 80deg);
-  --color-info-content: oklch(97% 0.004 80deg);
-  --shadow-color: oklch(52% 0.26 25deg / 0.25);
-  --shadow-color-strong: oklch(52% 0.26 25deg / 0.55);
-  --shadow-xs: 2px 2px 0 0 oklch(12% 0 0deg);
-  --shadow-sm: 3px 3px 0 0 oklch(12% 0 0deg);
-  --shadow-md: 4px 4px 0 0 oklch(12% 0 0deg);
-  --shadow-lg: 6px 6px 0 0 oklch(12% 0 0deg);
-  --shadow-xl: 10px 10px 0 0 oklch(12% 0 0deg);
-  --shadow-primary: 4px 4px 0 0 oklch(12% 0 0deg);
-  --shadow-accent: 4px 4px 0 0 oklch(12% 0 0deg);
-  --focus-ring-color: oklch(52% 0.26 25deg / 0.6);
+
+  // Base scale — warm newsprint paper -> ink black, hue drifting 75deg
+  // (paper) to 40deg (ink) so the ramp reads as one purpose-built material,
+  // not a tint-then-flat-gray split.
+  --color-background: oklch(93% 0.020 74deg);
+  --color-base-50:  oklch(98% 0.010 75deg);
+  --color-base-100: oklch(95% 0.014 74deg);
+  --color-base-200: oklch(90% 0.017 73deg);
+  --color-base-300: oklch(82% 0.018 70deg);
+  --color-base-400: oklch(66% 0.017 62deg);
+  --color-base-500: oklch(48% 0.015 50deg);
+  --color-base-600: oklch(36% 0.012 44deg);
+  --color-base-700: oklch(26% 0.010 40deg);
+  --color-base-800: oklch(18% 0.008 40deg);
+  --color-base-900: oklch(12% 0.006 40deg);
+  --color-base-950: oklch(6%  0.005 40deg);
+
+  // Content — Lc 92 / 77 / 77 (tertiary=muted) on background, all clear the
+  // small-text Lc75 floor with room; disabled sits at Lc 56, matching the
+  // house ~Lc55 convention (see _light.scss).
+  --color-base-content:           oklch(12% 0.006 40deg);
+  --color-base-content-secondary: oklch(22% 0.008 35deg);
+  --color-base-content-tertiary:  oklch(40% 0.010 40deg);
+  --color-muted:                  oklch(40% 0.010 40deg);  // aliases tertiary — muted copy is still content
+  --color-text-disabled:          oklch(58% 0.010 40deg);  // non-content only
+
+  // Surfaces keep the background's chroma (only lightness separates them) —
+  // cards read as newsprint stock, never as white paper.
+  --color-surface:          oklch(96% 0.016 74deg);
+  --color-surface-elevated: oklch(98% 0.012 74deg);
+  --color-surface-overlay:  oklch(10% 0.015 30deg / 0.55);
+
+  // Borders — thick black-ink rule lines, the paste-up signature. Hover
+  // flips to the poster-red spot color.
+  --color-border:       oklch(12% 0.008 40deg);
+  --color-border-hover: oklch(55% 0.205 25deg);
+
+  // Primary — vermilion poster-ink red, structural CTA/focus/tabs/links.
+  --color-primary:         oklch(46% 0.171 25deg);
+  --color-primary-hover:   oklch(40% 0.149 25deg);
+  --color-primary-active:  oklch(35% 0.131 25deg);
+  --color-primary-content: oklch(98% 0.010 75deg);
+
+  // Secondary — stamped black-ink button, the quiet non-brand action.
+  --color-secondary:         oklch(14% 0.006 40deg);
+  --color-secondary-hover:   oklch(8% 0.005 38deg);
+  --color-secondary-active:  oklch(3% 0.004 35deg);
+  --color-secondary-content: oklch(98% 0.010 75deg);
+
+  // Accent — safety-pin/hazard-tape yellow highlighter, dark-ink content.
+  // Editorial-only, ≤2 uses/page per J-2 — do not use for structural CTA.
+  --color-accent:         oklch(92% 0.155 100deg);
+  --color-accent-hover:   oklch(87% 0.166 100deg);
+  --color-accent-active:  oklch(82% 0.156 100deg);
+  --color-accent-content: oklch(12% 0.006 40deg);
+  --color-accent-bg:      oklch(95% 0.045 100deg);
+
+  // Semantics — four genuinely distinct hue families (red/amber/green/violet),
+  // each mid-tone enough to work as icon/text directly on the canvas as well
+  // as a filled surface with paper content.
+  --color-success:         oklch(46% 0.117 150deg);
+  --color-success-hover:   oklch(40% 0.101 150deg);
+  --color-success-active:  oklch(35% 0.088 150deg);
+  --color-success-bg:      oklch(92% 0.050 150deg);
+  --color-success-content: oklch(98% 0.010 75deg);
+
+  --color-warning:         oklch(46% 0.091 72deg);
+  --color-warning-hover:   oklch(40% 0.079 72deg);
+  --color-warning-active:  oklch(35% 0.069 72deg);
+  --color-warning-bg:      oklch(94% 0.035 72deg);
+  --color-warning-content: oklch(98% 0.010 75deg);
+
+  --color-error:         oklch(46% 0.174 355deg);
+  --color-error-hover:   oklch(40% 0.151 355deg);
+  --color-error-active:  oklch(35% 0.132 355deg);
+  --color-error-bg:      oklch(94% 0.024 355deg);
+  --color-error-content: oklch(98% 0.010 75deg);
+
+  --color-info:         oklch(38% 0.187 300deg);
+  --color-info-hover:   oklch(32% 0.157 300deg);
+  --color-info-active:  oklch(26% 0.128 300deg);
+  --color-info-bg:      oklch(92% 0.035 300deg);
+  --color-info-content: oklch(98% 0.010 75deg);
+
+  // Hard, unblurred offset shadows — one implied light source, no blur,
+  // "stat camera" paste-up flatness. Ink-tinted, never a flat 0-chroma
+  // black. --shadow-color/-strong also feed :root's un-overridden
+  // --shadow-2xl/--shadow-inner, so they stay a quiet warm ink rather than
+  // the loud spot red.
+  --shadow-color:        oklch(14% 0.010 40deg / 0.18);
+  --shadow-color-strong: oklch(14% 0.010 40deg / 0.32);
+  --shadow-xs: 2px 2px 0 0 oklch(12% 0.006 40deg);
+  --shadow-sm: 3px 3px 0 0 oklch(12% 0.006 40deg);
+  --shadow-md: 4px 4px 0 0 oklch(12% 0.006 40deg);
+  --shadow-lg: 6px 6px 0 0 oklch(12% 0.006 40deg);
+  --shadow-xl: 10px 10px 0 0 oklch(12% 0.006 40deg);
+  --shadow-primary: 4px 4px 0 0 oklch(12% 0.006 40deg);
+  --shadow-accent:  4px 4px 0 0 oklch(12% 0.006 40deg);
+
+  --focus-ring-color: oklch(46% 0.171 25deg / 0.55);
   --color-header-bg: var(--color-base-100);
+
+  // Razor-cut paste-up corners — the hard offset shadow above is a flat
+  // rectangular silhouette that only reads as "cut paper" against a square
+  // card; the house --radius-md: 8px default made every panel a softly
+  // rounded card wearing a hard-edged square shadow. See refit #2 above.
+  --radius-xs: 0; --radius-sm: 0; --radius-md: 0;
+  --radius-lg: 0; --radius-xl: 0;
 }

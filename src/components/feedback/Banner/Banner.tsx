@@ -47,6 +47,21 @@ const typeIcons: Record<BannerType, ReactNode> = {
 	feature: <Sparkles />,
 };
 
+// Animation variants - slide down with fade.
+// Hoisted to module scope so the object reference is stable across renders;
+// motion re-evaluates/restarts an in-progress transition if it receives a
+// brand new `variants`/`transition` object on every parent re-render.
+const BANNER_VARIANTS = {
+	hidden: { opacity: 0, y: -8 },
+	visible: { opacity: 1, y: 0 },
+} as const;
+
+const BANNER_TRANSITION_REDUCED = { duration: 0 } as const;
+const BANNER_TRANSITION_NORMAL = {
+	duration: DURATION.normal,
+	ease: EASE_OUT,
+} as const;
+
 /**
  * Banner component for page-level notifications.
  *
@@ -74,16 +89,10 @@ export function Banner({
 }: BannerProps) {
 	const prefersReducedMotion = useReducedMotion();
 
-	// Animation variants - slide down with fade
-	const bannerVariants = {
-		hidden: { opacity: 0, y: -8 },
-		visible: { opacity: 1, y: 0 },
-	};
-
 	const transition =
 		prefersReducedMotion || !animate
-			? { duration: 0 }
-			: { duration: DURATION.normal, ease: EASE_OUT };
+			? BANNER_TRANSITION_REDUCED
+			: BANNER_TRANSITION_NORMAL;
 
 	const iconElement = icon || typeIcons[type];
 
@@ -91,7 +100,7 @@ export function Banner({
 		<motion.div
 			className={cn(styles.banner, styles[type], styles[variant], className)}
 			role="alert"
-			variants={bannerVariants}
+			variants={BANNER_VARIANTS}
 			initial={animate ? "hidden" : "visible"}
 			animate="visible"
 			exit="hidden"

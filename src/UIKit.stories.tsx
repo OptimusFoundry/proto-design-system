@@ -7,7 +7,7 @@
 // specimen file and bump the matching `count` in CATEGORIES below.
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { type ComponentType, useEffect, useState } from "react";
+import { type ComponentType, useContext, useState } from "react";
 import { Compositions } from "./showcase/Compositions";
 import { Foundations } from "./showcase/foundations/Foundations";
 import { Hero } from "./showcase/Hero";
@@ -21,7 +21,7 @@ import { LayoutSpecimens } from "./showcase/specimens/Layout";
 import { NavigationSpecimens } from "./showcase/specimens/Navigation";
 import { OverlaysSpecimens } from "./showcase/specimens/Overlays";
 import { PrimitivesSpecimens } from "./showcase/specimens/Primitives";
-import { applyTheme, type ThemeName } from "./themes/themes";
+import { ThemeGlobalContext } from "./themes/themeGlobalContext";
 import styles from "./UIKit.module.scss";
 
 type Category = {
@@ -70,6 +70,7 @@ const NAV_GROUPS: NavGroup[] = [
 			{ id: "f-type", label: "Type" },
 			{ id: "f-space", label: "Spacing" },
 			{ id: "f-elevation", label: "Elevation" },
+			{ id: "f-contrast", label: "Contrast" },
 		],
 	},
 	{
@@ -126,27 +127,17 @@ function ChapterHead({
 }
 
 function UIKit() {
-	const [theme, setTheme] = useState<ThemeName>("light");
+	// Theme is the same Storybook global every story renders with (see
+	// .storybook/preview.ts's themeDecorator + toolbar) — reading/writing it
+	// here instead of separate local state means the "Try a theme" picker
+	// below and the toolbar dropdown are always in sync, and Storybook's own
+	// URL/session persistence covers reloads for free. Consumed via plain
+	// React context, not storybook/preview-api's useGlobals directly — see
+	// themeGlobalContext.ts for why.
+	const { theme, setTheme } = useContext(ThemeGlobalContext);
+
 	const [labSize, setLabSize] = useState<LabSize>("md");
 	const [patternsSize, setPatternsSize] = useState<LabSize>("sm");
-
-	// Capture the document's prior theme once, restore it on unmount so the
-	// catalog never leaks its theme selection into other Storybook stories.
-	useEffect(() => {
-		const previous = document.documentElement.getAttribute("data-theme");
-		return () => {
-			if (previous) {
-				document.documentElement.setAttribute("data-theme", previous);
-			} else {
-				document.documentElement.removeAttribute("data-theme");
-			}
-		};
-	}, []);
-
-	// Themes are scoped to [data-theme] on the root — apply the selected one.
-	useEffect(() => {
-		applyTheme(theme);
-	}, [theme]);
 
 	return (
 		<div className={styles.poster}>
@@ -198,15 +189,17 @@ function UIKit() {
 					title="Patterns"
 					lede="The primitives composed into the product surfaces you actually ship."
 				/>
-				<div className={styles.patternsToolbar}>
-					<span className={styles.patternsToolbarLabel}>Render at</span>
-					<SizeToggle
-						value={patternsSize}
-						onChange={setPatternsSize}
-						ariaLabel="Patterns size"
-					/>
+				<div className={styles.patternsCanvas}>
+					<div className={styles.patternsToolbar}>
+						<span className={styles.patternsToolbarLabel}>Render at</span>
+						<SizeToggle
+							value={patternsSize}
+							onChange={setPatternsSize}
+							ariaLabel="Patterns size"
+						/>
+					</div>
+					<Compositions size={patternsSize} />
 				</div>
-				<Compositions size={patternsSize} />
 			</section>
 		</div>
 	);

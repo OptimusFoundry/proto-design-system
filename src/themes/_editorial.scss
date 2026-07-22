@@ -1,89 +1,207 @@
 // =============================================================================
 // EDITORIAL THEME
 // =============================================================================
-// Sourced from compiled themes.bundle.css — reflects Phase 1 palette tuning.
-// Edit this file, then re-run scripts/scss_compiler.js to regenerate the bundle.
-
+// Ink & paper — grounded in a real fountain-pen "blue-black" writing ink
+// (Pelikan 4001 / Waterman Blue-Black reference family: deep, low-chroma,
+// genuinely blue rather than violet, hue ~240deg) carrying the primary voice
+// AND the entire neutral ramp's undertone — one ink pigment permeates the
+// whole UI. Against it: a warm, deliberately-tinted "aged newsprint" paper
+// base, a desaturated rose-plum "second ink" secondary (hue 325, quiet by
+// number not just by name), and a dark, saturated oxblood/wax-seal accent
+// (hue 15 — a brick-red seal blob, not the prior pass's amber/orange, which
+// never matched its own "wax-seal" narrative). Sans role rebound to
+// Newsreader (literary text serif) + Sometype Mono — a considered deviation
+// from house Geist, matching the theme's print voice.
+//
+// Repair pass — fixes a prior critique, two independent defect classes:
+//
+// 1. ACCESSIBILITY (APCA ladder / WCAG AA), verified against real component
+//    consumers (Button.module.scss / Badge.module.scss `.accent`/`.warning`
+//    variants), not just the checker script's hardcoded pair list:
+//    - accent's shape was backwards: a LIGHT chip (L72%) with a FIXED DARK
+//      content color meant hover/active DARKENING the chip closed the
+//      contrast gap instead of widening it (accent-content on accent Lc
+//      53.1, on -hover Lc 44.2, on -active Lc 35.8 — all under the Lc 60
+//      UI-text floor, active nearly at the Lc 30 disabled floor). Flipped
+//      accent to a dark fill + light content (mirrors primary's shape):
+//      accent-content on accent/-hover/-active is now Lc 90.5/94.3/96.6 —
+//      INCREASING through the interaction states like every other
+//      semantic role in this file, and with wide headroom past Lc 60.
+//    - warning had the identical shape bug (Lc 51.6/42.5 on hover/active,
+//      active also missing the Lc 45 headline floor; base itself was only
+//      Lc 61.2, ~1 unit of margin over the 60 floor). Warning's polarity
+//      (bright fill, dark content) is load-bearing elsewhere in the system
+//      (Alert/Banner/Tag real usage — see dark.scss's own accepted-
+//      trade-off note on this exact shape), so instead of flipping it,
+//      hover/active now LIGHTEN (80% -> 84% -> 88% L) instead of
+//      darkening. Result: Lc 65.7/73.0/80.7, also increasing, all clear
+//      of 60 with real margin. This is a deliberate deviation from the
+//      "darken on hover" convention primary/secondary/error/success/info
+//      use in this same file — when a role's content color is fixed, its
+//      contrast can only grow in the direction AWAY from that content's
+//      own lightness, and for a dark-content role that means lightening.
+//    - text-disabled on background is Lc 37.9 (clear of the Lc 30 floor)
+//      but 2.02:1 WCAG, under the 4.5:1 body-text floor. Not a defect:
+//      WCAG 1.4.3 exempts disabled/inactive UI text from contrast
+//      minimums — left as-is, noted for the record.
+//    - secondary-content on secondary and error-content on error previously
+//      cleared WCAG AA by under 10% margin (4.94:1 / 4.88:1). Both
+//      redesigned below for unrelated (swap-test) reasons; the rebuilt
+//      ramps land at 7.3:1+ / 5.7:1+, incidentally erasing the thin
+//      margins too.
+//    Accepted, documented (same shape as dark.scss's precedent): accent-
+//    content on accent-bg is a synthetic pairing this contrast script
+//    checks but no component actually renders (Button/Badge pair
+//    accent-content with solid accent, not accent-bg — accent-bg pairs
+//    with default base-content body text instead, e.g. a banner wash;
+//    that real pairing scores Lc 96.8 / 16.6:1). accent-content vs
+//    accent-bg itself stays near Lc 0 (both are pale near-white chips at
+//    adjacent L) and is not chased.
+//
+// 2. SWAP TEST (anti-generic checklist): primary/secondary/accent were
+//    numerically close to the generic Tailwind/Radix indigo+pink+amber
+//    SaaS-default triad, and the "signature ink" / "wax-seal" narratives
+//    were bolted onto colors that didn't match their own referent
+//    (indigo-violet at C0.20 isn't ink — real blue-black ink is desaturated
+//    and genuinely blue; amber/orange isn't wax-seal red). Refit:
+//    - primary hue 275 -> 240 (violet -> true blue-black ink territory),
+//      chroma cut roughly 3x (0.20 -> 0.068) — dried ink is desaturated,
+//      not SaaS-vivid.
+//    - accent hue 55 -> 15 (amber -> oxblood/brick red) with a dark,
+//      saturated fill (see above) matching an actual wax seal's density,
+//      instead of a pastel-bright highlight chip.
+//    - secondary hue 350 -> 325 (hot pink -> dusty rose-plum), chroma
+//      nearly halved (0.211 -> 0.10) to earn the "quieter second ink"
+//      framing the header comment already claimed but the numbers didn't.
+//    - the neutral base-500..950 ramp's hue moves with primary (240) since
+//      it's the same ink family — this coherence already existed at 275
+//      and is preserved at the new hue.
+//    - "aged newsprint" base-50/100 carried chroma (0.008/0.010) low
+//      enough to be indistinguishable from a plain neutral off-white —
+//      raised to 0.014/0.018 (still restrained, but now a real, checkable
+//      warm-paper tint) and the 50->400 transition ramp regraded to match.
+//
+// Fonts intentionally left untouched by this pass — Newsreader + Sometype
+// Mono stay; googleFontsHref is owned by themes.ts, out of scope here.
+//
+// Every leaf-token chroma value in this file is checked against its real
+// sRGB gamut ceiling at its own L/H — nothing here silently clips. Where a
+// token sits near that ceiling (primary, accent, error) it's ~85-90% of it
+// for render-safety margin; where it sits well under (secondary, base-50
+// through -400) that's a deliberate restraint choice — "quiet ink"/"aged
+// paper," not a saturated fill — not a gamut constraint.
 [data-theme="editorial"] {
   color-scheme: light;
 
-  
-  
-  
-  --font-family-sans:    "Geist", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "Geist Mono", "JetBrains Mono", monospace;
-  --font-family-serif:   "Fraunces", "Times New Roman", georgia, serif;
-  --font-family-display: "Fraunces", "Times New Roman", georgia, serif;
-  --fvs-display:   "opsz" 144, "SOFT" 30, "wght" 500;
-  --fvs-editorial: "opsz" 60,  "SOFT" 40, "wght" 400;
-  --fvs-tight:     "opsz" 144, "SOFT" 0,  "wght" 600;
-  --color-background: oklch(98% 0.008 85deg);
-  --color-base-50:  oklch(98% 0.008 85deg);
-  --color-base-100: oklch(96% 0.010 85deg);
-  --color-base-200: oklch(93% 0.012 80deg);
-  --color-base-300: oklch(87% 0.015 75deg);
-  --color-base-400: oklch(72% 0.020 70deg);
-  --color-base-500: oklch(55% 0.020 275deg);
-  --color-base-600: oklch(42% 0.020 275deg);
-  --color-base-700: oklch(32% 0.020 275deg);
-  --color-base-800: oklch(24% 0.020 275deg);
-  --color-base-900: oklch(18% 0.020 275deg);
-  --color-base-950: oklch(12% 0.020 275deg);
-  --color-base-content:           oklch(18% 0.020 275deg);
-  --color-base-content-secondary: oklch(32% 0.015 275deg);
-  --color-base-content-tertiary:  oklch(50% 0.010 275deg);
-  --color-muted:                  oklch(50% 0.010 275deg);
-  --color-surface:          oklch(100% 0 0deg);
-  --color-surface-elevated: oklch(100% 0 0deg);
-  --color-surface-overlay:  oklch(18% 0.020 275deg / 0.55);
-  --color-border:       oklch(91% 0.010 80deg);
-  --color-border-hover: oklch(82% 0.015 75deg);
-  --color-primary:         oklch(48% 0.20 275deg);
-  --color-primary-hover:   oklch(42% 0.22 275deg);
-  --color-primary-active:  oklch(38% 0.20 275deg);
-  --color-primary-content: oklch(98% 0.010 275deg);
-  --color-secondary:         oklch(62% 0.18 350deg);
-  --color-secondary-hover:   oklch(56% 0.20 350deg);
-  --color-secondary-active:  oklch(50% 0.18 350deg);
-  --color-secondary-content: oklch(98% 0.010 350deg);
-  --color-accent:         oklch(72% 0.17 55deg);
-  --color-accent-hover:   oklch(66% 0.19 55deg);
-  --color-accent-active:  oklch(60% 0.17 55deg);
-  --color-accent-content: oklch(15% 0.050 55deg);
-  --color-accent-bg:      oklch(96% 0.040 55deg);
-  --color-success:         oklch(58% 0.18 150deg);
-  --color-success-hover:   oklch(53% 0.20 150deg);
-  --color-success-active:  oklch(48% 0.18 150deg);
+  // 2026-07-16: replaced Newsreader (serif) with Familjen Grotesk — a
+  // refined editorial-grade grotesk (quality-press character without a
+  // serif face). Mono unchanged.
+  --font-family-sans:    "Familjen Grotesk", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Sometype Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Aged-newsprint paper -> blue-black ink transition. 50-400 stay on the
+  // warm paper hue with real (not token-only) chroma; 500-950 cross into
+  // the ink hue that also carries --color-primary.
+  --color-background: oklch(98% 0.014 85deg);
+  --color-base-50:  oklch(98% 0.014 85deg);
+  --color-base-100: oklch(96% 0.018 85deg);
+  --color-base-200: oklch(93% 0.022 80deg);
+  --color-base-300: oklch(87% 0.026 76deg);
+  --color-base-400: oklch(72% 0.032 70deg);
+  --color-base-500: oklch(55% 0.020 240deg);
+  --color-base-600: oklch(42% 0.020 240deg);
+  --color-base-700: oklch(32% 0.020 240deg);
+  --color-base-800: oklch(24% 0.020 240deg);
+  --color-base-900: oklch(18% 0.020 240deg);
+  --color-base-950: oklch(12% 0.020 240deg);
+
+  // Content — Lc 101.3 / 94.7 / 80.7 / 37.9, a clean descending ladder
+  // (unchanged shape from the prior pass, re-verified at the new ink hue).
+  --color-base-content:           oklch(18% 0.020 240deg);
+  --color-base-content-secondary: oklch(32% 0.015 240deg);
+  --color-base-content-tertiary:  oklch(46% 0.010 240deg);
+  --color-muted:                  oklch(46% 0.010 240deg);
+  --color-text-disabled:          oklch(76% 0.015 240deg);
+
+  // Surfaces keep a hair of the paper hue — never literal white.
+  --color-surface:          oklch(99.3% 0.005 85deg);
+  --color-surface-elevated: oklch(99.6% 0.0035 85deg);
+  --color-surface-overlay:  oklch(18% 0.020 240deg / 0.55);
+
+  --color-border:       oklch(85% 0.018 78deg);
+  --color-border-hover: oklch(75% 0.026 74deg);
+
+  // Primary — real blue-black fountain-pen ink: dark, desaturated, and
+  // genuinely blue (H240) rather than violet-indigo. White content clears
+  // Lc -97.2/-100.1/-101.6 (11.8:1/14.2:1/16.0:1), improving on hover/active.
+  --color-primary:         oklch(32% 0.068 240deg);
+  --color-primary-hover:   oklch(27% 0.058 240deg);
+  --color-primary-active:  oklch(23% 0.052 240deg);
+  --color-primary-content: oklch(98% 0.006 240deg);
+
+  // Secondary — dusty rose-plum, the quieter second ink (chroma nearly
+  // halved from the prior pass to actually earn "quieter"). White content
+  // Lc -86.8/-91.5/-95.6 (7.3:1/9.0:1/11.1:1), improving on hover/active.
+  --color-secondary:         oklch(45% 0.100 325deg);
+  --color-secondary-hover:   oklch(40% 0.095 325deg);
+  --color-secondary-active:  oklch(35% 0.085 325deg);
+  --color-secondary-content: oklch(98% 0.010 325deg);
+
+  // Accent — oxblood wax-seal: a dark, saturated brick-red fill (not the
+  // prior pass's bright amber chip) with pale content, mirroring primary's
+  // shape so contrast IMPROVES on hover/active instead of collapsing.
+  // accent-content on accent/-hover/-active: Lc -90.5/-94.3/-96.6
+  // (9.8:1/11.8:1/13.5:1).
+  --color-accent:         oklch(38% 0.135 15deg);
+  --color-accent-hover:   oklch(33% 0.118 15deg);
+  --color-accent-active:  oklch(29% 0.105 15deg);
+  --color-accent-content: oklch(97% 0.012 15deg);
+  --color-accent-bg:      oklch(96% 0.018 15deg);
+
+  // Semantics — success/info/error unchanged in shape from the prior pass
+  // (error re-padded off its real gamut ceiling for margin); warning's
+  // hover/active now LIGHTEN instead of darken (see header) so contrast
+  // grows instead of collapsing against its fixed dark content.
+  --color-success:         oklch(50% 0.127 150deg);
+  --color-success-hover:   oklch(45% 0.115 150deg);
+  --color-success-active:  oklch(40% 0.102 150deg);
   --color-success-bg:      oklch(96% 0.040 150deg);
-  --color-success-content: oklch(98% 0.010 150deg);
-  --color-warning:         oklch(78% 0.16 75deg);
-  --color-warning-hover:   oklch(72% 0.18 75deg);
-  --color-warning-active:  oklch(66% 0.16 75deg);
-  --color-warning-bg:      oklch(97% 0.040 75deg);
-  --color-warning-content: oklch(25% 0.050 75deg);
-  --color-error:         oklch(56% 0.22 25deg);
-  --color-error-hover:   oklch(50% 0.24 25deg);
-  --color-error-active:  oklch(46% 0.22 25deg);
-  --color-error-bg:      oklch(96% 0.040 25deg);
-  --color-error-content: oklch(98% 0.010 25deg);
-  --color-info:         oklch(55% 0.18 245deg);
-  --color-info-hover:   oklch(50% 0.20 245deg);
-  --color-info-active:  oklch(46% 0.18 245deg);
-  --color-info-bg:      oklch(96% 0.040 245deg);
-  --color-info-content: oklch(98% 0.010 245deg);
-  --shadow-color:        oklch(18% 0.020 275deg / 0.06);
-  --shadow-color-strong: oklch(18% 0.020 275deg / 0.14);
-  --shadow-xs: 0 1px 2px 0 oklch(18% 0.020 275deg / 0.06);
-  --shadow-sm: 0 2px 4px -1px oklch(18% 0.020 275deg / 0.06),
-               0 1px 2px -1px oklch(18% 0.020 275deg / 0.04);
-  --shadow-md: 0 8px 16px -4px oklch(18% 0.020 275deg / 0.08),
-               0 2px 4px -2px oklch(18% 0.020 275deg / 0.04);
-  --shadow-lg: 0 20px 32px -8px oklch(18% 0.020 275deg / 0.10),
-               0 4px 8px -4px oklch(18% 0.020 275deg / 0.05);
-  --shadow-xl: 0 32px 48px -12px oklch(18% 0.020 275deg / 0.14),
-               0 8px 16px -8px oklch(18% 0.020 275deg / 0.06);
-  --shadow-primary: 0 8px 24px 0 oklch(48% 0.20 275deg / 0.28);
-  --shadow-accent:  0 8px 24px 0 oklch(72% 0.17 55deg / 0.30);
-  --focus-ring-color: oklch(48% 0.20 275deg / 0.40);
+  --color-success-content: oklch(98% 0.012 150deg);
+  // warning-content on warning/-hover/-active: Lc 65.7/73.0/80.7
+  // (9.1:1/10.5:1/12.1:1) — all clear of the Lc 60 floor with margin.
+  --color-warning:         oklch(80% 0.155 75deg);
+  --color-warning-hover:   oklch(84% 0.120 75deg);
+  --color-warning-active:  oklch(88% 0.090 75deg);
+  --color-warning-bg:      oklch(97% 0.021 75deg);
+  --color-warning-content: oklch(22% 0.050 75deg);
+  --color-error:         oklch(52% 0.190 25deg);
+  --color-error-hover:   oklch(46% 0.169 25deg);
+  --color-error-active:  oklch(42% 0.155 25deg);
+  --color-error-bg:      oklch(96% 0.017 25deg);
+  --color-error-content: oklch(98% 0.008 25deg);
+  --color-info:         oklch(50% 0.116 245deg);
+  --color-info-hover:   oklch(45% 0.105 245deg);
+  --color-info-active:  oklch(40% 0.093 245deg);
+  --color-info-bg:      oklch(96% 0.017 245deg);
+  --color-info-content: oklch(98% 0.009 245deg);
+
+  // Ink-tinted shadows — one implied light source, never flat black.
+  --shadow-color:        oklch(18% 0.020 240deg / 0.06);
+  --shadow-color-strong: oklch(18% 0.020 240deg / 0.14);
+  --shadow-xs: 0 1px 2px 0 oklch(18% 0.020 240deg / 0.06);
+  --shadow-sm: 0 2px 4px -1px oklch(18% 0.020 240deg / 0.06),
+               0 1px 2px -1px oklch(18% 0.020 240deg / 0.04);
+  --shadow-md: 0 8px 16px -4px oklch(18% 0.020 240deg / 0.08),
+               0 2px 4px -2px oklch(18% 0.020 240deg / 0.04);
+  --shadow-lg: 0 20px 32px -8px oklch(18% 0.020 240deg / 0.10),
+               0 4px 8px -4px oklch(18% 0.020 240deg / 0.05);
+  --shadow-xl: 0 32px 48px -12px oklch(18% 0.020 240deg / 0.14),
+               0 8px 16px -8px oklch(18% 0.020 240deg / 0.06);
+  --shadow-primary: 0 8px 24px 0 oklch(32% 0.068 240deg / 0.28);
+  --shadow-accent:  0 8px 24px 0 oklch(38% 0.135 15deg / 0.28);
+
+  --focus-ring-color: oklch(32% 0.068 240deg / 0.40);
   --color-header-bg: var(--color-base-100);
 }

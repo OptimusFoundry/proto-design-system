@@ -1,19 +1,59 @@
 // =============================================================================
 // PORCELAIN THEME
 // =============================================================================
-// Sourced from compiled themes.bundle.css — reflects Phase 1 palette tuning.
-// Edit this file, then re-run scripts/scss_compiler.js to regenerate the bundle.
+// Reference: a museum object-label card — a Sèvres/Meissen-style catalog
+// slip printed on bisque-white ceramic stock, bordeaux enamel-glaze ink, a
+// sage vitrine-backdrop accent, sharp-cornered specimen-tag geometry
+// (near-zero radii, hairline rules).
+//
+// Numeric anchors, fitted off named references distinct from this
+// directory's other bordeaux/sage themes (_marble.scss ports
+// SingaporeAtmosphere's exact hue-20 primary; _botanical.scss's
+// primary/accent sit at hue145/hue15 — reusing either verbatim would just
+// restate them at lower chroma):
+//   - Primary: Maroon (X11) #B03060 -> oklch(51.8% 0.168 2.4deg), darkened
+//     to L36%/C0.13 so porcelain-white button text clears AA (hue 2 sits
+//     ~18deg off marble's hue20, ~13deg off botanical's accent hue15).
+//   - Accent: Sage Green #9CAF88 -> oklch(72.9% 0.059 128.9deg), held near
+//     its anchor lightness for an editorial wash (hue129 sits 16deg off
+//     botanical's primary hue145).
+// Base ramp stays low-chroma by material logic — unglazed porcelain bisque
+// reads near-white, not a "safe cream" default — contrast marble's stone
+// chroma 0.015 or botanical's parchment chroma 0.028, both warmer materials
+// by brief, not by omission.
+//
+// Fonts: Source Serif 4 + Cutive Mono, matching themes.ts's registered
+// googleFontsHref — restored here after a color-only pass dropped the block.
+// Cutive Mono ships Google Fonts at a single static 400 weight (no 500/600
+// face), so T-7.1 eyebrow / T-7.2 tier-badge render at regular weight in
+// this theme rather than synthesizing a fake bold — a known, accepted
+// limitation of the pairing, not a bug. (docs/design-docs/02-colors.md's
+// stale "Instrument Serif" note for this theme has been corrected to match.)
+//
+// Accepted trade-offs (computed via scripts/theme-contrast-check.mjs):
+//   - border on background: Lc 21.7 / 1.47:1 — clears the Lc15 hairline
+//     floor with margin; WCAG's 3:1 non-text floor is a decorative-hairline
+//     exception, same call _paper.scss's header documents for its own fix.
+//   - warning-content on warning: Lc 62.5 / 8.81:1 — base lightened to 78%
+//     (was 68%) and content darkened to L20% to clear the Lc60 UI-text
+//     floor; a bright warning wash can't hold darker ink without
+//     desaturating the "warning" identity — same shape as _paper.scss's
+//     identical trade-off.
+//   - info / -hover / -active: chroma refit in-gamut (was 0.10/0.12/0.12 at
+//     these L/H — 4-40% past the real sRGB ceiling and silently clipped) to
+//     0.088/0.075/0.065, ~86-92% of ceiling.
 
 [data-theme="porcelain"] {
   color-scheme: light;
 
-  --font-family-sans:    "Geist", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "Geist Mono", "SF Mono", monospace;
-  --font-family-serif:   "Instrument Serif", "Fraunces", georgia, serif;
-  --font-family-display: "Instrument Serif", "Fraunces", "Times New Roman", serif;
-  --fvs-display:   "opsz" 144, "wght" 400;
-  --fvs-editorial: "opsz" 60,  "wght" 400;
-  --fvs-tight:     "opsz" 144, "wght" 500;
+  // 2026-07-16: replaced Source Serif 4 (serif) with Instrument Sans — clean,
+  // precise strokes matching a museum object-label card's printed precision,
+  // without a serif face. Mono unchanged.
+  --font-family-sans:    "Instrument Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Cutive Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
   --color-background: oklch(98.5% 0.004 80deg);
   --color-base-50:  oklch(98% 0.004 80deg);
   --color-base-100: oklch(96% 0.006 75deg);
@@ -26,48 +66,74 @@
   --color-base-800: oklch(28% 0.012 40deg);
   --color-base-900: oklch(22% 0.012 40deg);
   --color-base-950: oklch(15% 0.010 40deg);
+
+  // Ink ramp — content L22/38 unchanged (Lc 101.2/90.5, already clears the
+  // Lc90 preferred bar); tertiary darkened 58%->50% (was Lc 66.9 / 4.13:1,
+  // failing WCAG AA) to Lc 77.2 / 5.79:1. Muted aliases tertiary, matching
+  // the house default's own muted=tertiary relationship (was a bare
+  // medium-gray at Lc 42.8, under the Lc60 floor for its T-7.3/T-7.4 mono
+  // counts/timestamps role).
   --color-base-content:           oklch(22% 0.012 40deg);
   --color-base-content-secondary: oklch(38% 0.012 40deg);
-  --color-base-content-tertiary:  oklch(58% 0.010 40deg);
-  --color-muted:                  oklch(74% 0.008 50deg);
-  --color-surface:          oklch(100% 0 0deg);
-  --color-surface-elevated: oklch(100% 0 0deg);
+  --color-base-content-tertiary:  oklch(50% 0.011 42deg);
+  --color-muted:                  oklch(50% 0.011 42deg);
+  --color-text-disabled:          oklch(66% 0.010 45deg); // non-content only — Lc 55.4, 3.00:1
+
+  // Glaze layers — de-pure'd off literal white (was 100%/0/0 on both,
+  // Lc 0.0 / 1.04:1 against background, i.e. lightness-indistinguishable);
+  // now a whisper of the background's warm chroma, same delta shape as the
+  // house `light` theme's own surface/surface-elevated step.
+  --color-surface:          oklch(99.3% 0.003 80deg);
+  --color-surface-elevated: oklch(99.7% 0.0015 80deg);
   --color-surface-overlay:  oklch(22% 0.012 40deg / 0.45);
-  --color-border:       oklch(92% 0.006 70deg);
-  --color-border-hover: oklch(82% 0.010 60deg);
-  --color-primary:         oklch(38% 0.10 20deg);
-  --color-primary-hover:   oklch(32% 0.12 20deg);
-  --color-primary-active:  oklch(28% 0.11 20deg);
+
+  --color-border:       oklch(86% 0.010 68deg); // was Lc 10.3 (below Lc15 floor) — now Lc 21.7 / 1.47:1
+  --color-border-hover: oklch(74% 0.014 60deg);
+
+  --color-primary:         oklch(36% 0.13 2deg);
+  --color-primary-hover:   oklch(30% 0.11 2deg);
+  --color-primary-active:  oklch(26% 0.095 2deg);
   --color-primary-content: oklch(98% 0.004 80deg);
-  --color-secondary:         oklch(45% 0.06 40deg);
-  --color-secondary-hover:   oklch(38% 0.08 40deg);
-  --color-secondary-active:  oklch(32% 0.08 40deg);
+
+  --color-secondary:         oklch(44% 0.075 55deg);
+  --color-secondary-hover:   oklch(37% 0.085 55deg);
+  --color-secondary-active:  oklch(31% 0.07 55deg);
   --color-secondary-content: oklch(98% 0.004 80deg);
-  --color-accent:         oklch(78% 0.05 140deg);
-  --color-accent-hover:   oklch(72% 0.07 140deg);
-  --color-accent-active:  oklch(66% 0.07 140deg);
-  --color-accent-content: oklch(22% 0.03 140deg);
-  --color-accent-bg:      oklch(94% 0.02 140deg);
+
+  --color-accent:         oklch(78% 0.06 129deg);
+  --color-accent-hover:   oklch(72% 0.08 129deg);
+  --color-accent-active:  oklch(66% 0.08 129deg);
+  --color-accent-content: oklch(20% 0.03 129deg);
+  --color-accent-bg:      oklch(94% 0.03 129deg);
+
   --color-success:         oklch(52% 0.10 150deg);
   --color-success-hover:   oklch(46% 0.12 150deg);
   --color-success-active:  oklch(40% 0.12 150deg);
   --color-success-bg:      oklch(95% 0.020 150deg);
   --color-success-content: oklch(98% 0.004 80deg);
-  --color-warning:         oklch(68% 0.13 60deg);
-  --color-warning-hover:   oklch(62% 0.15 60deg);
-  --color-warning-active:  oklch(56% 0.15 60deg);
-  --color-warning-bg:      oklch(96% 0.025 60deg);
-  --color-warning-content: oklch(24% 0.05 60deg);
+
+  // Base lightened 68%->78%, content darkened 24%->20%: was Lc 45.3 / 5.57:1
+  // (fails the Lc60 UI-text floor); now Lc 62.5 / 8.81:1.
+  --color-warning:         oklch(78% 0.14 60deg);
+  --color-warning-hover:   oklch(72% 0.145 60deg);
+  --color-warning-active:  oklch(66% 0.14 60deg);
+  --color-warning-bg:      oklch(97% 0.025 60deg);
+  --color-warning-content: oklch(20% 0.05 60deg);
+
   --color-error:         oklch(48% 0.16 25deg);
   --color-error-hover:   oklch(42% 0.18 25deg);
   --color-error-active:  oklch(36% 0.18 25deg);
   --color-error-bg:      oklch(96% 0.020 25deg);
   --color-error-content: oklch(98% 0.004 80deg);
-  --color-info:         oklch(48% 0.10 230deg);
-  --color-info-hover:   oklch(42% 0.12 230deg);
-  --color-info-active:  oklch(36% 0.12 230deg);
+
+  // Chroma refit in-gamut at L48/42/36, H230 (was 0.10/0.12/0.12 — 4-40%
+  // past the real sRGB ceiling, silently clipped) to 0.088/0.075/0.065.
+  --color-info:         oklch(48% 0.088 230deg);
+  --color-info-hover:   oklch(42% 0.075 230deg);
+  --color-info-active:  oklch(36% 0.065 230deg);
   --color-info-bg:      oklch(95% 0.020 230deg);
   --color-info-content: oklch(98% 0.004 80deg);
+
   --shadow-color:        oklch(22% 0.012 40deg / 0.05);
   --shadow-color-strong: oklch(22% 0.012 40deg / 0.12);
   --shadow-xs: 0 1px 0 0 oklch(22% 0.012 40deg / 0.04);
@@ -75,10 +141,12 @@
   --shadow-md: 0 2px 8px -2px oklch(22% 0.012 40deg / 0.06), 0 1px 2px 0 oklch(22% 0.012 40deg / 0.04);
   --shadow-lg: 0 8px 24px -6px oklch(22% 0.012 40deg / 0.08), 0 2px 4px 0 oklch(22% 0.012 40deg / 0.04);
   --shadow-xl: 0 16px 48px -12px oklch(22% 0.012 40deg / 0.10), 0 4px 8px 0 oklch(22% 0.012 40deg / 0.05);
-  --shadow-primary: 0 4px 16px 0 oklch(38% 0.10 20deg / 0.20);
-  --shadow-accent:  0 4px 16px 0 oklch(78% 0.05 140deg / 0.30);
-  --focus-ring-color: oklch(38% 0.10 20deg / 0.25);
+  --shadow-primary: 0 4px 16px 0 oklch(36% 0.13 2deg / 0.20);
+  --shadow-accent:  0 4px 16px 0 oklch(78% 0.06 129deg / 0.30);
+
+  --focus-ring-color: oklch(36% 0.13 2deg / 0.28);
   --color-header-bg: var(--color-base-100);
+
   --radius-xs: 0; --radius-sm: 1px; --radius-md: 2px;
   --radius-lg: 4px; --radius-xl: 8px;
 }

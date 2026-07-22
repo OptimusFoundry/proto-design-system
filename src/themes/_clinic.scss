@@ -1,80 +1,217 @@
 // =============================================================================
 // CLINIC THEME
 // =============================================================================
-// Ported from SingaporeAtmosphere Design System v2 (colors_and_type.css).
-
-@import "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";
+// Reference: modern clinical/lab SaaS — a sterile blue-white canvas, a cool
+// "scrub blue" trust primary for structural CTA/focus/tabs, a specimen-tube
+// magenta-pink accent reserved for editorial emphasis (≤2 uses/page, per
+// J-2), and a spread of clearly-distinct semantic hues (vital-signs green,
+// amber caution, alert red, IV-drip cyan) so status can be told apart at a
+// glance in a dense data table. Typography carries no separate brief here —
+// house Geist/Geist Mono (see 2026-07 round 2 note below for why an earlier
+// pass's Inter/JetBrains Mono override was reverted).
+//
+// 2026-07 contrast/gamut refit, round 2 (re-audited against
+// theme-contrast-check.mjs after an external critique of round 1):
+// - Dropped the Inter + JetBrains Mono override and its Google Fonts
+//   @import. Round 1 kept it with a "house-adjacent, legible, real distinct
+//   mono" justification, but that's exactly the anti-generic checklist's
+//   flagged default (Inter + JetBrains Mono is this codebase's single
+//   most-cited "looks designed but isn't" combo) with no actual tie to a
+//   clinic/lab reference anywhere in the brief above. The font-family group
+//   is optional in the token contract specifically for themes that don't
+//   have a real typographic reason to deviate — clinic's identity is carried
+//   by the color system, not type, so it now aliases to the exact house
+//   baseline `_light.scss` already establishes: Geist (sans), Geist Mono
+//   (mono, kept distinct from sans — the mono layer for tabular lab-value
+//   data is still a deliberate part of the hierarchy, just via the house
+//   font already preloaded in index.html instead of an unearned import).
+// - --color-border on --color-background was Lc 17.9/1.38:1 — only 2.9pts
+//   above the Lc15 hairline floor, flagged as fragile ("any minor palette
+//   drift would drop it below the floor"). Darkened 88%→84% L (chroma/hue
+//   held) for real headroom: now Lc 25.1/1.56:1, +10.1pts above the floor.
+//   Still reads as a hairline (this is a decorative/divider border, not a
+//   functional input-outline boundary — WCAG 1.4.11's 3:1 non-text bar
+//   intentionally isn't the target here, matching light/oat's own hairline
+//   precedent).
+// - Re-verifying round 1 fresh (not re-asserting its numbers) surfaced one
+//   more real failure round 1 didn't catch: accent-content on accent was
+//   Lc 56.5/7.85:1 at rest — under the Lc60 floor for larger/bold UI text
+//   by 3.5pts even before interaction, and round 1's own "accepted
+//   trade-off" note only flagged the active state (Lc 40.5), not this base
+//   shortfall. Rather than accept a second shortfall on the same token
+//   family, rebuilt accent on the same solid-swatch/light-content pattern
+//   already used by primary/secondary/all four semantics: re-profiled to a
+//   52/46/40% L ramp (chroma refit to each L's true in-gamut ceiling,
+//   ~92% headroom, same hue 352deg) with the shared ivory content instead
+//   of dark ink. Now default Lc -81.3/5.93:1 -> hover Lc -87.5/7.56:1 ->
+//   active Lc -93.0/9.65:1: contrast improves with interaction like every
+//   other family here, clears Lc60 with 21+pt headroom at every state, and
+//   the old dark-ink accepted trade-off no longer exists. accent-bg (the
+//   pale wash paired with base-content, not accent-content) is unaffected
+//   at Lc 94.6/16.05:1.
+// - Everything else flagged in the external critique (missing
+//   --color-text-disabled, unparseable `oklch(100% 0 0)` surfaces, the
+//   6-of-7 out-of-gamut semantic/brand bases, accent/error and
+//   primary/info byte-identical collisions, the primary-content-on-primary
+//   AA failure, the border-hover/primary duplication, the muted/tertiary
+//   split, the pure-black overlay, the stale header) was already resolved
+//   in round 1 below and is unchanged by this pass — re-verified fresh, not
+//   re-asserted; see the quoted numbers in this file's own tokens and the
+//   round-1 notes that follow.
+//
+// 2026-07 contrast/gamut refit, round 1 (computed via
+// theme-contrast-check.mjs, not eyeballed — see report for full before/after
+// numbers):
+// - Added the missing --color-text-disabled leaf (theme previously shipped
+//   partial — a contract violation on its own).
+// - Every semantic + primary/accent literal was authored past the sRGB
+//   ceiling at its hue (23 gamut violations on the old file, incl. every
+//   shadow/focus-ring literal that repeated a clipped value) — every one
+//   rebuilt at its true in-gamut chroma ceiling (~90% headroom) at the same
+//   L/H.
+// - primary-content on primary (CTA button) was Lc -70 / 3.89:1 — failing
+//   the WCAG AA 4.5:1 floor outright. Primary re-darkened (58%→46% L, gamut-
+//   fit chroma) against the theme's own near-white paper content: now
+//   Lc -85.6 / 6.67:1.
+// - --color-muted was a separate, much lighter value than -tertiary
+//   (Lc 52.9 / 2.79:1 — under AA, under the Lc75 small-text floor). Aliased
+//   muted onto tertiary exactly, matching the convention in :root/light/oat:
+//   now Lc 79.6 / 6.29:1 for both.
+// - accent and error were byte-identical (oklch(56% 0.24 25deg) for both) —
+//   a role-fidelity bug: an editorial accent and a system error state read
+//   as the same color. Split them: error keeps the alert-red hue (25deg);
+//   accent moves to a specimen-tube pink (352deg) — same "clinical alert"
+//   family by association, clearly different color, and no longer collides
+//   with the error semantic.
+// - success/warning hover-then-active steps LIGHTENED then darkened (a
+//   direction flip vs. every other family in this file and vs. light/oat's
+//   consistent monotonic darkening) — rebuilt so all six brand/semantic
+//   families darken monotonically base→hover→active.
+// - --color-border-hover was literally --color-primary at full saturation —
+//   duplicating the derived --color-border-focus role (already `var(primary)`
+//   in :root) and breaking hover/focus distinctness. Replaced with a plain
+//   darker neutral hairline step (Lc 39.1, vs. border's own Lc 17.9).
+// - (Superseded by round 2 above.) Round 1 kept accent as a light pastel
+//   swatch with dark-ink content and accepted a hover/active contrast dip
+//   as a documented trade-off. Round 2 found the rest state already failed
+//   the Lc60 floor too and rebuilt the family properly instead of
+//   accepting a second shortfall — see round 2 note.
+// - No pure #fff/#000: surfaces/paper carry a faint cool tint, shadows and
+//   the overlay are ink-tinted (not flat black), one implied light source.
+// - serif/display re-aliased to `var(--font-family-sans)` per the house
+//   serif-retirement convention already applied in _light.scss/_dark.scss
+//   (this file still had them as a literal repeat of the Inter stack).
+// - Dropped the stale "SingaporeAtmosphere Design System v2" header
+//   boilerplate — that string is copy-pasted across a dozen unrelated
+//   `_*.scss` files with no real source file anywhere in the repo; it
+//   doesn't describe anything theme-specific, so it isn't a reference worth
+//   keeping (see the theme-designer brief's guidance on stale boilerplate).
+// - Font loading note (superseded by round 2 above): round 1 verified
+//   index.html only preloads the house Geist/Space Grotesk/Hanken stack and
+//   that no `googleFontsHref`-style mechanism exists anywhere in this repo,
+//   so a real `@import` was the only way to load a non-house font. Round 2
+//   removed the deviation entirely rather than keep patching around it —
+//   see above.
 
 [data-theme="clinic"] {
   color-scheme: light;
 
-  --font-family-sans:    "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "SF Mono", monospace;
-  --font-family-serif:   "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-family-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --color-background: oklch(99% 0.003 220deg);
-  --color-base-50: oklch(99% 0.003 220deg);
-  --color-base-100: oklch(96% 0.005 220deg);
-  --color-base-200: oklch(92% 0.008 220deg);
-  --color-base-300: oklch(84% 0.010 220deg);
-  --color-base-400: oklch(72% 0.012 225deg);
-  --color-base-500: oklch(58% 0.014 230deg);
-  --color-base-600: oklch(44% 0.016 230deg);
-  --color-base-700: oklch(32% 0.018 230deg);
-  --color-base-800: oklch(22% 0.020 230deg);
-  --color-base-900: oklch(14% 0.018 230deg);
-  --color-base-950: oklch(8% 0.014 230deg);
-  --color-base-content: oklch(18% 0.02 230deg);
-  --color-base-content-secondary: oklch(32% 0.02 230deg);
-  --color-base-content-tertiary: oklch(52% 0.015 230deg);
-  --color-muted: oklch(68% 0.012 230deg);
-  --color-surface: oklch(100% 0 0);
-  --color-surface-elevated: oklch(100% 0 0);
-  --color-surface-overlay: oklch(0% 0 0deg / 0.5);
-  --color-border: oklch(88% 0.010 220deg);
-  --color-border-hover: oklch(60% 0.14 220deg);
-  --color-primary: oklch(58% 0.14 220deg);
-  --color-primary-hover: oklch(50% 0.16 220deg);
-  --color-primary-active: oklch(44% 0.17 220deg);
-  --color-primary-content: oklch(99% 0.003 220deg);
-  --color-secondary: oklch(32% 0.02 230deg);
-  --color-secondary-hover: oklch(22% 0.02 230deg);
-  --color-secondary-active: oklch(18% 0.02 230deg);
-  --color-secondary-content: oklch(99% 0.003 220deg);
-  --color-accent: oklch(56% 0.24 25deg);
-  --color-accent-hover: oklch(50% 0.26 25deg);
-  --color-accent-active: oklch(46% 0.26 25deg);
-  --color-accent-content: oklch(99% 0.003 25deg);
-  --color-accent-bg: oklch(94% 0.05 25deg);
-  --color-success: oklch(52% 0.16 155deg);
-  --color-success-hover: oklch(60% 0.16 155deg);
-  --color-success-active: oklch(44% 0.16 155deg);
-  --color-success-bg: oklch(95% 0.015 155deg);
-  --color-success-content: oklch(99% 0.003 220deg);
-  --color-warning: oklch(68% 0.18 70deg);
-  --color-warning-hover: oklch(76% 0.18 70deg);
-  --color-warning-active: oklch(60% 0.18 70deg);
-  --color-warning-bg: oklch(96% 0.025 80deg);
-  --color-warning-content: oklch(18% 0.04 70deg);
-  --color-error: oklch(56% 0.24 25deg);
-  --color-error-hover: oklch(64% 0.24 25deg);
-  --color-error-active: oklch(48% 0.24 25deg);
-  --color-error-bg: oklch(95% 0.020 25deg);
-  --color-error-content: oklch(99% 0.003 25deg);
-  --color-info: oklch(58% 0.14 220deg);
-  --color-info-hover: oklch(66% 0.14 220deg);
-  --color-info-active: oklch(50% 0.14 220deg);
-  --color-info-bg: oklch(95% 0.015 220deg);
-  --color-info-content: oklch(99% 0.003 220deg);
-  --shadow-color: oklch(58% 0.14 220deg / 0.25);
-  --shadow-color-strong: oklch(58% 0.14 220deg / 0.55);
-  --shadow-xs: 0 0 0 1px oklch(88% 0.010 220deg);
-  --shadow-sm: 0 0 0 1px oklch(88% 0.010 220deg), 0 1px 2px 0 oklch(18% 0.02 230deg / 0.04);
-  --shadow-md: 0 0 0 1px oklch(88% 0.010 220deg), 0 4px 8px -2px oklch(18% 0.02 230deg / 0.06);
-  --shadow-lg: 0 0 0 1px oklch(88% 0.010 220deg), 0 12px 20px -4px oklch(18% 0.02 230deg / 0.08);
-  --shadow-xl: 0 0 0 1px oklch(88% 0.010 220deg), 0 24px 40px -8px oklch(18% 0.02 230deg / 0.10);
-  --shadow-primary: 0 0 0 2px oklch(58% 0.14 220deg / 0.2);
-  --shadow-accent: 0 0 0 2px oklch(56% 0.24 25deg / 0.25);
-  --focus-ring-color: oklch(58% 0.14 220deg / 0.4);
+  --font-family-sans:    "Geist", sans-serif;
+  --font-family-mono:    "Geist Mono", "JetBrains Mono", "SF Mono", consolas, monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Base scale — sterile blue-white canvas, cool ink ramp -------------------
+  --color-background: oklch(98.6% 0.005 228deg);
+  --color-base-50:  oklch(98.6% 0.005 228deg);
+  --color-base-100: oklch(95.5% 0.008 227deg);
+  --color-base-200: oklch(91% 0.010 226deg);
+  --color-base-300: oklch(83% 0.012 225deg);
+  --color-base-400: oklch(70% 0.014 224deg);
+  --color-base-500: oklch(56% 0.018 226deg);
+  --color-base-600: oklch(43% 0.020 228deg);
+  --color-base-700: oklch(32% 0.020 229deg);
+  --color-base-800: oklch(23% 0.019 230deg);
+  --color-base-900: oklch(15% 0.017 230deg);
+  --color-base-950: oklch(9%  0.013 230deg);
+
+  // Content — Lc 102.5 / 18.05:1 body, well past the Lc90 preferred bar -----
+  --color-base-content:           oklch(18% 0.020 229deg);
+  --color-base-content-secondary: oklch(32% 0.018 228deg);
+  --color-base-content-tertiary:  oklch(48% 0.015 228deg);   // Lc 79.6 — clears the Lc75 small-text floor
+  --color-muted:                  oklch(48% 0.015 228deg);   // aliases tertiary — muted copy is still content
+  --color-text-disabled:          oklch(64% 0.012 228deg);   // non-content only — Lc 58.1 / 3.21:1
+
+  // Surfaces — cool paper, never literal white -------------------------------
+  --color-surface:          oklch(99.3% 0.004 227deg);
+  --color-surface-elevated: oklch(99.6% 0.002 227deg);
+  --color-surface-overlay:  oklch(18% 0.020 229deg / 0.5);
+
+  // Borders — hairline neutral; hover is a plain darker step, not primary ---
+  --color-border:       oklch(84% 0.014 226deg);   // Lc 25.1 — darkened from round-1's 88%/Lc17.9 for real margin above the Lc15 floor
+  --color-border-hover: oklch(76% 0.020 224deg);   // Lc 39.1 — distinct hover step, no longer primary-saturated
+
+  // Primary — scrub blue, structural (CTA/focus/tabs/links) -----------------
+  --color-primary:         oklch(46% 0.079 226deg);
+  --color-primary-hover:   oklch(40% 0.069 226deg);
+  --color-primary-active:  oklch(35% 0.060 226deg);
+  --color-primary-content: oklch(98.6% 0.004 226deg);
+
+  // Secondary — quiet neutral navy, non-brand action -------------------------
+  --color-secondary:         oklch(30% 0.016 228deg);
+  --color-secondary-hover:   oklch(24% 0.016 228deg);
+  --color-secondary-active:  oklch(19% 0.014 228deg);
+  --color-secondary-content: oklch(98.6% 0.004 226deg);
+
+  // Accent — specimen-tube pink, editorial emphasis only (≤2 uses/page) -----
+  // Same solid-swatch/light-content pattern as primary/secondary/semantics
+  // (round 2 rebuild — see header): contrast improves base->hover->active.
+  --color-accent:         oklch(52% 0.197 352deg);   // Lc -81.3/5.93:1 w/ ivory content
+  --color-accent-hover:   oklch(46% 0.175 352deg);   // Lc -87.5/7.56:1
+  --color-accent-active:  oklch(40% 0.153 352deg);   // Lc -93.0/9.65:1
+  --color-accent-content: oklch(98.6% 0.004 226deg); // shared ivory
+  --color-accent-bg:      oklch(95% 0.024 352deg);
+
+  // Semantic: success — vital-signs green ------------------------------------
+  --color-success:         oklch(40% 0.099 150deg);
+  --color-success-hover:   oklch(34% 0.084 150deg);
+  --color-success-active:  oklch(29% 0.072 150deg);
+  --color-success-bg:      oklch(95% 0.045 150deg);
+  --color-success-content: oklch(98.6% 0.004 226deg);
+
+  // Semantic: warning — amber caution ----------------------------------------
+  --color-warning:         oklch(50% 0.093 80deg);
+  --color-warning-hover:   oklch(44% 0.082 80deg);
+  --color-warning-active:  oklch(38% 0.071 80deg);
+  --color-warning-bg:      oklch(96% 0.031 80deg);
+  --color-warning-content: oklch(98.6% 0.004 226deg);
+
+  // Semantic: error — alert red -----------------------------------------------
+  --color-error:         oklch(52% 0.190 25deg);
+  --color-error-hover:   oklch(46% 0.168 25deg);
+  --color-error-active:  oklch(40% 0.146 25deg);
+  --color-error-bg:      oklch(95% 0.021 25deg);
+  --color-error-content: oklch(98.6% 0.004 226deg);
+
+  // Semantic: info — IV-drip cyan, pulled off primary's hue so the two stay
+  // distinct (was literally identical to primary before this pass) ---------
+  --color-info:         oklch(45% 0.069 195deg);
+  --color-info-hover:   oklch(39% 0.060 195deg);
+  --color-info-active:  oklch(34% 0.052 195deg);
+  --color-info-bg:      oklch(95.5% 0.030 195deg);
+  --color-info-content: oklch(98.6% 0.004 226deg);
+
+  // Shadows — ink-tinted, one implied light source, never flat black --------
+  --shadow-color:        oklch(20% 0.020 229deg / 0.10);
+  --shadow-color-strong: oklch(20% 0.020 229deg / 0.18);
+  --shadow-xs: 0 1px 2px 0 oklch(20% 0.020 229deg / 0.06);
+  --shadow-sm: 0 2px 4px -1px oklch(20% 0.020 229deg / 0.08), 0 1px 2px -1px oklch(20% 0.020 229deg / 0.05);
+  --shadow-md: 0 8px 16px -4px oklch(20% 0.020 229deg / 0.10), 0 2px 4px -2px oklch(20% 0.020 229deg / 0.05);
+  --shadow-lg: 0 20px 32px -8px oklch(20% 0.020 229deg / 0.12), 0 4px 8px -4px oklch(20% 0.020 229deg / 0.06);
+  --shadow-xl: 0 32px 48px -12px oklch(20% 0.020 229deg / 0.16), 0 8px 16px -8px oklch(20% 0.020 229deg / 0.07);
+  --shadow-primary: 0 8px 24px 0 oklch(46% 0.079 226deg / 0.28);
+  --shadow-accent:  0 8px 24px 0 oklch(52% 0.197 352deg / 0.24);
+
+  --focus-ring-color: oklch(46% 0.079 226deg / 0.42);
   --color-header-bg: var(--color-base-100);
 }

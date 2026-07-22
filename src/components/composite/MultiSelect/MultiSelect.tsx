@@ -302,8 +302,9 @@ export function MultiSelect({
 				className,
 			)}
 		>
-			<button
-				type="button"
+			<div
+				role="button"
+				tabIndex={disabled ? -1 : 0}
 				className={cn(
 					styles.trigger,
 					styles[variant],
@@ -312,7 +313,7 @@ export function MultiSelect({
 				)}
 				onClick={handleToggle}
 				onKeyDown={handleKeyDown}
-				disabled={disabled}
+				aria-disabled={disabled}
 				aria-haspopup="listbox"
 				aria-expanded={isOpen}
 			>
@@ -349,7 +350,7 @@ export function MultiSelect({
 						className={cn(styles.chevron, isOpen && styles.rotated)}
 					/>
 				</span>
-			</button>
+			</div>
 
 			<AnimatePresence>
 				{isOpen && (

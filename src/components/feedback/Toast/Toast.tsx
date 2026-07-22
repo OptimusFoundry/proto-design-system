@@ -1,10 +1,29 @@
 import { AlertCircle, CheckCircle, Info, X, XCircle } from "lucide-react";
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
 import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Toast.module.scss";
+
+// Animation target values - slide in from right with fade. Passed directly
+// as `initial`/`animate`/`exit` target-value objects below (not Motion's
+// named `variants` prop), which skips variant-name string resolution
+// entirely. Still hoisted to module scope so the object reference is stable
+// across renders; motion re-evaluates/restarts an in-progress transition if
+// it receives a brand new target-value/`transition` object on every parent
+// re-render.
+const TOAST_VARIANTS = {
+	hidden: { opacity: 0, x: 24, scale: 0.95 },
+	visible: { opacity: 1, x: 0, scale: 1 },
+} as const;
+
+const TOAST_TRANSITION_REDUCED = { duration: 0 } as const;
+const TOAST_TRANSITION_NORMAL = {
+	duration: DURATION.normal,
+	ease: EASE_OUT,
+} as const;
 
 export type ToastVariant = "default" | "success" | "warning" | "error";
 export type ToastPosition =
@@ -49,7 +68,7 @@ const variantIcons: Record<ToastVariant, ReactNode> = {
  * </Toast>
  * ```
  */
-export function Toast({
+export const Toast = memo(function Toast({
 	variant = "default",
 	title,
 	children,
@@ -60,24 +79,17 @@ export function Toast({
 }: ToastProps) {
 	const prefersReducedMotion = useReducedMotion();
 
-	// Animation variants - slide in from right with fade
-	const toastVariants = {
-		hidden: { opacity: 0, x: 24, scale: 0.95 },
-		visible: { opacity: 1, x: 0, scale: 1 },
-	};
-
 	const transition = prefersReducedMotion
-		? { duration: 0 }
-		: { duration: DURATION.normal, ease: EASE_OUT };
+		? TOAST_TRANSITION_REDUCED
+		: TOAST_TRANSITION_NORMAL;
 
 	return (
 		<motion.output
 			className={cn(styles.toast, styles[variant], className)}
 			aria-live="polite"
-			variants={toastVariants}
-			initial="hidden"
-			animate="visible"
-			exit="hidden"
+			initial={TOAST_VARIANTS.hidden}
+			animate={TOAST_VARIANTS.visible}
+			exit={TOAST_VARIANTS.hidden}
 			transition={transition}
 		>
 			<div className={styles.icon}>{variantIcons[variant]}</div>
@@ -98,7 +110,7 @@ export function Toast({
 			)}
 		</motion.output>
 	);
-}
+});
 
 Toast.displayName = "Toast";
 
@@ -117,10 +129,13 @@ export function ToastContainer({
 	children,
 	className,
 }: ToastContainerProps) {
-	return (
+	if (typeof document === "undefined") return null;
+
+	return createPortal(
 		<div className={cn(styles.container, styles[position], className)}>
 			{children}
-		</div>
+		</div>,
+		document.body,
 	);
 }
 

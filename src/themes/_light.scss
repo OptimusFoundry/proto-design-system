@@ -1,97 +1,137 @@
 // =============================================================================
 // LIGHT THEME
 // =============================================================================
-// Sourced from compiled themes.bundle.css — reflects Phase 1 palette tuning.
-// Edit this file, then re-run scripts/scss_compiler.js to regenerate the bundle.
+// Canonical product-default light theme. Refinement pass: the prior "2027
+// vibrant refresh" concept (crisp neutral surfaces + high-chroma brand/
+// semantic colours) is kept, but two structural bugs are fixed:
+//
+// 1. Nearly every saturated leaf token (primary, accent-bg, and all four
+//    semantic families) authored chroma 40-70% past the sRGB gamut ceiling
+//    at its own lightness — e.g. primary was oklch(50% 0.24 250deg) against
+//    an in-gamut max of ~0.143 at that L. Browsers were already silently
+//    clipping these to an indeterminate colour; every such token below is
+//    refit to the closest in-gamut chroma at its authored L/H (~90% of the
+//    computed ceiling, for render-safety margin), so what ships is exactly
+//    what's authored, not a clip. `info` in particular cannot be as vivid as
+//    the old comment implied at L50 in H215 (ceiling ~0.089) — kept as
+//    saturated as the gamut allows and documented, the same accepted-
+//    trade-off discipline `oat` used for its terracotta primary.
+// 2. Craft-rule violations: pure #fff background/surface, a literal
+//    rgba(0,0,0,x)-equivalent black on every shadow token and the modal
+//    scrim, and a hairline border at Lc 13.5 (below the Lc 15 floor). Fixed
+//    by giving the neutral ramp, borders, and shadows a shared whisper-low
+//    steel-cool tint at hue 250 — the same hue as --color-primary — so nothing
+//    in the theme renders literal #fff/#000, and the "quiet, chroma-reserved-
+//    for-brand" identity now has a specific hue anchor instead of a flat 0
+//    that could belong to any theme.
+//
+// Fonts intentionally NOT touched — stays on house Geist + Geist Mono per
+// this pass's brief.
 
 [data-theme="light"] {
   color-scheme: light;
 
-  
   --font-family-sans:    "Geist", sans-serif;
-  // Single-family system: mono aliases to Geist (no monospace). Other themes
-  // still carry Geist Mono — they get migrated when we expand past light.
-  --font-family-mono:    var(--font-family-sans);
+  // Geist + real Geist Mono: the mono layer (eyebrows, captions, tabular data)
+  // is a deliberate part of the hierarchy — aliasing it to sans flattened it.
+  --font-family-mono:    "Geist Mono", "JetBrains Mono", "SF Mono", consolas, monospace;
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
-  // 2027 vibrant refresh: clean neutral grayscale (no hue tint) carrying a
-  // high-chroma chromatic set — all the vibrancy comes from the brand and
-  // semantic colours, the surfaces/ink stay a crisp true gray. Filled semantic
-  // colours are tuned to clear WCAG AA (4.5:1) for their text.
-  --color-background: oklch(100% 0 0deg);
-  --color-base-50:  oklch(99% 0 0deg);
-  --color-base-100: oklch(97% 0 0deg);
-  --color-base-200: oklch(94% 0 0deg);
-  --color-base-300: oklch(88% 0 0deg);
-  --color-base-400: oklch(72% 0 0deg);
-  --color-base-500: oklch(55% 0 0deg);
-  --color-base-600: oklch(42% 0 0deg);
-  --color-base-700: oklch(32% 0 0deg);
-  --color-base-800: oklch(22% 0 0deg);
-  --color-base-900: oklch(15% 0 0deg);
-  --color-base-950: oklch(8%  0 0deg);
-  // Text ramp — lightness tuned for the heavier weights; still AA-safe.
-  --color-base-content:           oklch(29% 0 0deg);   // primary body/headings
-  --color-base-content-soft:      color-mix(in oklch, var(--color-base-content), var(--color-base-content-secondary));
-  --color-base-content-secondary: oklch(45% 0 0deg);   // secondary copy
-  --color-base-content-tertiary:  oklch(54% 0 0deg);   // captions / eyebrows
-  --color-muted:                  oklch(58% 0 0deg);   // muted / placeholder
-  --color-surface:          oklch(100% 0 0deg);
-  --color-surface-elevated: oklch(100% 0 0deg);
-  --color-surface-overlay:  oklch(0% 0 0deg / 0.5);
-  --color-border:       oklch(92% 0 0deg);
-  --color-border-hover: oklch(82% 0 0deg);
-  // Primary — electric cobalt (deep + highly saturated; white text at 5.8:1).
-  --color-primary:         oklch(50% 0.24 250deg);
-  --color-primary-hover:   oklch(44% 0.25 250deg);
-  --color-primary-active:  oklch(39% 0.23 250deg);
+
+  // Base scale — steel-cool neutral ramp, hue 250 (matches --color-primary)
+  // at a near-imperceptible but real chroma: "no hue tint" was replaced with
+  // "one purpose-built, brand-anchored tint" so no step is a flat #fff/#000
+  // afterthought. All the vibrancy still comes from primary/accent/semantics.
+  --color-background: oklch(98.6% 0.006 250deg);
+  --color-base-50:  oklch(98.2% 0.007 250deg);
+  --color-base-100: oklch(96.8% 0.010 250deg);
+  --color-base-200: oklch(93.8% 0.012 250deg);
+  --color-base-300: oklch(87.8% 0.014 250deg);
+  --color-base-400: oklch(71.8% 0.016 250deg);
+  --color-base-500: oklch(55%   0.018 250deg);
+  --color-base-600: oklch(42%   0.016 250deg);
+  --color-base-700: oklch(32%   0.014 250deg);
+  --color-base-800: oklch(22%   0.013 250deg);
+  --color-base-900: oklch(15%   0.012 250deg);
+  --color-base-950: oklch(8%    0.011 250deg);
+  // Text ramp — APCA-scored quiet neutral (see UI kit → Foundations → Text
+  // contrast), same steel hue as the base ramp so ink and surface read as
+  // one family.
+  --color-base-content:           oklch(30%   0.014 250deg);  // body/headings — Lc 97.6, 13.17:1
+  --color-base-content-secondary: oklch(44%   0.013 250deg);  // supporting copy — Lc 84.3, 7.47:1
+  --color-base-content-tertiary:  oklch(50.5% 0.012 250deg);  // captions/eyebrows — Lc 76.8, 5.66:1
+  --color-muted:                  oklch(50.5% 0.012 250deg);  // aliases tertiary — muted copy is still content
+  --color-text-disabled:          oklch(68%   0.010 250deg);  // non-content only — Lc 52.4, 2.77:1
+  // Surfaces sit lighter than the canvas (oat's pattern: cards float above
+  // background, not flush with it) — none of the three is literal #fff.
+  --color-surface:          oklch(99.3% 0.003  250deg);
+  --color-surface-elevated: oklch(99.7% 0.0013 250deg);
+  --color-surface-overlay:  oklch(15% 0.012 250deg / 0.5);
+  // Border darkened off its prior Lc 13.5 (below the Lc 15 hairline floor)
+  // to Lc 19.9 — still a true hairline, no longer functionally invisible.
+  --color-border:       oklch(87% 0.008 250deg);
+  --color-border-hover: oklch(76% 0.011 250deg);
+  // Primary — electric cobalt, refit in-gamut (was 0.24, ceiling at L50/H250
+  // is ~0.143; using 0.13 for render-safety margin). White text 5.97:1.
+  --color-primary:         oklch(50% 0.13 250deg);
+  --color-primary-hover:   oklch(44% 0.11 250deg);
+  --color-primary-active:  oklch(39% 0.10 250deg);
   --color-primary-content: oklch(100% 0 0deg);
-  // Secondary — neutral gray (the quiet, non-brand action).
-  --color-secondary:         oklch(45% 0 0deg);
-  --color-secondary-hover:   oklch(35% 0 0deg);
-  --color-secondary-active:  oklch(28% 0 0deg);
+  // Secondary — quiet steel gray, same hue family as the base ramp (was flat
+  // 0-chroma; now shares the theme's one hue anchor instead of being a
+  // swappable neutral).
+  --color-secondary:         oklch(45% 0.012 250deg);
+  --color-secondary-hover:   oklch(35% 0.013 250deg);
+  --color-secondary-active:  oklch(28% 0.012 250deg);
   --color-secondary-content: oklch(100% 0 0deg);
-  // Accent — coral (the warm complementary to cobalt blue per Figma's colour
-  // guide; sits in the open orange gap between error-red and warning-gold).
-  // White text clears AA (~5:1).
+  // Accent — coral, the warm complementary to cobalt. Base chroma was
+  // already in-gamut; hover/active refit down from a chroma that exceeded
+  // gamut at their darker L (was 0.18/0.17, ceilings ~0.159/0.144).
   --color-accent:         oklch(56% 0.17 40deg);
-  --color-accent-hover:   oklch(50% 0.18 40deg);
-  --color-accent-active:  oklch(45% 0.17 40deg);
+  --color-accent-hover:   oklch(50% 0.14 40deg);
+  --color-accent-active:  oklch(45% 0.13 40deg);
   --color-accent-content: oklch(100% 0 0deg);
-  --color-accent-bg:      oklch(96% 0.04 40deg);
-  // Semantics maxed to their in-gamut chroma ceiling — all AA on their content.
-  // (success sits at the sRGB green limit; the rest carry heavier chroma.)
-  --color-success:         oklch(50% 0.22 150deg);
-  --color-success-hover:   oklch(45% 0.22 150deg);
-  --color-success-active:  oklch(40% 0.21 150deg);
+  --color-accent-bg:      oklch(95% 0.023 40deg);
+  // Semantics refit to their real in-gamut ceiling at each L (all four
+  // families — base, hover, active — were previously clipping). success-bg
+  // was already in-gamut and is untouched; the other three *-bg washes are
+  // unified onto one L95 wash tier for a coherent "light wash" system.
+  --color-success:         oklch(50% 0.125 150deg);
+  --color-success-hover:   oklch(45% 0.113 150deg);
+  --color-success-active:  oklch(40% 0.101 150deg);
   --color-success-bg:      oklch(95% 0.065 150deg);
-  --color-success-content: oklch(99% 0.02 150deg);
-  --color-warning:         oklch(79% 0.21 82deg);
-  --color-warning-hover:   oklch(73% 0.21 82deg);
-  --color-warning-active:  oklch(67% 0.20 82deg);
-  --color-warning-bg:      oklch(96% 0.08 82deg);
+  --color-success-content: oklch(99% 0.014 150deg);
+  --color-warning:         oklch(79% 0.147 82deg);
+  --color-warning-hover:   oklch(73% 0.136 82deg);
+  --color-warning-active:  oklch(67% 0.125 82deg);
+  --color-warning-bg:      oklch(95% 0.044 82deg);
   --color-warning-content: oklch(28% 0.06 82deg);
-  --color-error:         oklch(54% 0.28 22deg);
-  --color-error-hover:   oklch(48% 0.29 22deg);
-  --color-error-active:  oklch(43% 0.28 22deg);
-  --color-error-bg:      oklch(96% 0.065 22deg);
-  --color-error-content: oklch(99% 0.02 22deg);
-  // Info — vivid cyan, pulled off the primary's blue hue so the two stay distinct.
-  --color-info:         oklch(50% 0.19 215deg);
-  --color-info-hover:   oklch(44% 0.20 215deg);
-  --color-info-active:  oklch(39% 0.19 215deg);
-  --color-info-bg:      oklch(96% 0.07 215deg);
-  --color-info-content: oklch(99% 0.02 215deg);
-  --shadow-color:        oklch(0% 0 0deg / 0.08);
-  --shadow-color-strong: oklch(0% 0 0deg / 0.15);
-  --shadow-xs: 0 1px 2px 0 oklch(0% 0 0deg / 0.05);
-  --shadow-sm: 0 2px 4px -1px oklch(0% 0 0deg / 0.06), 0 1px 2px -1px oklch(0% 0 0deg / 0.04);
-  --shadow-md: 0 8px 16px -4px oklch(0% 0 0deg / 0.08), 0 2px 4px -2px oklch(0% 0 0deg / 0.04);
-  --shadow-lg: 0 20px 32px -8px oklch(0% 0 0deg / 0.10), 0 4px 8px -4px oklch(0% 0 0deg / 0.05);
-  --shadow-xl: 0 32px 48px -12px oklch(0% 0 0deg / 0.14), 0 8px 16px -8px oklch(0% 0 0deg / 0.06);
-  // Vibrant coloured glows — primary + accent cast their own hue.
-  --shadow-primary: 0 8px 24px 0 oklch(50% 0.24 250deg / 0.32);
+  --color-error:         oklch(54% 0.197 22deg);
+  --color-error-hover:   oklch(48% 0.175 22deg);
+  --color-error-active:  oklch(43% 0.158 22deg);
+  --color-error-bg:      oklch(95% 0.022 22deg);
+  --color-error-content: oklch(99% 0.004 22deg);
+  // Info — vivid cyan pulled off primary's blue hue so the two stay
+  // distinct. H215 has a much tighter sRGB ceiling near L50 (~0.089) than
+  // the other semantics — accepted trade-off, kept at ~90% of that ceiling
+  // rather than raising L (which would break the white-content pairing).
+  --color-info:         oklch(50% 0.080 215deg);
+  --color-info-hover:   oklch(44% 0.071 215deg);
+  --color-info-active:  oklch(39% 0.063 215deg);
+  --color-info-bg:      oklch(95% 0.035 215deg);
+  --color-info-content: oklch(99% 0.006 215deg);
+  // Shadows — one implied light source, ink-tinted (steel hue 250, matching
+  // the base ramp) instead of the prior flat rgba(0,0,0,x) black.
+  --shadow-color:        oklch(20% 0.014 250deg / 0.08);
+  --shadow-color-strong: oklch(20% 0.014 250deg / 0.15);
+  --shadow-xs: 0 1px 2px 0 oklch(20% 0.014 250deg / 0.05);
+  --shadow-sm: 0 2px 4px -1px oklch(20% 0.014 250deg / 0.06), 0 1px 2px -1px oklch(20% 0.014 250deg / 0.04);
+  --shadow-md: 0 8px 16px -4px oklch(20% 0.014 250deg / 0.08), 0 2px 4px -2px oklch(20% 0.014 250deg / 0.04);
+  --shadow-lg: 0 20px 32px -8px oklch(20% 0.014 250deg / 0.10), 0 4px 8px -4px oklch(20% 0.014 250deg / 0.05);
+  --shadow-xl: 0 32px 48px -12px oklch(20% 0.014 250deg / 0.14), 0 8px 16px -8px oklch(20% 0.014 250deg / 0.06);
+  // Vibrant coloured glows — primary + accent cast their own (now in-gamut) hue.
+  --shadow-primary: 0 8px 24px 0 oklch(50% 0.13 250deg / 0.32);
   --shadow-accent:  0 8px 24px 0 oklch(56% 0.17 40deg / 0.28);
-  --focus-ring-color: oklch(50% 0.24 250deg / 0.40);
+  --focus-ring-color: oklch(50% 0.13 250deg / 0.40);
   --color-header-bg: var(--color-base-100);
 }

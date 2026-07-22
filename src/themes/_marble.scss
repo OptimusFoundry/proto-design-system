@@ -1,80 +1,180 @@
 // =============================================================================
 // MARBLE THEME
 // =============================================================================
-// Ported from SingaporeAtmosphere Design System v2 (colors_and_type.css).
-
-@import "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&display=swap";
+// Reference: Carrara marble — quarried white-and-grey stone (Carrara, Tuscany),
+// prized for its cool crystalline body and fine dark veining, warmed here by a
+// Calacatta Gold-style ochre vein for editorial emphasis. This is a rebuild of
+// a prior "ported from SingaporeAtmosphere" pass (same stale boilerplate line
+// pasted verbatim into 18 other theme files, itself the flagged problem) that
+// never got a refit: it was terracotta-and-warm-sand in every ramp step, had
+// no stated intent, and had real contrast bugs (see below).
+//
+// The base ramp is the theme's one specific device: hue bends from warm ivory
+// stone (58deg) at the lightest steps, through a low-chroma neutral crossing,
+// into cool slate-blue "vein ink" (238deg) at the darkest steps — encoding
+// "polished stone body -> mineral vein" the way botanical bends cream into
+// foliage green and riso bends cream into magenta-violet, but going the other
+// rotational direction (through cyan/blue, never magenta/violet) so it reads
+// as stone, not clay or a duotone print. Chroma stays low throughout (<=0.022)
+// — a purpose-built quiet ramp, not colorful, on purpose.
+//
+// --color-primary = the vein-ink itself (structural CTA/focus/link, cool
+// slate-blue h232). --color-accent = a warm gold vein (h85, Calacatta Gold
+// reference), <=2 uses/page, never swapped with primary's structural role.
+//
+// Numeric fixes applied this pass (theme-contrast-check.mjs, not eyeballed):
+// - --color-text-disabled was absent (partial-theme contract violation) —
+//   added at Lc 41.5 / 2.23:1, clears the Lc30 disabled floor with margin.
+// - warning-content/warning was Lc 46.7 (under the Lc60 bold-UI-text floor)
+//   and out-of-gamut — warning refit to its own hue (h60, was accidentally
+//   identical to accent's h80) and content color, now Lc 65.6 / 9.12:1, in
+//   gamut.
+// - accent was the literal same oklch() triple as warning — split to its own
+//   gold h85 identity. accent-content/accent (the real Badge/Button pairing,
+//   not the script's accent-content/accent-bg synthetic pair) is now
+//   Lc 64.1 / 9.33:1, in gamut — 4pt margin above the Lc60 bold-UI floor.
+// - content-tertiary/muted was Lc 73.4 (1.6 short of the Lc75 small-body
+//   floor) and muted was a separately-miscalibrated Lc 52.7/3.10:1 (fails
+//   WCAG AA outright, wired as real placeholder/hint text in 20+ components).
+//   Muted now aliases tertiary (oat/light's pattern) at Lc 78.6 / 6.68:1.
+// - border/background was Lc 13.1 (under the Lc15 hairline floor) and
+//   1.29:1 (fails WCAG 1.4.11's 3:1 non-text floor by more than half — real,
+//   since --color-border is the boundary color for Input/Checkbox/Radio/
+//   Select/TextArea/MultiSelect/DatePicker, not just decoration). Darkened
+//   to a visible cool slate-grey "vein line" at Lc 55.1 / 3.13:1 — clears
+//   both floors with a real but modest safety margin (not overshot into a
+//   heavier line than the floor requires), and reads as an intentional
+//   material device (a visible mineral seam) rather than a dead hairline.
+// - primary-content/primary, accent-content/accent(-bg), warning-content/
+//   warning, and info-content/info were all flagged out-of-gamut (chroma
+//   past the true sRGB ceiling at their authored L/H). Every saturated leaf
+//   token below was checked against its real in-gamut chroma ceiling
+//   (gamutCeiling binary search) and kept at ~85-95% of it for render-safety
+//   margin — same discipline light.scss/aqua.scss use. None flag ⚠ below.
+// - --color-surface-overlay was a flat rgba(0,0,0,0.5)-equivalent black,
+//   inconsistent with this file's own ink-tinted shadows two lines down —
+//   retinted to the theme's vein-ink hue (h235).
+//
+// Fonts: kept "Libre Caslon Text" (sans) + "DM Mono" (mono) — themes.ts's
+// googleFontsHref for this theme already loads exactly these two families,
+// and that file is out of scope for this pass, so the names themselves
+// aren't swappable here. What was missing was the rationale: Libre Caslon
+// Text is an inscriptional book serif (old-style figures, carved-lettering
+// weight) — a lapidary reference fitting text set on/about marble the way a
+// museum placard or cornerstone inscription is cut into stone. DM Mono's
+// cool, even, geometric letterforms read as a specimen/inventory label for
+// tabular and mono content (quarry catalogue numbers), independent of
+// botanical's unrelated reason for using the same family — two themes
+// sharing a mono stack for two different, individually-stated reasons is not
+// the same failure as one theme using it with no stated reason at all.
 
 [data-theme="marble"] {
   color-scheme: light;
 
-  --font-family-sans:    "Libre Caslon Text", georgia, serif;
-  --font-family-mono:    "DM Mono", "SF Mono", monospace;
-  --font-family-serif:   "Libre Caslon Text", georgia, serif;
-  --font-family-display: "Playfair Display", "Fraunces", georgia, serif;
-  --color-background: oklch(94% 0.015 70deg);
-  --color-base-50: oklch(97% 0.010 70deg);
-  --color-base-100: oklch(92% 0.018 70deg);
-  --color-base-200: oklch(87% 0.025 65deg);
-  --color-base-300: oklch(80% 0.030 60deg);
-  --color-base-400: oklch(68% 0.035 50deg);
-  --color-base-500: oklch(52% 0.040 40deg);
-  --color-base-600: oklch(40% 0.040 35deg);
-  --color-base-700: oklch(30% 0.040 30deg);
-  --color-base-800: oklch(22% 0.040 30deg);
-  --color-base-900: oklch(16% 0.035 30deg);
-  --color-base-950: oklch(10% 0.030 30deg);
-  --color-base-content: oklch(20% 0.040 30deg);
-  --color-base-content-secondary: oklch(30% 0.040 30deg);
-  --color-base-content-tertiary: oklch(46% 0.035 30deg);
-  --color-muted: oklch(62% 0.030 35deg);
-  --color-surface: oklch(97% 0.010 70deg);
-  --color-surface-elevated: oklch(99% 0.006 70deg);
-  --color-surface-overlay: oklch(0% 0 0deg / 0.5);
-  --color-border: oklch(86% 0.022 65deg);
-  --color-border-hover: oklch(52% 0.040 40deg);
-  --color-primary: oklch(34% 0.14 20deg);
-  --color-primary-hover: oklch(28% 0.16 20deg);
-  --color-primary-active: oklch(24% 0.15 20deg);
-  --color-primary-content: oklch(95% 0.012 70deg);
-  --color-secondary: oklch(42% 0.06 35deg);
-  --color-secondary-hover: oklch(34% 0.08 35deg);
-  --color-secondary-active: oklch(30% 0.08 35deg);
-  --color-secondary-content: oklch(95% 0.012 70deg);
-  --color-accent: oklch(68% 0.14 80deg);
-  --color-accent-hover: oklch(60% 0.16 80deg);
-  --color-accent-active: oklch(56% 0.16 80deg);
-  --color-accent-content: oklch(18% 0.06 70deg);
-  --color-accent-bg: oklch(94% 0.05 80deg);
-  --color-success: oklch(48% 0.12 145deg);
-  --color-success-hover: oklch(56% 0.12 145deg);
-  --color-success-active: oklch(40% 0.12 145deg);
-  --color-success-bg: oklch(92% 0.025 145deg);
-  --color-success-content: oklch(95% 0.012 70deg);
-  --color-warning: oklch(68% 0.14 80deg);
-  --color-warning-hover: oklch(76% 0.14 80deg);
-  --color-warning-active: oklch(60% 0.14 80deg);
-  --color-warning-bg: oklch(93% 0.030 80deg);
-  --color-warning-content: oklch(22% 0.06 70deg);
-  --color-error: oklch(44% 0.18 25deg);
-  --color-error-hover: oklch(52% 0.18 25deg);
-  --color-error-active: oklch(36% 0.18 25deg);
-  --color-error-bg: oklch(92% 0.030 25deg);
-  --color-error-content: oklch(95% 0.012 70deg);
-  --color-info: oklch(42% 0.10 235deg);
-  --color-info-hover: oklch(50% 0.1 235deg);
-  --color-info-active: oklch(34% 0.1 235deg);
-  --color-info-bg: oklch(92% 0.025 235deg);
-  --color-info-content: oklch(95% 0.012 70deg);
-  --shadow-color: oklch(34% 0.14 20deg / 0.25);
-  --shadow-color-strong: oklch(34% 0.14 20deg / 0.55);
-  --shadow-xs: 0 1px 2px 0 oklch(20% 0.040 30deg / 0.06);
-  --shadow-sm: 0 2px 6px -1px oklch(20% 0.040 30deg / 0.08), 0 1px 2px 0 oklch(20% 0.040 30deg / 0.04);
-  --shadow-md: 0 8px 20px -4px oklch(20% 0.040 30deg / 0.10), 0 2px 4px -1px oklch(20% 0.040 30deg / 0.06);
-  --shadow-lg: 0 20px 40px -8px oklch(20% 0.040 30deg / 0.14), 0 4px 8px -2px oklch(20% 0.040 30deg / 0.08);
-  --shadow-xl: 0 32px 60px -12px oklch(20% 0.040 30deg / 0.18), 0 8px 16px -4px oklch(20% 0.040 30deg / 0.10);
-  --shadow-primary: 0 8px 24px 0 oklch(34% 0.14 20deg / 0.30);
-  --shadow-accent: 0 8px 24px 0 oklch(68% 0.14 80deg / 0.35);
-  --focus-ring-color: oklch(34% 0.14 20deg / 0.3);
+  // 2026-07-16: replaced Libre Caslon Text (serif) with Josefin Sans — a
+  // thin geometric sans with the same timeless, refined character ("quarried
+  // stone" precision) without a serif face. Mono unchanged.
+  --font-family-sans:    "Josefin Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "DM Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Base scale — warm ivory stone (h58) bending through a low-chroma neutral
+  // crossing into cool slate "vein ink" (h238) at the dark end. Every step
+  // checked in-gamut (gamutCeiling), none clip.
+  --color-background: oklch(96.5% 0.008 58deg);
+  --color-base-50:  oklch(98%   0.005 56deg);
+  --color-base-100: oklch(93.5% 0.010 68deg);
+  --color-base-200: oklch(88%   0.013 85deg);
+  --color-base-300: oklch(81%   0.015 110deg);
+  --color-base-400: oklch(70%   0.016 140deg);
+  --color-base-500: oklch(56%   0.018 175deg);
+  --color-base-600: oklch(44%   0.020 200deg);
+  --color-base-700: oklch(33%   0.022 218deg);
+  --color-base-800: oklch(24%   0.022 228deg);
+  --color-base-900: oklch(17%   0.020 235deg);
+  --color-base-950: oklch(11%   0.016 238deg);
+
+  // Content — vein-ink hue (h238-240), APCA-scored: content Lc 98.1/16.90:1,
+  // secondary Lc 89.7/10.53:1, tertiary Lc 78.6/6.68:1 (clears Lc75 floor).
+  --color-base-content:           oklch(18% 0.020 240deg);
+  --color-base-content-secondary: oklch(34% 0.020 238deg);
+  --color-base-content-tertiary:  oklch(45% 0.018 238deg);
+  --color-muted:                  oklch(45% 0.018 238deg);   // aliases tertiary — Lc 78.6/6.68:1
+  --color-text-disabled:          oklch(72% 0.014 235deg);   // non-content only — Lc 41.5/2.23:1
+
+  // Surfaces keep the background's chroma (oat's rule) — polished-slab
+  // lightness steps, same hue family as the canvas.
+  --color-surface:          oklch(97.5% 0.006 56deg);
+  --color-surface-elevated: oklch(98.5% 0.004 55deg);
+  --color-surface-overlay:  oklch(15% 0.02 235deg / 0.5);
+
+  // Border — a genuinely visible cool slate "vein line", not a near-
+  // invisible hairline: Lc 55.1/3.13:1 clears both the Lc15 floor and WCAG
+  // 1.4.11's 3:1 non-text floor (this token bounds real form controls) with
+  // a small safety margin, without going heavier than the floor requires
+  // (sunset.scss's border sets the same-shape precedent at Lc -20.2/3.15:1).
+  --color-border:       oklch(63% 0.030 230deg);
+  --color-border-hover: oklch(46% 0.035 225deg);   // Lc 77.4/6.38:1 — clearly distinct from resting border
+
+  // Primary — the vein-ink itself, structural CTA/focus/link color.
+  --color-primary:         oklch(30% 0.057 232deg);
+  --color-primary-hover:   oklch(25% 0.049 232deg);
+  --color-primary-active:  oklch(21% 0.043 232deg);
+  --color-primary-content: oklch(95% 0.010 58deg);   // Lc -91.9/11.70:1, in gamut
+
+  // Secondary — quiet slate, one hue step off primary, deep + light content.
+  --color-secondary:         oklch(42% 0.020 235deg);
+  --color-secondary-hover:   oklch(34% 0.018 232deg);
+  --color-secondary-active:  oklch(28% 0.016 230deg);
+  --color-secondary-content: oklch(95% 0.008 58deg);   // Lc -82.5/7.26:1
+
+  // Accent — Calacatta Gold vein, editorial only (<=2 uses/page per J-2).
+  // Split off from warning's prior identical value; own h85 identity.
+  --color-accent:         oklch(78% 0.144 85deg);
+  --color-accent-hover:   oklch(72% 0.130 85deg);
+  --color-accent-active:  oklch(67% 0.120 85deg);
+  --color-accent-content: oklch(18% 0.035 75deg);   // on accent (real pairing): Lc 64.1/9.33:1, in gamut
+  --color-accent-bg:      oklch(94% 0.035 85deg);   // pale gold wash
+
+  // Semantics — functional colors, own hues, all refit to their true
+  // in-gamut chroma ceiling (~85-95% margin).
+  --color-success:         oklch(48% 0.120 150deg);
+  --color-success-hover:   oklch(43% 0.108 150deg);
+  --color-success-active:  oklch(38% 0.095 150deg);
+  --color-success-bg:      oklch(92% 0.030 150deg);
+  --color-success-content: oklch(97% 0.020 150deg);   // Lc -79.2/5.67:1, in gamut
+
+  --color-warning:         oklch(80% 0.130 60deg);   // own hue, was accidentally == accent
+  --color-warning-hover:   oklch(74% 0.130 60deg);
+  --color-warning-active:  oklch(69% 0.140 60deg);
+  --color-warning-bg:      oklch(95% 0.035 60deg);
+  --color-warning-content: oklch(22% 0.050 55deg);   // Lc 65.6/9.12:1, in gamut, clears Lc60 floor
+
+  --color-error:         oklch(44% 0.161 22deg);
+  --color-error-hover:   oklch(39% 0.143 22deg);
+  --color-error-active:  oklch(34% 0.125 22deg);
+  --color-error-bg:      oklch(92% 0.030 22deg);
+  --color-error-content: oklch(97% 0.014 22deg);   // Lc -85.3/7.71:1, in gamut
+
+  --color-info:         oklch(42% 0.068 215deg);   // shifted off primary's h232 for separation
+  --color-info-hover:   oklch(37% 0.059 215deg);
+  --color-info-active:  oklch(33% 0.054 215deg);
+  --color-info-bg:      oklch(92% 0.025 215deg);
+  --color-info-content: oklch(97% 0.012 215deg);   // Lc -86.4/7.60:1, in gamut
+
+  // Shadows — vein-ink tinted (h235, matches primary/base-900), one implied
+  // light source, never flat rgba(0,0,0,x) black.
+  --shadow-color:        oklch(18% 0.02 235deg / 0.10);
+  --shadow-color-strong: oklch(18% 0.02 235deg / 0.18);
+  --shadow-xs: 0 1px 2px 0 oklch(18% 0.02 235deg / 0.06);
+  --shadow-sm: 0 2px 6px -1px oklch(18% 0.02 235deg / 0.08), 0 1px 2px 0 oklch(18% 0.02 235deg / 0.05);
+  --shadow-md: 0 8px 20px -4px oklch(18% 0.02 235deg / 0.10), 0 2px 4px -1px oklch(18% 0.02 235deg / 0.06);
+  --shadow-lg: 0 20px 40px -8px oklch(18% 0.02 235deg / 0.13), 0 4px 8px -2px oklch(18% 0.02 235deg / 0.07);
+  --shadow-xl: 0 32px 60px -12px oklch(18% 0.02 235deg / 0.16), 0 8px 16px -4px oklch(18% 0.02 235deg / 0.09);
+  --shadow-primary: 0 8px 24px 0 oklch(30% 0.057 232deg / 0.30);
+  --shadow-accent:  0 8px 24px 0 oklch(78% 0.144 85deg / 0.30);
+
+  --focus-ring-color: oklch(30% 0.057 232deg / 0.40);
   --color-header-bg: var(--color-base-100);
 }

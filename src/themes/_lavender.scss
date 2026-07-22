@@ -1,17 +1,134 @@
 // =============================================================================
 // LAVENDER THEME (SOFT BUT BOLD)
 // =============================================================================
-// Dreamy purples with confident design. Soft colors, strong shapes.
-// Modern SaaS with personality. Calm yet assertive.
+// Dreamy purples with confident design. Soft colors, strong shapes. Modern
+// SaaS with personality, calm yet assertive — pastel violet canvas carrying a
+// saturated violet CTA, a soft rose-pink secondary (oklch chroma 0.11, hue
+// 350 — real but noticeably less saturated than _candy.scss's actual candy
+// pink, so it's described on its own terms below rather than borrowing that
+// theme's identity) and a mint editorial accent.
+// Pairing: Plus Jakarta Sans (rounded-geometric, humanist warmth without
+// going cute; not duplicated by any other theme's --font-family-sans in this
+// repo — survives the in-repo swap test, though it's a common "friendly
+// pastel SaaS" pick in the wider design world, worth naming even though it
+// isn't a repo-local violation) + Kode Mono.
+//
+// Font pipeline note (2026-07): two earlier mono picks for this theme both
+// failed. Spline Sans Mono duplicated _blueprint.scss's exact value for a
+// personality-opposite brief (a literal swap-test failure). PT Mono — the
+// next pick, and what themes.ts's googleFontsHref requested for a while —
+// ships Google Fonts at a single static 400 weight (verified against the
+// live CSS2 API), so T-7.1/T-7.2's mono weight-500/600 requirements would
+// silently render at regular weight instead of synthesizing a fake bold.
+// Kode Mono is a real, currently-unused-elsewhere-in-repo Google Fonts
+// family with full 400/500/600/700 static faces (also verified against the
+// live API) and a rounded-geometric character that pairs with Plus Jakarta
+// Sans's own warmth instead of reading as a bare terminal face. themes.ts's
+// googleFontsHref is updated in this same pass to request it.
+//
+// 2026-07 contrast/gamut refit (computed via theme-contrast-check.mjs, not
+// eyeballed):
+// - Background/base-50 was authored at 97% L / 0.02 C, past the sRGB ceiling
+//   at hue 290 (silently clipped/hue-shifted at paint time). Refit to 96.5%
+//   L / 0.016 C, same hue — still reads as a lavender wash, verified in-gamut.
+// - Surfaces now KEEP background chroma instead of jumping to pure white
+//   (0 0 0deg): surface 98% L / 0.010 C, surface-elevated 98.5% L / 0.006 C —
+//   cards read as lavender material lifting off the canvas, not paper dropped
+//   onto a tinted page (same rule oat's surfaces follow).
+// - content-tertiary/muted darkened 55%->46% L: was Lc 67.3 / 4.43:1 on the
+//   new background, under both the Lc75 small-text floor and WCAG AA. Now
+//   Lc 77.8 / 6.46:1.
+// - border darkened 90%->84% L: was Lc 11.0 on background, under the Lc15
+//   hairline floor (functionally invisible). border-hover 82%->73% L to keep
+//   a clearly larger hover step (Lc 21.6 -> Lc 40.6). Both still sit under
+//   WCAG 1.4.11's 3:1 non-text-boundary floor (1.49:1 / 2.18:1) — accepted
+//   because the ladder's separate, deliberately lower Lc15 hairline floor is
+//   what a decorative 1px divider is actually held to, and both clear it with
+//   margin. Scope discipline required to keep this lawful: these tokens must
+//   stay decorative dividers/panel edges only, never the sole indicator of a
+//   focus or functional boundary (that's --color-border-focus/
+//   --focus-ring-color, both derived and unaffected by this).
+// - accent-content swapped from a separate mint-hued dark ink (18% 0.04
+//   170deg — out of gamut) onto the theme's own violet ink
+//   (--color-base-content's value) — in-gamut, and one consistent ink instead
+//   of a second near-black per hue.
+// - success/warning/error/info rebuilt end to end: every base/hover/active/bg
+//   in the original was authored past the in-gamut chroma ceiling at its hue
+//   (warning-hover, error-hover/bg, info-hover/bg, success/success-hover,
+//   accent-content). Rebuilt at the true in-gamut ceiling per L/H, with
+//   -active added (was missing on all four). success/warning/error/info
+//   -content unified onto one lavender ivory (98% 0.006 290deg) instead of
+//   four separate near-white hue tints — each of those was both a gamut risk
+//   at L~98-100% and a "generic desaturated afterthought" per the craft rules.
+// - --color-accent-bg, --shadow-primary, --shadow-accent, --color-header-bg
+//   added (all missing from the contract). --shadow-2xl and a partial radius
+//   override were dropped/completed respectively — see radius note below.
+// - Soft rounded corners are a deliberate, theme-specific corner language
+//   (this theme's whole premise is "soft"), so --radius-xs/sm/md/lg/xl stay
+//   overridden as a complete set (xs added, was missing) rather than reverting
+//   to the house scale.
+//
+// 2026-07 second pass (post external adversarial re-verification — every
+// number recomputed via theme-contrast-check.mjs, not eyeballed):
+// - --color-text-disabled was a WCAG AA hard-floor failure: 70% L cleared the
+//   internal Lc30 disabled floor (Lc 44.9) but scored only 2.41:1 against
+//   background — under both the 4.5:1 normal-text and 3:1 large/UI-text AA
+//   minimums, and this token isn't scoped anywhere in the codebase to a
+//   provably-exempt "inactive component" role (it's only wired into the
+//   Foundations showcase today, so nothing stops a future disabled-input or
+//   placeholder-text use that WOULD need real AA). Darkened 70%->52% L: now
+//   Lc 70.7 / 5.01:1, real margin above both the Lc30 floor and 4.5:1 AA,
+//   while staying clearly quieter (lower Lc) than tertiary (Lc 77.8) so the
+//   content/secondary/tertiary/disabled tier order is preserved.
+// - secondary-content on secondary-hover/-active and accent-content on
+//   accent-active fell under the Lc60 UI-text floor at press states
+//   (Lc 56.4/48.4 and Lc 59.4/51.1) even though WCAG AA held throughout —
+//   both secondary and accent keep their fixed dark-ink -content color across
+//   all three interaction states, and the original ramps darkened the fill on
+//   hover/active, which closes the gap to that fixed dark ink and erodes
+//   contrast at exactly the states that need it most (pressed/focused).
+//   Flipped both ramps to LIGHTEN on hover/active instead (this hue pair's
+//   in-gamut chroma ceiling sits at high L, same shape _aqua.scss documents
+//   for its own accent/warning roles): secondary 80%->83%->87% L (chroma
+//   tapered 0.11->0.10->0.08 to stay in-gamut), accent 78%->82%->86% L
+//   (chroma tapered 0.12->0.12->0.10). Every state now clears Lc60 with
+//   margin: secondary Lc 65.1/70.5/78.0, accent Lc 67.3/74.1/81.1 — and WCAG
+//   AA improves further at every step as a side effect.
+// - warning/error/info's BASE color, used directly as chip text/icon on its
+//   own -bg tint (a real Badge/Tag pattern the PAIRS script doesn't name but
+//   components do use), was borderline-AA: warning 4.513:1 (0.013 over the
+//   cutoff), error 4.766:1, info 4.980:1 — all three also under the Lc75
+//   small-text floor. Darkened each base (chroma re-fit to the true in-gamut
+//   ceiling at the new L, same discipline as the first pass) and shifted
+//   hover/active down by the same delta: warning 54->47/41/36% L
+//   (c 0.104->0.09/0.08/0.07), error 55->47/41/36% L (c 0.207->0.17/0.15/0.13),
+//   info 52->46/40/35% L (c 0.155->0.12/0.11/0.10). Chip-text now scores
+//   Lc 75.3/6.07:1 (warning), Lc 75.9/6.61:1 (error), Lc 76.5/6.36:1 (info) —
+//   all clear Lc75 with real margin. success's base was already Lc 77.5/
+//   6.43:1 on its own -bg and needed no change. Button/badge content-on-fill
+//   contrast (the ivory -content tokens) only improved as a side effect of
+//   darkening the fill.
+// - content-secondary (Lc 84.2 on background) and border/border-hover's WCAG
+//   ratios were flagged as informational, not failures: 84.2 already clears
+//   the Lc75 small-text minimum (just short of the Lc90 preferred target,
+//   which is aspirational, not a floor) and border/border-hover's WCAG
+//   1.4.11 shortfall is addressed by the decorative-only scope note above,
+//   not a value change — left as-is.
 
 [data-theme="lavender"] {
   color-scheme: light;
 
-  // Background
-  --color-background: oklch(97% 0.02 290deg);
+  --font-family-sans:    "Plus Jakarta Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Kode Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
 
-  // Base colors (soft lavender tints)
-  --color-base-50: oklch(97% 0.02 290deg);
+  // Background — pastel violet wash, refit in-gamut (see header)
+  --color-background: oklch(96.5% 0.016 290deg);
+
+  // Base colors (soft lavender tints, bell-curve chroma: quiet at the
+  // extremes, richest at mid-tone)
+  --color-base-50:  oklch(96.5% 0.016 290deg);
   --color-base-100: oklch(95% 0.025 290deg);
   --color-base-200: oklch(92% 0.03 290deg);
   --color-base-300: oklch(87% 0.035 290deg);
@@ -23,79 +140,101 @@
   --color-base-900: oklch(15% 0.02 290deg);
   --color-base-950: oklch(10% 0.015 290deg);
 
-  // Content colors (deep purple-gray)
-  --color-base-content: oklch(18% 0.02 290deg);
-  --color-base-content-secondary: oklch(40% 0.025 290deg);
-  --color-base-content-tertiary: oklch(55% 0.02 290deg);
+  // Content colors (deep purple-gray ink)
+  --color-base-content:           oklch(18% 0.02 290deg);   // Lc 98.3 on bg
+  --color-base-content-secondary: oklch(40% 0.025 290deg);  // Lc 84.2 on bg
+  --color-base-content-tertiary:  oklch(46% 0.022 290deg);  // Lc 77.8 on bg — was 55% (Lc 67.3, AA fail)
+  --color-muted:                  oklch(46% 0.022 290deg);  // aliases tertiary
+  --color-text-disabled:          oklch(52% 0.02 290deg);   // non-content only — Lc 70.7 / 5.01:1, was 70% L (Lc 44.9/2.41:1, under AA)
 
-  // Surface colors
-  --color-surface: oklch(100% 0 0deg);
-  --color-surface-elevated: oklch(100% 0 0deg);
-  --color-surface-overlay: oklch(18% 0.02 290deg / 0.5);
+  // Surface colors — keep background's violet chroma, only lightness steps up
+  --color-surface:          oklch(98% 0.010 290deg);
+  --color-surface-elevated: oklch(98.5% 0.006 290deg);
+  --color-surface-overlay:  oklch(18% 0.02 290deg / 0.5);
 
-  // Border colors (soft purple)
-  --color-border: oklch(90% 0.03 290deg);
-  --color-border-hover: oklch(82% 0.05 290deg);
+  // Border colors (soft purple) — darkened to clear the hairline Lc15 floor.
+  // Decorative dividers/panel edges only — never the sole indicator of a
+  // focus/functional boundary (see header note on the WCAG 1.4.11 shortfall).
+  --color-border:       oklch(84% 0.032 290deg);   // Lc 21.6 on bg (was Lc 11.0)
+  --color-border-hover: oklch(73% 0.046 290deg);   // Lc 40.6 on bg — clearly distinct from resting
 
-  // Shadow colors (purple tinted)
+  // Shadow colors (purple tinted, single implied light source from above)
   --shadow-color: oklch(50% 0.08 290deg / 0.12);
   --shadow-color-strong: oklch(40% 0.1 290deg / 0.2);
 
-  // Primary (bold violet)
+  // Primary (bold violet) — CTA/focus/tabs/links, unchanged (already in-gamut,
+  // already clears the ladder: Lc 72.6 as link text on bg)
   --color-primary: oklch(52% 0.22 290deg);
   --color-primary-hover: oklch(47% 0.24 290deg);
   --color-primary-active: oklch(42% 0.22 290deg);
-  --color-primary-content: oklch(100% 0 0deg);
+  --color-primary-content: oklch(98% 0.006 290deg);  // lavender ivory, never pure #fff
 
-  // Secondary (soft pink)
-  --color-secondary: oklch(75% 0.12 350deg);
-  --color-secondary-hover: oklch(70% 0.14 350deg);
-  --color-secondary-active: oklch(65% 0.12 350deg);
+  // Secondary (soft rose-pink) — dark-ink content stays fixed across states,
+  // so hover/active LIGHTEN (not darken) to keep clearing the Lc60 UI-text
+  // floor at press states — see header second-pass note.
+  --color-secondary: oklch(80% 0.11 350deg);          // Lc 65.1 / 9.33:1
+  --color-secondary-hover: oklch(83% 0.10 350deg);    // Lc 70.5 / 10.38:1
+  --color-secondary-active: oklch(87% 0.08 350deg);   // Lc 78.0 / 11.93:1
   --color-secondary-content: oklch(20% 0.04 350deg);
 
-  // Accent (mint)
-  --color-accent: oklch(78% 0.12 170deg);
-  --color-accent-hover: oklch(73% 0.14 170deg);
-  --color-accent-active: oklch(68% 0.12 170deg);
-  --color-accent-content: oklch(18% 0.04 170deg);
+  // Accent (mint) — editorial emphasis only, dark ink content unified onto
+  // the theme's own violet ink instead of a separate out-of-gamut mint ink.
+  // hover/active LIGHTEN for the same Lc60-floor reason as secondary above.
+  --color-accent: oklch(78% 0.12 170deg);             // Lc 67.3 / 9.93:1
+  --color-accent-hover: oklch(82% 0.12 170deg);       // Lc 74.1 / 11.34:1
+  --color-accent-active: oklch(86% 0.10 170deg);      // Lc 81.1 / 12.88:1
+  --color-accent-content: oklch(18% 0.02 290deg);
+  // Soft-wash chip background — pairs with --color-base-content (dark ink),
+  // never with --color-accent-content; matches every other semantic's -bg
+  // role and the contrast script's own "accent-content on accent" pairing.
+  --color-accent-bg: oklch(95% 0.045 170deg);
 
-  // Semantic colors
-  --color-success: oklch(60% 0.15 160deg);
-  --color-success-hover: oklch(55% 0.17 160deg);
-  --color-success-bg: oklch(95% 0.04 160deg);
-  --color-success-content: oklch(100% 0 0deg);
-  --color-warning: oklch(80% 0.14 85deg);
-  --color-warning-hover: oklch(75% 0.16 85deg);
-  --color-warning-bg: oklch(96% 0.04 85deg);
-  --color-warning-content: oklch(22% 0.05 85deg);
-  --color-error: oklch(58% 0.2 15deg);
-  --color-error-hover: oklch(53% 0.22 15deg);
-  --color-error-bg: oklch(95% 0.04 15deg);
-  --color-error-content: oklch(100% 0 0deg);
-  --color-info: oklch(55% 0.15 250deg);
-  --color-info-hover: oklch(50% 0.17 250deg);
-  --color-info-bg: oklch(95% 0.04 250deg);
-  --color-info-content: oklch(100% 0 0deg);
+  // Semantic colors — rebuilt at the true in-gamut chroma ceiling per hue so
+  // the BASE color itself also clears Lc75/AA with margin when used directly
+  // as chip text/icon on its own -bg (a real Badge/Tag usage, not just
+  // -content-on-base). -content unified onto one lavender ivory.
+  --color-success: oklch(45% 0.098 158deg);           // Lc 77.5 / 6.43:1 on success-bg
+  --color-success-hover: oklch(40% 0.088 158deg);
+  --color-success-active: oklch(35% 0.077 158deg);
+  --color-success-bg: oklch(96% 0.045 158deg);
+  --color-success-content: oklch(98% 0.006 290deg);
+  --color-warning: oklch(47% 0.09 84deg);             // Lc 75.3 / 6.07:1 on warning-bg — was 54% (4.513:1, AA-borderline)
+  --color-warning-hover: oklch(41% 0.08 84deg);
+  --color-warning-active: oklch(36% 0.07 84deg);
+  --color-warning-bg: oklch(96% 0.035 84deg);
+  --color-warning-content: oklch(98% 0.006 290deg);
+  --color-error: oklch(47% 0.17 20deg);               // Lc 75.9 / 6.61:1 on error-bg — was 55% (4.766:1, AA-borderline)
+  --color-error-hover: oklch(41% 0.15 20deg);
+  --color-error-active: oklch(36% 0.13 20deg);
+  --color-error-bg: oklch(96% 0.018 20deg);
+  --color-error-content: oklch(98% 0.006 290deg);
+  --color-info: oklch(46% 0.12 254deg);               // Lc 76.5 / 6.36:1 on info-bg — was 52% (4.980:1, AA-borderline)
+  --color-info-hover: oklch(40% 0.11 254deg);
+  --color-info-active: oklch(35% 0.10 254deg);
+  --color-info-bg: oklch(96% 0.017 254deg);
+  --color-info-content: oklch(98% 0.006 290deg);
 
   // Focus ring
   --focus-ring-color: oklch(52% 0.22 290deg / 0.4);
-
-  // Muted
-  --color-muted: oklch(55% 0.02 290deg);
 
   // ==========================================================================
   // LAVENDER DESIGN TOKENS
   // ==========================================================================
 
-  // Dreamy soft shadows
+  // Dreamy soft shadows — single soft blur, no crisp secondary layer
   --shadow-xs: 0 1px 2px var(--shadow-color);
   --shadow-sm: 0 2px 6px var(--shadow-color);
   --shadow-md: 0 4px 12px var(--shadow-color);
   --shadow-lg: 0 8px 24px var(--shadow-color-strong);
   --shadow-xl: 0 16px 40px var(--shadow-color-strong);
-  --shadow-2xl: 0 24px 56px var(--shadow-color-strong);
+  --shadow-primary: 0 8px 24px 0 oklch(52% 0.22 290deg / 0.30);
+  --shadow-accent:  0 8px 24px 0 oklch(78% 0.12 170deg / 0.28);
 
-  // Soft rounded corners
+  // Chrome sits a step above the canvas, on-hue
+  --color-header-bg: var(--color-base-100);
+
+  // Soft rounded corners — this theme's deliberate corner language
+  --radius-xs: 6px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;

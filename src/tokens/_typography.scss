@@ -10,7 +10,7 @@
 // working without per-file edits. Any leftover `font-variation-settings`
 // referencing Fraunces axes (`opsz`, `SOFT`) become no-ops on Geist —
 // safe, just ignored.
-@import "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500;600&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap";
 
 :root {
 	// Font families -----------------------------------------------------------
@@ -54,11 +54,12 @@
 	--font-weight-extralight: 200;
 	--font-weight-light:      300;
 	// Calm content, confident headings: body + labels stay light so dense UI
-	// (forms, tables, settings) reads clean, while headings keep the bold punch.
+	// (forms, tables, settings) reads clean. Semibold is a TRUE 600 — headings
+	// carry hierarchy without the 700 punch; bold (700) stays for rare emphasis.
 	--font-weight-normal:     400;   // body copy
 	--font-weight-medium:     500;   // labels, buttons, UI emphasis
-	--font-weight-semibold:   700;   // headings / titles
-	--font-weight-bold:       700;   // alias — "bold" == heaviest loaded
+	--font-weight-semibold:   600;   // headings / titles
+	--font-weight-bold:       700;   // strong emphasis, stat values
 	--font-weight-extrabold:  800;
 	--font-weight-black:      900;
 

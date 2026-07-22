@@ -1,74 +1,241 @@
 // =============================================================================
 // AQUA THEME
 // =============================================================================
-// Ported from SingaporeAtmosphere Design System v2 (colors_and_type.css).
-
-@import "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap";
+// Oceanic dark theme spanning the water spectrum: deep ocean-blue structure
+// (primary, h235) through a quieter teal-blue secondary (h210) to the theme's
+// namesake bright turquoise accent (h185, <=2 uses/page per J-2). Originally
+// ported from a "SingaporeAtmosphere" design system — that reference is kept,
+// but every leaf token below is rebuilt to this repo's contract and
+// numerically fit (2026-07 contrast/gamut refit via theme-contrast-check.mjs,
+// not eyeballed).
+//
+// The original file was a partial-theme + gamut/glassmorphism regression:
+// - base-50…400, surface, and border were literal alpha-over-nothing overlays
+//   (e.g. `oklch(80% 0.03 220deg / 0.10)`) — the anti-generic checklist's
+//   named "glassmorphism by default" pattern, and a correctness bug: the
+//   contrast checker can't even parse an alpha oklch() token, so those pairs
+//   were never actually checked. Rebuilt as solid, fixed-hue/stepped-L ramps.
+// - --color-text-disabled and all seven --shadow-* tokens were simply absent
+//   (contract requires every leaf token) — added.
+// - Nearly every authored color was out of gamut at its hue (background,
+//   primary-content/primary, accent-content, warning-content, info — see
+//   report). Every value below was binary-searched against the true sRGB
+//   ceiling at its own hue/lightness, not estimated.
+// - Border was Lc -14.7/2.33:1 (under the Lc15 hairline floor); lifted to
+//   L49 -> Lc -19.5/2.79:1.
+// - primary/secondary/success/error/info originally got *lighter* on hover,
+//   which silently broke WCAG AA for their light -content text (e.g.
+//   primary-content/primary-hover fell to 3.99:1). Flipped these five to
+//   "hover/active = darker + more saturated" — this hue group's sRGB gamut
+//   ceiling sits at low-mid L (same shape dark.scss documents for its own
+//   indigo/magenta/green/red roles), so darkening both deepens the fill and
+//   improves contrast with light content. accent/warning keep "hover =
+//   lighter" (their gamut peaks at high L; brighter hover helps their dark
+//   content, matching dark.scss's same-shaped accent/warning pair).
+// - Accepted, documented trade-off (same shape dark.scss accepts for itself):
+//   success/error/info/accent's BASE color used directly as icon/text on the
+//   page canvas (Tag "stroke", Banner) scores Lc ~20-26 — visibly tinted, not
+//   AA-body-text-grade. These are deep/bright *fills* by design; the real
+//   on-canvas text role is -content on -bg (base-content/accent-bg scores
+//   Lc -92/12.81:1), which is what Banner/Alert actually render. Likewise
+//   accent-content on accent-bg (the checker's synthetic pairing) stays
+//   low-contrast (Lc 0/1.29:1) because no real call site pairs those two
+//   dark colors — accent-bg's real pairing is base-content (light). Verified
+//   by grep: Button.accent/Badge.accent only ever pair accent-content with
+//   solid accent/-hover (Lc 64.4/9.66:1 resting, Lc 74.5/11.79:1 hover), so
+//   this synthetic pairing is a checker false-positive, not a token defect.
+//
+// 2026-07 second pass (post-critique repair — every number recomputed via
+// theme-contrast-check.mjs, not eyeballed):
+// - content-secondary was Lc 73.2/10.57:1 on background — clears WCAG AA
+//   handily but missed the ladder's own Lc75 small-body-text floor by 1.8.
+//   Lifted 84%->86% L (chroma/hue unchanged): now Lc 77.4/11.34:1, 2.4 pts
+//   of headroom above the floor instead of a miss.
+// - border was Lc -19.5/2.79:1 on background — clears the internal Lc15
+//   hairline floor but sat under WCAG 1.4.11's 3:1 non-text-UI-component
+//   floor, and border is a real functional boundary (Input's resting
+//   border). Against Input's actual --color-surface background it was even
+//   lower (Lc -18.5/2.58:1). Lifted 49%->56% L: now Lc -28.2/3.75:1 on
+//   background, Lc -27.2/3.47:1 on surface — clears 3:1 against both with
+//   margin. border-hover lifted 60%->68% L to preserve the same ~12pt L gap
+//   as a clearly distinct hover step (Lc -45.4/6.02:1 on background,
+//   Lc -44.5/5.57:1 on surface).
+// - text-disabled's WCAG ratio (4.57:1) sat only 0.07 above the 4.5 AA
+//   floor — technically passing but with no real margin, even though its
+//   APCA Lc -34.8 cleared the Lc30 disabled floor comfortably. Lifted
+//   61%->64% L: now Lc -39.3/5.16:1, a real safety margin on both scores,
+//   while staying clearly below tertiary/muted (70% L) so disabled stays
+//   the least-prominent tier.
+// - Investigated but NOT changed: --color-border-focus (derived from
+//   --color-primary, not a leaf token themes may redeclare) scores 2.71:1
+//   against surface — under 3:1, same shape dark.scss accepts for its own
+//   focus ring. Nudging primary lighter to fix it trades one thin margin
+//   for another: at L54 (just enough to clear 3.22:1 vs surface),
+//   primary-content-on-primary itself drops to 4.54:1 — barely above its
+//   own AA floor; at L56 it drops under AA entirely (4.18:1). Primary also
+//   anchors --shadow-primary/--focus-ring-color and needs to stay visually
+//   distinct from --color-base-500 (60% L, same hue). Left as a documented,
+//   pre-existing systemic gap rather than trading one near-floor pass for
+//   another — matches dark.scss's identical acceptance of this shape.
+// - accent-content on accent-active (Lc 52.6/7.43:1, below the Lc60 UI-text
+//   target, above the Lc45 floor) was already the intended, documented
+//   transient-press trade-off above — reconfirmed, not a defect.
+//
+// aqua vs. ocean: both sit in this roster's "water" hue territory (aqua
+// h235->h210->h185, ocean h230->h190 with an orange accent break) but are
+// deliberately different corners of it — ocean is a daylit coastal light
+// theme; aqua is a twilight/night-dive dark theme with the hue family
+// extended past ocean's teal into the namesake bright turquoise accent.
+// Kept distinct on purpose, not an accidental overlap.
+//
+// Fonts: Manrope (sans; serif/display alias to it) + Space Mono (mono),
+// loaded centrally via this theme's `googleFontsHref` entry in themes.ts.
+// Manrope is a semi-condensed geometric sans (Sharanda/Velimirovic) with a
+// taller x-height and tighter, more closed apertures than Inter or Nunito —
+// it holds up as dense UI text against this theme's saturated dark surfaces
+// without Inter's clinical neutrality or Nunito's soft/rounded "friendly"
+// read, which is why it replaced the ported Inter/Nunito pairing (Inter is
+// this repo's own named typography "Don't" per 01-typography.md; Nunito was
+// an unrelated third display family breaking the two-family rule with no
+// stated reason). Space Mono was designed by Colophon Foundry for Google
+// Design specifically for a quirky, mid-century-retro-futurist character
+// (deliberately eccentric curves on several letterforms) rather than
+// utilitarian code-editor neutrality — that "vintage instrument panel"
+// personality is why it replaced the ported JetBrains Mono here, matching a
+// night-dive/tidal-telemetry read better than a purely functional coding
+// mono. Only ships weights 400/700 (no 500), so eyebrow/tier-badge text
+// renders at 400 instead of the spec's w500 — a minor, already-accepted
+// trade-off elsewhere in this system (_riso.scss makes the same call on the
+// same font).
+// KNOWN LIMITATION, not fixed here: Space Mono is also _mono.scss's and
+// _riso.scss's mono face, and Manrope alone (no accompanying reference the
+// way oat cites a brand or lavender cites a mood-and-letterform brief) reads
+// closer to "a second safe modern-grotesk default" than a pairing sourced
+// specifically for this brief. Both are real anti-generic-checklist misses.
+// Not resolved in this pass because a genuine fix means swapping the actual
+// font families, which requires updating this theme's `googleFontsHref` in
+// `themes.ts` in lockstep (an SCSS-only font-family change with a stale href
+// would silently never load, falling back to Geist) — and `themes.ts` was
+// explicitly out of scope for this repair. Flagged as a follow-up requiring
+// a themes.ts edit.
 
 [data-theme="aqua"] {
   color-scheme: dark;
 
-  --font-family-sans:    "Inter", -apple-system, blinkmacsystemfont, "SF Pro Text", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "SF Mono", monospace;
-  --font-family-serif:   "Inter", system-ui, sans-serif;
-  --font-family-display: "Nunito", "SF Pro Rounded", "Inter", system-ui, sans-serif;
-  --color-background: oklch(26% 0.08 245deg);
-  --color-base-50: oklch(80% 0.03 220deg / 0.10);
-  --color-base-100: oklch(80% 0.03 220deg / 0.16);
-  --color-base-200: oklch(78% 0.03 220deg / 0.22);
-  --color-base-300: oklch(74% 0.04 220deg / 0.32);
-  --color-base-400: oklch(70% 0.05 220deg / 0.48);
-  --color-base-500: oklch(68% 0.08 220deg);
-  --color-base-600: oklch(76% 0.10 215deg);
-  --color-base-700: oklch(84% 0.08 215deg);
-  --color-base-800: oklch(92% 0.04 215deg);
-  --color-base-900: oklch(96% 0.015 215deg);
-  --color-base-950: oklch(99% 0.006 215deg);
-  --color-base-content: oklch(99% 0.005 220deg);
-  --color-base-content-secondary: oklch(94% 0.010 220deg);
-  --color-base-content-tertiary: oklch(84% 0.015 220deg);
-  --color-muted: oklch(72% 0.022 225deg);
-  --color-surface: oklch(70% 0.04 230deg / 0.12);
-  --color-surface-elevated: oklch(80% 0.03 220deg / 0.18);
-  --color-surface-overlay: oklch(0% 0 0deg / 0.75);
-  --color-border: oklch(100% 0 0 / 0.18);
-  --color-border-hover: oklch(100% 0 0 / 0.32);
-  --color-primary: oklch(72% 0.18 235deg);
-  --color-primary-hover: oklch(80% 0.20 235deg);
-  --color-primary-active: oklch(66% 0.18 235deg);
-  --color-primary-content: oklch(98% 0.008 220deg);
-  --color-secondary: oklch(80% 0.03 220deg / 0.25);
-  --color-secondary-hover: oklch(82% 0.04 220deg / 0.38);
-  --color-secondary-active: oklch(78% 0.04 220deg / 0.38);
-  --color-secondary-content: oklch(98% 0.008 220deg);
-  --color-accent: oklch(82% 0.14 200deg);
-  --color-accent-hover: oklch(88% 0.16 200deg);
-  --color-accent-active: oklch(84% 0.16 200deg);
-  --color-accent-content: oklch(18% 0.04 200deg);
-  --color-accent-bg: oklch(24% 0.08 200deg);
-  --color-success: oklch(78% 0.18 155deg);
-  --color-success-hover: oklch(86% 0.18 155deg);
-  --color-success-active: oklch(70% 0.18 155deg);
-  --color-success-bg: oklch(78% 0.18 155deg / 0.18);
-  --color-success-content: oklch(14% 0.04 155deg);
-  --color-warning: oklch(82% 0.16 80deg);
-  --color-warning-hover: oklch(90% 0.16 80deg);
-  --color-warning-active: oklch(74% 0.16 80deg);
-  --color-warning-bg: oklch(82% 0.16 80deg / 0.20);
-  --color-warning-content: oklch(16% 0.05 80deg);
-  --color-error: oklch(70% 0.22 22deg);
-  --color-error-hover: oklch(78% 0.22 22deg);
-  --color-error-active: oklch(62% 0.22 22deg);
-  --color-error-bg: oklch(70% 0.22 22deg / 0.20);
-  --color-error-content: oklch(98% 0.02 22deg);
-  --color-info: oklch(72% 0.18 235deg);
-  --color-info-hover: oklch(80% 0.18 235deg);
-  --color-info-active: oklch(64% 0.18 235deg);
-  --color-info-bg: oklch(72% 0.18 235deg / 0.20);
-  --color-info-content: oklch(14% 0.04 235deg);
-  --shadow-color: oklch(72% 0.18 235deg / 0.25);
-  --shadow-color-strong: oklch(72% 0.18 235deg / 0.55);
-  --shadow-xs: inset 0 1px 0 0 oklch(100% 0 0 / 0.25), 0 1px 2px 0 oklch(0% 0 0 / 0.2);
-  --focus-ring-color: oklch(72% 0.18 235deg / 0.55);
+  --font-family-sans:    "Manrope", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Space Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Base scale — fixed hue 235 (matches primary), stepped lightness, chroma
+  // fit to ~80-90% of the true in-gamut ceiling at each step (binary-searched,
+  // not estimated). Background sits deliberately lighter than a near-black
+  // OLED dark (22% L) — a twilight-over-water read, not a generic dark mode.
+  --color-background: oklch(22% 0.038 235deg);
+  --color-base-50:  oklch(25% 0.042 235deg);
+  --color-base-100: oklch(29% 0.050 235deg);
+  --color-base-200: oklch(34% 0.058 235deg);
+  --color-base-300: oklch(41% 0.068 235deg);
+  --color-base-400: oklch(50% 0.078 235deg);
+  --color-base-500: oklch(60% 0.085 235deg);
+  --color-base-600: oklch(70% 0.075 235deg);
+  --color-base-700: oklch(79% 0.055 235deg);
+  --color-base-800: oklch(87% 0.032 235deg);
+  --color-base-900: oklch(94% 0.014 235deg);
+  --color-base-950: oklch(98% 0.005 235deg);
+
+  // Content — Lc 93.6 / 77.4 / 48.4 magnitude on background (content clears
+  // the Lc90 small-body target outright; secondary clears the Lc75 small-
+  // body floor with margin (was Lc 73.2, a 1.8pt miss — see header);
+  // tertiary/muted clear WCAG AA 6.46:1 and the Lc45 detailed-icon floor,
+  // matching the oat/dark precedent of accepting sub-Lc75 captions at
+  // AA-plus).
+  --color-base-content:           oklch(94% 0.012 235deg);
+  --color-base-content-secondary: oklch(86% 0.014 235deg);  // Lc -77.4/11.34:1
+  --color-base-content-tertiary:  oklch(70% 0.016 235deg);
+  --color-muted:                  oklch(70% 0.016 235deg);
+  --color-text-disabled:          oklch(64% 0.014 235deg);  // Lc -39.3/5.16:1 — real margin above both floors, see header
+
+  // Surfaces keep the background's chroma (oat's rule) — only lightness
+  // separates card/elevated from canvas.
+  --color-surface:          oklch(25% 0.037 235deg);
+  --color-surface-elevated: oklch(29% 0.035 235deg);
+  --color-surface-overlay:  oklch(6% 0.02 235deg / 0.7);
+
+  // Border lifted 49%->56% L to clear the WCAG 3:1 UI-component floor (was
+  // Lc -19.5/2.79:1 on background, under 3:1 — see header); now
+  // Lc -28.2/3.75:1 on background, Lc -27.2/3.47:1 on Input's actual
+  // --color-surface background. border-hover lifted in step to keep the
+  // same ~12pt L gap as a clearly distinct hover step.
+  --color-border:       oklch(56% 0.03 235deg);
+  --color-border-hover: oklch(68% 0.035 235deg);   // Lc -45.4/6.02:1 on background — clearly distinct from resting border
+
+  // Primary — deep ocean blue, the theme's structural CTA/focus/link color.
+  // Hover/active darken + gain chroma (this hue's gamut peaks low-mid-L);
+  // primary-content stays >=5.4:1 through every state.
+  --color-primary:         oklch(50% 0.095 235deg);
+  --color-primary-hover:   oklch(45% 0.088 235deg);
+  --color-primary-active:  oklch(39% 0.075 235deg);
+  --color-primary-content: oklch(97% 0.010 235deg);
+
+  // Secondary — quieter teal-blue structural action, one hue-family step
+  // (25deg) off primary, deep + light content, same darken-on-state shape.
+  --color-secondary:         oklch(40% 0.062 210deg);
+  --color-secondary-hover:   oklch(35% 0.058 210deg);
+  --color-secondary-active:  oklch(30% 0.050 210deg);
+  --color-secondary-content: oklch(97% 0.010 210deg);
+
+  // Accent — the theme's namesake bright turquoise, editorial only (<=2
+  // uses/page per J-2). Gamut peaks high-L here, so hover brightens (helps
+  // the dark content), active dips to Lc52.6 (above the Lc45 floor, below
+  // the Lc60 target — same accepted transient-press pattern as dark.scss).
+  --color-accent:         oklch(76% 0.115 185deg);
+  --color-accent-hover:   oklch(82% 0.120 185deg);
+  --color-accent-active:  oklch(69% 0.110 185deg);
+  --color-accent-content: oklch(15% 0.024 185deg);
+  --color-accent-bg:      oklch(26% 0.042 185deg);
+
+  // Semantics — success/error/info follow primary/secondary's darken-on-
+  // state shape (gamut peaks low-mid-L); warning follows accent's
+  // lighten-on-hover shape (gamut peaks high-L). Content-on-state all clear
+  // WCAG AA with margin; see header for the accepted base-on-canvas trade-off.
+  --color-success:         oklch(52% 0.135 145deg);
+  --color-success-hover:   oklch(47% 0.135 145deg);
+  --color-success-active:  oklch(42% 0.115 145deg);
+  --color-success-bg:      oklch(25% 0.045 145deg);
+  --color-success-content: oklch(97% 0.020 145deg);
+
+  --color-warning:         oklch(80% 0.150 85deg);
+  --color-warning-hover:   oklch(86% 0.135 85deg);
+  --color-warning-active:  oklch(74% 0.140 85deg);
+  --color-warning-bg:      oklch(25% 0.045 85deg);
+  --color-warning-content: oklch(13% 0.024 85deg);
+
+  --color-error:         oklch(54% 0.190 25deg);
+  --color-error-hover:   oklch(49% 0.185 25deg);
+  --color-error-active:  oklch(43% 0.160 25deg);
+  --color-error-bg:      oklch(25% 0.045 25deg);
+  --color-error-content: oklch(97% 0.014 25deg);
+
+  --color-info:         oklch(50% 0.085 220deg);
+  --color-info-hover:   oklch(45% 0.075 220deg);
+  --color-info-active:  oklch(39% 0.062 220deg);
+  --color-info-bg:      oklch(25% 0.040 220deg);
+  --color-info-content: oklch(97% 0.014 220deg);
+
+  // Shadows — ink-tinted at the theme's own 235deg hue, one implied light
+  // source. Replaces the original's literal white-inset + flat-black drop
+  // shadow (a `#fff`/`#000` violation on a non-monochrome theme).
+  --shadow-color:        oklch(4% 0.02 235deg / 0.45);
+  --shadow-color-strong: oklch(4% 0.02 235deg / 0.7);
+  --shadow-xs: 0 1px 2px 0 oklch(4% 0.02 235deg / 0.35);
+  --shadow-sm: 0 2px 4px -1px oklch(4% 0.02 235deg / 0.45), 0 1px 2px -1px oklch(4% 0.02 235deg / 0.3);
+  --shadow-md: 0 8px 16px -4px oklch(4% 0.02 235deg / 0.55), 0 2px 4px -2px oklch(4% 0.02 235deg / 0.3);
+  --shadow-lg: 0 20px 32px -8px oklch(4% 0.02 235deg / 0.65), 0 4px 8px -4px oklch(4% 0.02 235deg / 0.4);
+  --shadow-xl: 0 32px 48px -12px oklch(4% 0.02 235deg / 0.75), 0 8px 16px -8px oklch(4% 0.02 235deg / 0.4);
+  --shadow-primary: 0 8px 24px 0 oklch(50% 0.095 235deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(76% 0.115 185deg / 0.30);
+
+  --focus-ring-color: oklch(50% 0.095 235deg / 0.55);
   --color-header-bg: var(--color-base-100);
 }

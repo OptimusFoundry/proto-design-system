@@ -15,6 +15,7 @@
 // Import themes
 @use "editorial";
 @use "light";
+@use "oat";
 @use "ember";
 @use "mono";
 @use "dark";
@@ -44,6 +45,19 @@
 @use "riso";
 @use "vinyl";
 @use "zen";
+@use "bioluminescent";
+@use "blueprint";
+@use "candy";
+@use "citrus";
+@use "forest";
+@use "forest-light";
+@use "lavender";
+@use "midnight";
+@use "monochrome";
+@use "neon";
+@use "paper";
+@use "pixel";
+@use "terminal";
 
 // Import base styles
 @use "../base/reset";
