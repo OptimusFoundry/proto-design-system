@@ -40,7 +40,7 @@ export interface TableProps {
  *   <TableBody>
  *     <TableRow>
  *       <TableCell>John Doe</TableCell>
- *       <TableCell>john@example.com</TableCell>
+ *       <TableCell>john@tickuptoks.com</TableCell>
  *     </TableRow>
  *   </TableBody>
  * </Table>

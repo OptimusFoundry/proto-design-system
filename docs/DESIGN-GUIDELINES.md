@@ -34,6 +34,8 @@ This document provides guidelines for AI agents to create consistent, accessible
 
 ### Use Design Tokens, Never Hardcode
 
+→ skill: frontend-design-rules FC-4
+
 ```scss
 // ✅ CORRECT - Using tokens
 .card {
@@ -53,6 +55,8 @@ This document provides guidelines for AI agents to create consistent, accessible
 ```
 
 ### Use SCSS Modules, Not Style Props
+
+→ skill: frontend-design-rules FC-3
 
 ```tsx
 // ✅ CORRECT - SCSS module
@@ -121,6 +125,8 @@ Use SCSS modules for:
 ```
 
 ### Style Prop - Only When Absolutely Necessary
+
+→ skill: frontend-style-rules (style prop)
 
 The `style` prop should only be used for:
 - **Dynamic values** calculated at runtime (e.g., progress width)
@@ -578,7 +584,7 @@ See `docs/design-docs/21-page-layout-decisions.md` for the full decision guide i
                   <TextField label="Last Name" defaultValue="Doe" />
                 </Grid>
 
-                <TextField label="Email" defaultValue="john@example.com" />
+                <TextField label="Email" defaultValue="john@tickuptoks.com" />
                 <TextArea label="Bio" rows={3} />
 
                 <Stack direction="horizontal" justify="end">
@@ -651,7 +657,7 @@ See `docs/design-docs/21-page-layout-decisions.md` for the full decision guide i
                 <Text weight="medium">John Doe</Text>
               </Stack>
             </TableCell>
-            <TableCell>john@example.com</TableCell>
+            <TableCell>john@tickuptoks.com</TableCell>
             <TableCell><Badge>Admin</Badge></TableCell>
             <TableCell><Badge variant="success">Active</Badge></TableCell>
             <TableCell>
@@ -705,7 +711,7 @@ See `docs/design-docs/21-page-layout-decisions.md` for the full decision guide i
   <ModalBody>
     <Stack gap={4}>
       <TextField label="Name" defaultValue="John Doe" />
-      <TextField label="Email" defaultValue="john@example.com" />
+      <TextField label="Email" defaultValue="john@tickuptoks.com" />
       <Select
         label="Role"
         options={[

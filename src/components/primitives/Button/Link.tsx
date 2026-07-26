@@ -44,7 +44,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
  * @example
  * ```tsx
  * <Link href="/about">About us</Link>
- * <Link href="https://example.com" target="_blank" rightIcon={<ExternalLink size="1em" />}>
+ * <Link href="https://tickuptoks.com" target="_blank" rightIcon={<ExternalLink size="1em" />}>
  *   Visit website
  * </Link>
  * ```

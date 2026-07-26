@@ -73,7 +73,7 @@ export const AccountSettings: Story = {
 										<Input
 											id="email"
 											type="email"
-											placeholder="you@example.com"
+											placeholder="you@tickuptoks.com"
 											defaultValue="sarah@acme.com"
 										/>
 										<FormHint variant="success" showIcon>
@@ -506,7 +506,7 @@ export const SignupForm: Story = {
 					setEmailError(null);
 				} else if (!value.includes("@")) {
 					setEmailError("Please enter a valid email address");
-				} else if (value === "taken@example.com") {
+				} else if (value === "taken@tickuptoks.com") {
 					setEmailError("This email is already registered");
 				} else {
 					setEmailError(null);
@@ -645,7 +645,7 @@ export const ContactForm: Story = {
 								<Input
 									id="contact-email"
 									type="email"
-									placeholder="john@example.com"
+									placeholder="john@tickuptoks.com"
 								/>
 							</Stack>
 

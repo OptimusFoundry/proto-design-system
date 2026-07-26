@@ -161,7 +161,7 @@ export const EmailInput: Story = {
 	args: {
 		type: "email",
 		leftElement: <Mail size="1em" />,
-		placeholder: "you@example.com",
+		placeholder: "you@tickuptoks.com",
 	},
 };
 

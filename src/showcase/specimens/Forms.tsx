@@ -715,7 +715,7 @@ export function FormsSpecimens() {
 							label="Email"
 							errorMessage="Please enter a valid email address"
 						>
-							<Input type="email" placeholder="you@example.com" isError />
+							<Input type="email" placeholder="you@tickuptoks.com" isError />
 						</FormField>
 					</SpecItem>
 				</SpecRow>

@@ -575,7 +575,7 @@ export const SettingsLayout: Story = {
 									</label>
 									<input
 										type="email"
-										defaultValue="john@example.com"
+										defaultValue="john@tickuptoks.com"
 										style={{
 											padding: "var(--space-2) var(--space-3)",
 											border: "1px solid var(--color-border)",

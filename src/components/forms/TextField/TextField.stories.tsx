@@ -158,7 +158,7 @@ export const Showcase: Story = {
 			<TextField label="Full name" placeholder="John Doe" />
 			<TextField
 				label="Email"
-				placeholder="john@example.com"
+				placeholder="john@tickuptoks.com"
 				leftElement={<Mail size={16} />}
 				helperText="We'll never share your email"
 			/>

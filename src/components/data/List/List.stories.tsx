@@ -79,13 +79,13 @@ export const WithLeadingIcons: Story = {
 export const WithSecondaryText: Story = {
 	render: () => (
 		<List variant="divided">
-			<ListItem leading={<User />} secondary="john@example.com">
+			<ListItem leading={<User />} secondary="john@tickuptoks.com">
 				John Doe
 			</ListItem>
-			<ListItem leading={<User />} secondary="jane@example.com">
+			<ListItem leading={<User />} secondary="jane@tickuptoks.com">
 				Jane Smith
 			</ListItem>
-			<ListItem leading={<User />} secondary="bob@example.com">
+			<ListItem leading={<User />} secondary="bob@tickuptoks.com">
 				Bob Johnson
 			</ListItem>
 		</List>

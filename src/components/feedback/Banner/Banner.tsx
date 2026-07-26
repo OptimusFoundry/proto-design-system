@@ -13,6 +13,21 @@ import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Banner.module.scss";
 
+// Animation variants - slide down with fade.
+// Hoisted to module scope so the object reference is stable across renders;
+// motion re-evaluates/restarts an in-progress transition if it receives a
+// brand new `variants`/`transition` object on every parent re-render.
+const BANNER_VARIANTS = {
+	hidden: { opacity: 0, y: -8 },
+	visible: { opacity: 1, y: 0 },
+} as const;
+
+const BANNER_TRANSITION_REDUCED = { duration: 0 } as const;
+const BANNER_TRANSITION_NORMAL = {
+	duration: DURATION.normal,
+	ease: EASE_OUT,
+} as const;
+
 export type BannerType = "info" | "success" | "warning" | "error" | "feature";
 export type BannerVariant = "filled" | "light" | "lighter" | "stroke";
 
@@ -46,21 +61,6 @@ const typeIcons: Record<BannerType, ReactNode> = {
 	error: <XCircle />,
 	feature: <Sparkles />,
 };
-
-// Animation variants - slide down with fade.
-// Hoisted to module scope so the object reference is stable across renders;
-// motion re-evaluates/restarts an in-progress transition if it receives a
-// brand new `variants`/`transition` object on every parent re-render.
-const BANNER_VARIANTS = {
-	hidden: { opacity: 0, y: -8 },
-	visible: { opacity: 1, y: 0 },
-} as const;
-
-const BANNER_TRANSITION_REDUCED = { duration: 0 } as const;
-const BANNER_TRANSITION_NORMAL = {
-	duration: DURATION.normal,
-	ease: EASE_OUT,
-} as const;
 
 /**
  * Banner component for page-level notifications.

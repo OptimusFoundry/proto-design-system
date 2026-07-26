@@ -123,7 +123,7 @@ export const WithRightIcon: Story = {
 
 export const ExternalLinkExample: Story = {
 	args: {
-		href: "https://example.com",
+		href: "https://tickuptoks.com",
 		target: "_blank",
 		rightIcon: <ExternalLink size="1em" />,
 		children: "Visit Website",

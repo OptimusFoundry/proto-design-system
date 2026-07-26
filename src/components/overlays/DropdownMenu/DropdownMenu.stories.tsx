@@ -74,7 +74,7 @@ export const WithSublabels: Story = {
 			{
 				id: "1",
 				label: "John Doe",
-				sublabel: "john@example.com",
+				sublabel: "john@tickuptoks.com",
 				leftIcon: <User />,
 			},
 			{

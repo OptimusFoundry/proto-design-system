@@ -37,7 +37,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		label: "Email",
-		children: <Input type="email" placeholder="you@example.com" />,
+		children: <Input type="email" placeholder="you@tickuptoks.com" />,
 	},
 };
 
@@ -53,7 +53,7 @@ export const WithErrorMessage: Story = {
 	args: {
 		label: "Email",
 		errorMessage: "Please enter a valid email address",
-		children: <Input type="email" placeholder="you@example.com" isError />,
+		children: <Input type="email" placeholder="you@tickuptoks.com" isError />,
 	},
 };
 
@@ -143,7 +143,7 @@ export const FormExample: Story = {
 				required
 				helperText="We'll never share your email"
 			>
-				<Input type="email" placeholder="you@example.com" />
+				<Input type="email" placeholder="you@tickuptoks.com" />
 			</FormField>
 			<FormField
 				label="Password"
