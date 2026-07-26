@@ -43,6 +43,10 @@
 	--font-size-xl:   1.25rem;    // 20px - card titles
 	--font-size-2xl:  1.5rem;     // 24px - section headers
 	--font-size-3xl:  1.75rem;    // 28px - page titles
+	// Stat values range 28-32px (J-3.3, T-5.2); 3xl covers the 28px default but
+	// nothing landed on 32px for the hero variant until this token — it is not
+	// a ladder rung, it's the one sanctioned off-scale value for that one use.
+	--font-size-stat-hero: 2rem; // 32px - hero stat value only (T-5.2)
 	--font-size-4xl:  2.125rem;   // 34px - large headings
 	--font-size-5xl:  2.5rem;     // 40px - hero / stat value
 	--font-size-6xl:  3rem;       // 48px - display
