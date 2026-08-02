@@ -2,8 +2,8 @@ import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Drawer.module.scss";
 
@@ -75,6 +75,7 @@ export function Drawer({
 }: DrawerProps) {
 	const prefersReducedMotion = useReducedMotion();
 	const isDesktop = useIsDesktop();
+	const motionTokens = useMotionTokens();
 
 	const handleBackdropClick = useCallback(() => {
 		if (dismissible) onClose();
@@ -118,7 +119,10 @@ export function Drawer({
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: DURATION.fast, ease: EASE_OUT }}
+						transition={{
+							duration: motionTokens.duration.fast,
+							ease: motionTokens.easeOut,
+						}}
 					/>
 					<motion.aside
 						className={cn(styles.panel, styles[`size-${size}`], className)}
@@ -137,7 +141,10 @@ export function Drawer({
 										animate: { y: 0, x: 0 },
 										exit: { y: "100%", x: 0 },
 									}))}
-						transition={{ duration: DURATION.normal, ease: EASE_OUT }}
+						transition={{
+							duration: motionTokens.duration.normal,
+							ease: motionTokens.easeOut,
+						}}
 					>
 						{(title || showCloseButton) && (
 							<header className={styles.header}>

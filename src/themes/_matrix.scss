@@ -39,6 +39,54 @@
 // Code for both roles, matching themes.ts's registered googleFontsHref
 // (which requests only that one family), the same pattern
 // _mono.scss/_punk.scss/_terminal.scss use for their own single-font hrefs.
+//
+// Motion — genuine deviation, not decoration: matrix's premise is instant,
+// mechanical, code-executing precision — cascading glyphs don't linger,
+// wobble, or apologize. Four touchpoints, three of them the exact places
+// `useMotionConfig()`/`useMotionTokens()` hand a component its own physics
+// (grep-confirmed: Tabs' active-indicator is --spring-stiff's only
+// consumer, StatCard's counter is --spring-slow's only consumer,
+// Button/LinkButton's default no-preset `useMotionConfig()` call is
+// --spring-gentle's only consumer):
+//  - --duration-normal: 240ms -> 175ms (-27%), the one duration lever
+//    broadly shared enough to carry the theme's overall pace
+//    (Modal/Dropdown/Accordion/Tabs-panel fade, Stack/Grid/List's default
+//    stagger duration) without recolouring every unrelated
+//    micro-interaction the way retuning --ease-out would (declined below,
+//    same restraint _cosmos.scss's header applies for the identical
+//    reason). --duration-fast (150ms hover, J-9.1) and --duration-instant
+//    (focus ring) are the two hard-fixed values and stay untouched.
+//  - --spring-gentle (Button/LinkButton press): 120,14,1 (zeta 0.64,
+//    underdamped, soft doughy give) -> 320,32,0.85 (zeta =
+//    32/(2*sqrt(320*0.85)) = 0.97, essentially critical) — a decisive
+//    mechanical key-click, not a springy software press.
+//  - --spring-stiff (Tabs indicator): 400,30,1 (zeta 0.75, faint
+//    overshoot) -> 520,58,0.9 (zeta = 58/(2*sqrt(520*0.9)) = 1.34,
+//    overdamped) — the active-tab marker snaps to its new position like a
+//    cursor jumping cells, zero spring-back.
+//  - --spring-slow (StatCard counter): 100,20,1 (zeta 1.0, already
+//    critically damped per _cosmos.scss's own note) -> 200,28,1 (zeta =
+//    28/(2*sqrt(200)) = 0.99, still ~critical) — same zero-overshoot
+//    precision, roughly double the stiffness so a stat reads like a fast
+//    decrypt/tally rather than a slow gauge sweep.
+//  All three springs stay near-critically-damped by design: faster and
+//  stiffer than house, never bouncier — matrix's own "precise but fast"
+//  cousin of _cosmos.scss's "precise but heavy" instrumentation springs,
+//  not a re-skin of them (cosmos adds mass for weight; matrix keeps mass
+//  at/below 1 for speed).
+//  - --duration-enter/-exit/-complex/-page have no live consumer anywhere
+//    in this codebase (grep-verified — zero hits outside _motion.scss
+//    itself — same finding _cosmos.scss's header documents), left at
+//    house default rather than overriding tokens nothing renders.
+//  - --ease-out/--ease-in-out stay at house default: the single most
+//    broadly shared levers in the system (every hover-adjacent
+//    transition, Modal/Toast/Dropdown/Stack/Grid) — recurving them would
+//    read as a generic global "sharper" reskin, not matrix's specific
+//    touchpoints.
+//  - --ease-bounce/--ease-elastic/--spring-bouncy/--spring-wobbly stay at
+//    house default — J-9.4 reserves spring/bounce character for delight
+//    moments (toast entry, success), and bounciness would undercut this
+//    theme's cold precision premise outright.
 
 [data-theme="matrix"] {
   color-scheme: dark;
@@ -143,4 +191,11 @@
 
   --focus-ring-color: oklch(88% 0.18 142deg / 0.55);
   --color-header-bg: var(--color-base-100);
+
+  // Motion — see header rationale. --duration-fast (hover) and
+  // --duration-instant (focus ring) are never touched.
+  --duration-normal: 175ms;
+  --spring-gentle: 320, 32, 0.85;
+  --spring-stiff:  520, 58, 0.9;
+  --spring-slow:   200, 28, 1;
 }

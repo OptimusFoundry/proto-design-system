@@ -175,4 +175,27 @@
   // Tighter letter spacing for headlines
   --letter-spacing-tight: -0.03em;
   --letter-spacing-tighter: -0.05em;
+
+  // Motion — mechanical/instrument-precise, following from the zero-radius,
+  // pure-ink-on-paper identity above: swaps the house's soft cushioned
+  // ease-out (0.22, 1, 0.36, 1, a gentle settle) for a symmetric,
+  // no-overshoot curve — the same "ruler snapping into place" quality as
+  // the sharp corners, reached automatically by every --transition-* alias
+  // that composites --ease-out/--ease-in-out (they're not redeclared here).
+  // Hover (150ms, --duration-fast) and accordion/tab (240ms,
+  // --duration-normal) timings are untouched per J-9.1 — this theme changes
+  // HOW things move, not those fixed durations. Mount/dismiss/page are
+  // tightened for a decisive cut instead of a lingering dissolve, still
+  // under J-9.1's 400ms ceiling. --ease-bounce/--spring-bouncy keep their
+  // J-9.4 reserved-for-delight role (toast entry, success checkmark) but
+  // with overshoot trimmed — even this theme's one permitted flourish stays
+  // restrained, not playful. --duration-instant and focus-ring timing are
+  // untouched — instant and unthemed per the hard rule.
+  --ease-out:      cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in-out:   cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-bounce:   cubic-bezier(0.34, 1.2, 0.64, 1);
+  --spring-bouncy: 320, 22, 1;
+  --duration-enter: 200ms;
+  --duration-exit:  140ms;
+  --duration-page:  260ms;
 }

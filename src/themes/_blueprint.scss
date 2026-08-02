@@ -44,6 +44,31 @@
 //   base a step instead of darkening the content further (already pinned to
 //   its own gamut ceiling at L18).
 //
+// Motion: mechanical/precise personality — CAD software snapping to grid
+// points, not an editorial ease. Three coherent overrides, everything else
+// stays house default:
+// - --ease-out: expo-style hard deceleration (cubic-bezier(0.16,1,0.3,1))
+//   replaces the house's softer ease-out-quad. This is the one curve nearly
+//   every entrance/exit in the system reads (Modal, Dropdown, Grid/Stack/List
+//   mount stagger, Toast, Banner, Alert, plus --transition-opacity/-transform/
+//   -shadow/-all), so retuning it alone reshapes the whole theme's motion
+//   signature toward "snaps to a stop" instead of "eases to a stop."
+// - --duration-normal: 240ms -> 190ms, a decisive ~20% cut. --duration-fast
+//   (150ms) is deliberately untouched — it drives --transition-colors, i.e.
+//   the literal hover transition J-9.1 fixes at 150ms house-wide; a theme
+//   changing hover duration would break that hard rule via the back door.
+// - --spring-gentle: 120,14,1 -> 260,30,1 (damping ratio 0.64 -> 0.93, near-
+//   critical). This is Button's default press-spring — house's underdamped
+//   value gives a soft squish-and-settle; the near-critical version snaps to
+//   its target with negligible overshoot, closer to a toggle-switch click.
+// --spring-stiff (Tabs indicator) and --spring-slow (StatCard counter) are
+// left at house default: Tabs is already the stiffest house preset, nothing
+// to add; StatCard's counter role is "settled tally," and retuning it purely
+// for snappiness would drift the token's role away from what its name
+// promises elsewhere in the system. --ease-bounce/--ease-elastic stay
+// house default too, per J-9.4 (bounce is a delight reservation, not a
+// theme-wide default) — this theme has no delight moments that call for it.
+//
 // Fonts: IBM Plex Sans Condensed + Spline Sans Mono are fixed by themes.ts's
 // googleFontsHref (not touched here — out of scope for a token-contract
 // pass). Honest accounting since neither had a rationale before: condensed
@@ -186,4 +211,11 @@
   // Thin precise borders
   --border-width: 1px;
   --border-width-thick: 2px;
+
+  // Motion — mechanical/precise (see header rationale). --duration-fast
+  // (hover, 150ms) and --duration-instant (focus ring, 0ms) are never
+  // touched.
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal: 190ms;
+  --spring-gentle: 260, 30, 1;
 }

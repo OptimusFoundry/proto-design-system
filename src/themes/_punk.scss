@@ -116,6 +116,30 @@
 //   `oat`'s identical convention (oat's own surface/background gap is
 //   similarly ~2pts of L). Shape here comes from the Lc92 border ring on
 //   every panel, not fill contrast — not a copy-paste bug.
+//
+// 2026-08 motion refit (J-9): punk's whole visual language is an impact,
+// not a glide — hard offset shadows with zero blur, razor-cut square
+// corners, a rubber-stamped ink border. Motion follows the same physics:
+// something slapped/stapled/stamped down, not eased into place.
+// - --ease-out: cubic-bezier(0, 0, 0, 1) replaces the house's soft
+//   decelerating "ease-out-quad." This is an *impact* curve — full velocity
+//   from frame one, then a dead stop with no glide-out tail — modeling a
+//   staple gun or rubber stamp hitting paper. Deliberately not
+//   `--ease-linear` (a flat conveyor-belt constant velocity, which is
+//   `brutal`'s device for its own, cooler "absence-of-ornament" motion) —
+//   punk's motion has an impact, brutal's has none.
+// - --duration-fast: 100ms (was house 150ms). Hover/color transitions read
+//   as a flash-cut reflex, not a considered fade — closer to a photocopier
+//   flash than a UI courtesy.
+// - --duration-normal: 150ms (was house 240ms). Tabs/accordions/opacity/
+//   transform snap shut like a staple, not an editorial 240ms glide.
+// - Declined: --ease-bounce/--ease-elastic and all --spring-* stay at house
+//   defaults. Per J-9.4 they're scoped to single-use delight moments (toast
+//   entry, success checkmark) system-wide, not routine interactions — an
+//   abrupt theme expresses itself through a harder, faster curve on the
+//   tokens that already drive every interaction, not by editorializing the
+//   tokens reserved for occasional delight. --duration-instant (0ms, focus
+//   rings) is untouched — fixed system-wide, never themed.
 
 @import "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap";
 
@@ -234,4 +258,10 @@
   // rounded card wearing a hard-edged square shadow. See refit #2 above.
   --radius-xs: 0; --radius-sm: 0; --radius-md: 0;
   --radius-lg: 0; --radius-xl: 0;
+
+  // Motion — impact, not glide. See "2026-08 motion refit" above for the
+  // full rationale; --duration-instant and focus-ring timing are untouched.
+  --ease-out:        cubic-bezier(0, 0, 0, 1);
+  --duration-fast:   100ms;
+  --duration-normal: 150ms;
 }

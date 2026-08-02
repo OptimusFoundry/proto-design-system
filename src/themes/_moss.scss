@@ -120,6 +120,36 @@
 // Mono ships one static weight, confirmed via the actual Google Fonts CSS
 // response, same href-construction precedent as _porcelain.scss's Cutive
 // Mono).
+//
+// Motion: the brief is waterlogged, not springy — a rainforest floor this
+// saturated with mist and rain absorbs rebound the way it absorbs sound.
+// One coherent override, everything else stays house default:
+// - --duration-fast (hover, 150ms) and --duration-instant (focus ring,
+//   0ms) are untouched per the hard rule — hover feedback stays crisp and
+//   direct regardless of how heavy this theme's press-and-release feels.
+// - --spring-gentle (Button/LinkButton's default press preset): house
+//   120/14/1 is underdamped (zeta 0.639 — a faint rebound on release, per
+//   _botanical.scss's own read of that same default). Retuned to 90/26/1.5
+//   (zeta 1.119, overdamped: zero rebound, no bounce-back at all) — the
+//   added mass is deliberate, not just a damping bump, so the settle reads
+//   as sinking into a rain-soaked cushion-moss mat over a nurse log, not a
+//   dry surface with more friction.
+// - --duration-normal, --ease-out: left at house default. The muffled
+//   quality this theme wants lives in spring weight/damping, not reveal
+//   pacing or deceleration shape — bumping duration-normal (as _botanical
+//   does) or swapping ease-out (as _forest-light does) would just restate
+//   a choice a sibling forest-floor theme already owns, not add a moss-
+//   specific signal.
+// - --spring-stiff (Tabs indicator) / --spring-slow (StatCard counter):
+//   declined — neither is part of this theme's material story, and
+//   --spring-slow's house default (100/20/1, zeta 1.0) is already
+//   critically damped, the same finding _botanical.scss's motion pass
+//   made for the identical token.
+// - --ease-bounce / --spring-bouncy (J-9.4: reserved for toast/success
+//   delight moments): declined — no house component wires either yet
+//   (same reserved-for-future status _archive/_candy/_carbon leave them
+//   in), so inventing a moss-specific bloom-pop now would be decorating a
+//   token nothing uses rather than serving a real interaction.
 
 [data-theme="moss"] {
   color-scheme: dark;
@@ -233,4 +263,8 @@
   // Focus ring uses primary-hover, not primary, for extra on-dark visibility.
   --focus-ring-color: oklch(80% 0.14 128deg / 0.55);
   --color-header-bg: var(--color-base-100);
+
+  // Motion — see header rationale. Overdamped + heavier mass: a button
+  // press sinks into soaked cushion-moss with zero rebound, not a snap.
+  --spring-gentle: 90, 26, 1.5;
 }

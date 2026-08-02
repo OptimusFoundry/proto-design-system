@@ -68,6 +68,31 @@
 //   overridden as a complete set (xs added, was missing) rather than reverting
 //   to the house scale.
 //
+// 2026-08 radius re-derivation (pilot: proportions, not just size) —
+// the first-pass override (xs6/sm8/md12/lg16/xl24) had the theme's own
+// header calling it "soft," but checking it against the house default
+// (xs2/sm4/md8/lg12/xl20) shows why it still read as generic: every step
+// was exactly the default value +4px (2+4, 4+4, 8+4, 12+4, 20+4) — a
+// constant additive shift, same curve as the default ladder, just moved up.
+// "Soft but bold" (this theme's own tagline) wants a curve, not an offset:
+// controls stay compact/legible (bold, decisive) while surfaces balloon
+// outward (soft, pillowy) — so the ratio between consecutive steps should
+// itself grow as you go up the ladder, not hold flat like the old
+// 1.33/1.5/1.33/1.5 oscillation (or the house default's 2/2/1.5/1.667).
+// Re-derived: xs4/sm8/md14/lg26/xl46 → consecutive ratios 2.0/1.75/1.86/1.77,
+// consistently high and front-to-back distinct from both the house curve
+// and the old lavender curve (deltas 4/6/12/20 aren't a multiple or an
+// offset of either). --radius-md (buttons/inputs, J-10.1) stays at 14px —
+// comfortably under half of the smallest real control height (--space-6 =
+// 32px sm-button, half = 16px) so a small button still reads as
+// "generously rounded rect," never an accidental --radius-full pill.
+// --radius-lg (26px) is the jump where the surface language actually
+// changes character — cards read as noticeably plush next to a button, not
+// a slightly-bigger version of the same shape. --radius-xl (46px, modals/
+// hero surfaces) carries that further. J-10.2 still holds with more margin
+// than before: a card (26 or 46) around an input/button (14) leaves a
+// 12–32px outer-larger gap, vs. the old ladder's 4–12px.
+//
 // 2026-07 second pass (post external adversarial re-verification — every
 // number recomputed via theme-contrast-check.mjs, not eyeballed):
 // - --color-text-disabled was a WCAG AA hard-floor failure: 70% L cleared the
@@ -114,6 +139,62 @@
 //   which is aspirational, not a floor) and border/border-hover's WCAG
 //   1.4.11 shortfall is addressed by the decorative-only scope note above,
 //   not a value change — left as-is.
+//
+// 2026-08 shadow/border-width pilot — the prior shadow override only
+// retinted the house shape (single soft layer, opacity scaling with size);
+// that's flat haze, not elevation. Rebuilt as a real system: layer count
+// grows 1 -> 2 -> 3 going up the scale, spread flips from tight/negative at
+// low levels to loose/positive at lg/xl, and the top two steps switch from
+// a dense contact ink to a lighter, higher-L wash so the bloom reads as a
+// diffuse violet glow, not a bigger grey smear — see the inline comment on
+// the token block for the per-level logic. Border-width was evaluated
+// against the revised J-10.4 and NOT remapped: this theme's identity is
+// built on shape (radius) and now depth (shadow), not line weight, and a
+// hairline border is load-bearing for the J-10.5 contract this theme leans
+// on hardest (border at rest, shadow alone on lift) — see the inline note
+// by the border-color tokens.
+//
+// 2026-08 motion pilot — verified live consumers before touching anything
+// (grepped components/, hooks/, context/): --duration-fast drives
+// Dropdown/DropdownMenu/Popover/DatePicker/MultiSelect's open transition and
+// Drawer's enter; --duration-normal drives Modal/Stack/Grid/PageTransition/
+// Alert/Toast/Banner/List/Drawer-exit, plus Accordion directly in CSS
+// (J-9.1's literal "accordions/tabs 240ms"); both are always paired with
+// --ease-out. --spring-gentle is Button/LinkButton's press-spring (the
+// default useMotionConfig() preset, J-9.2's scale-on-press). --spring-stiff
+// is Tabs' indicator. --spring-slow is StatCard's counter. --duration-instant,
+// --duration-fast and --duration-normal are left at house values — the first
+// two are hard/near-hard contracts (J-9.1 names 0ms and 150/240ms literally),
+// and this theme's "bold but soft" story is already fully carried by the
+// shadow/radius systems above, so there's no strong reason to also spend the
+// one lever every sibling theme treats as load-bearing. --ease-bounce/
+// --ease-elastic/--spring-bouncy/--spring-wobbly/--duration-enter/-exit/
+// -complex/-page/-fastest/-faster/-slower/-slowest/-ambient all verified
+// zero live consumers (no component reads them, JS or CSS) — left alone as
+// genuinely unused, not "reserved." --spring-stiff (Tabs) is also left
+// alone: wayfinding benefits from staying precise regardless of mood, the
+// same call aqua/blueprint made for this exact token.
+// Three tokens get the theme's actual personality:
+// - --ease-out (the one curve nearly every transition above reads): house's
+//   cubic-bezier(0.22, 1, 0.36, 1) already fronts-loads deceleration; pulled
+//   the same shape further toward cubic-bezier(0.15, 1, 0.29, 1) — a
+//   quicker initial commit, then a longer, unhurried tail. One curve reads
+//   as the theme's own duality in miniature: a decisive snap into motion
+//   (the tight contact-edge shadow, the compact control radii) that
+//   resolves into a cushioned, plush settle (the diffuse violet bloom on
+//   lift) — no overshoot, so it stays clear of --ease-bounce's J-9.4
+//   delight-only reservation.
+// - --spring-gentle (Button/LinkButton press): house 120,14,1 (zeta 0.64,
+//   soft underdamped squish-back) -> 260,30,1 (zeta 0.93, near-critically
+//   damped) — a tight, decisive resolve with almost no give, matching the
+//   compact/legible control half of the radius ladder (xs4/sm6/md14), not
+//   the billowing-surface half.
+// - --spring-slow (StatCard's counter, a reveal moment): house 100,20,1
+//   (zeta 1.0, critically damped "settled tally") -> 50,18,1.3 (zeta 1.12,
+//   overdamped) — still zero-overshoot, the same "no bounce" convention
+//   aqua/blueprint already set for this token, but slower and floatier from
+//   the lower stiffness and added mass, so the count-up arrives the way the
+//   lg/xl shadow bloom does: unhurried and airy, never a snap.
 
 [data-theme="lavender"] {
   color-scheme: light;
@@ -155,12 +236,32 @@
   // Border colors (soft purple) — darkened to clear the hairline Lc15 floor.
   // Decorative dividers/panel edges only — never the sole indicator of a
   // focus/functional boundary (see header note on the WCAG 1.4.11 shortfall).
+  //
+  // Border-WIDTH (J-10.4) stays house default (1px --border-width-sm) —
+  // no remap. J-10.4's carve-out is for identities BUILT ON line weight
+  // (industrial/technical/brutalist/blueprint); "soft but bold" is built on
+  // shape (the radius curve above) and now on depth (the elevation system
+  // below), not on stroke thickness. Thickening these hairlines would fight
+  // the theme's own premise — a heavier rule reads as structural/graphic,
+  // the opposite of "soft" — and would blunt the J-10.5 contract this theme
+  // leans on hardest: border carries the resting edge, shadow alone carries
+  // the lift, so the border can (and should) stay a near-invisible hairline
+  // and let the new billowing shadow ladder do the structural work on hover.
   --color-border:       oklch(84% 0.032 290deg);   // Lc 21.6 on bg (was Lc 11.0)
   --color-border-hover: oklch(73% 0.046 290deg);   // Lc 40.6 on bg — clearly distinct from resting
 
-  // Shadow colors (purple tinted, single implied light source from above)
-  --shadow-color: oklch(50% 0.08 290deg / 0.12);
-  --shadow-color-strong: oklch(40% 0.1 290deg / 0.2);
+  // Shadow colors (purple tinted, single implied light source from above).
+  // Two inks, not one recolor: a denser near-ink for tight contact layers
+  // (kept the theme's own hue, not the house's grey-indigo), and a lighter,
+  // higher-L wash reserved for the elevated "bloom" layers introduced below
+  // — the bloom needs enough L to read as a diffuse violet glow rather than
+  // a second grey haze stacked under the first. Both re-verified in-gamut
+  // at the new L/C (theme-contrast-check.mjs has no shadow-token gamut
+  // check, so this was checked with the same OKLCH->linear-sRGB port
+  // standalone: L46/C0.10, L38/C0.11, and the L62/C0.09-0.11 bloom family
+  // below all render in-gamut).
+  --shadow-color: oklch(46% 0.10 290deg / 0.14);
+  --shadow-color-strong: oklch(38% 0.11 290deg / 0.22);
 
   // Primary (bold violet) — CTA/focus/tabs/links, unchanged (already in-gamut,
   // already clears the ladder: Lc 72.6 as link text on bg)
@@ -221,22 +322,65 @@
   // LAVENDER DESIGN TOKENS
   // ==========================================================================
 
-  // Dreamy soft shadows — single soft blur, no crisp secondary layer
-  --shadow-xs: 0 1px 2px var(--shadow-color);
-  --shadow-sm: 0 2px 6px var(--shadow-color);
-  --shadow-md: 0 4px 12px var(--shadow-color);
-  --shadow-lg: 0 8px 24px var(--shadow-color-strong);
-  --shadow-xl: 0 16px 40px var(--shadow-color-strong);
-  --shadow-primary: 0 8px 24px 0 oklch(52% 0.22 290deg / 0.30);
-  --shadow-accent:  0 8px 24px 0 oklch(78% 0.12 170deg / 0.28);
+  // Elevation system, not a recolor — layer count, blur, spread and offset
+  // all change per step, not just opacity. "Soft but bold": low levels
+  // (chip/input/button rest) stay tight and crisp — a single near-zero-blur
+  // contact edge, the "bold" half of the premise. Layer count grows to 2
+  // at md (resting card — a defined contact line plus a first soft ambient
+  // wash, still pulled in with negative spread so it reads as sitting ON
+  // the surface, not floating off it) and to 3 at lg/xl (lift/dropdown,
+  // modal), where the outermost layer flips to POSITIVE spread and a much
+  // larger blur radius, and switches from the grey-violet contact ink to
+  // the lighter --shadow-color/-strong wash — a genuine diffuse violet
+  // bloom, not a bigger version of the same haze. That's the "airy,
+  // billowing" half of the premise, and it's deliberately reserved for the
+  // top two steps so it reads as a real state change on lift (J-10.5),
+  // not a constant background hum at every elevation.
+  --shadow-xs: 0 1px 2px 0 oklch(46% 0.10 290deg / 0.16);
+  --shadow-sm:
+    0 1px 1px 0 oklch(46% 0.10 290deg / 0.14),
+    0 2px 5px -2px var(--shadow-color);
+  --shadow-md:
+    0 1px 2px -1px oklch(46% 0.10 290deg / 0.16),
+    0 6px 16px -6px var(--shadow-color);
+  --shadow-lg:
+    0 2px 4px -2px oklch(46% 0.10 290deg / 0.18),
+    0 10px 24px -8px var(--shadow-color-strong),
+    0 28px 56px 6px oklch(62% 0.10 290deg / 0.12);
+  --shadow-xl:
+    0 2px 4px -2px oklch(46% 0.10 290deg / 0.20),
+    0 18px 36px -10px var(--shadow-color-strong),
+    0 44px 88px 10px oklch(62% 0.11 290deg / 0.16);
+  --shadow-primary:
+    0 4px 8px -2px oklch(52% 0.22 290deg / 0.35),
+    0 16px 32px 2px oklch(52% 0.20 290deg / 0.22);
+  --shadow-accent:
+    0 4px 8px -2px oklch(78% 0.12 170deg / 0.30),
+    0 16px 32px 2px oklch(78% 0.10 170deg / 0.20);
 
   // Chrome sits a step above the canvas, on-hue
   --color-header-bg: var(--color-base-100);
 
-  // Soft rounded corners — this theme's deliberate corner language
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  // Soft rounded corners — this theme's deliberate corner language.
+  // Ratios grow up the ladder (2.0/1.75/1.86/1.77) instead of holding flat:
+  // controls (xs/sm/md) stay compact and legible, surfaces (lg/xl) billow
+  // outward — see the 2026-08 header note for the full derivation.
+  // sm capped at 6px (was 8px): Checkbox applies --radius-sm directly to its
+  // 16px box regardless of size variant, and 8px == half that box, which CSS
+  // clips to a full circle — indistinguishable from Radio's --radius-full.
+  // 6px keeps a comfortable margin under that 8px collision threshold.
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 26px;
+  --radius-xl: 46px;
+
+  // Motion — "bold but soft" carried into the one curve nearly every
+  // transition reads plus the two springs with a genuine rest/lift role.
+  // See the 2026-08 header note for the full derivation and what was
+  // deliberately left untouched (--duration-fast/-normal/-instant,
+  // --spring-stiff, and every token with zero live consumers).
+  --ease-out: cubic-bezier(0.15, 1, 0.29, 1);
+  --spring-gentle: 260, 30, 1;
+  --spring-slow: 50, 18, 1.3;
 }

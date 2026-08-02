@@ -9,6 +9,8 @@
 // link text on the pampas canvas scores ~4.2:1 (AA needs 4.5) — same
 // trade-off Anthropic's own site makes; links on ivory cards pass.
 // Fonts intentionally NOT redeclared — inherits Geist + Geist Mono.
+// Motion carries the same calm/unhurried register — see the block near the
+// bottom of this file.
 
 [data-theme="oat"] {
   color-scheme: light;
@@ -115,4 +117,24 @@
 
   // Chrome sits on the pampas itself — flat, like claude.ai.
   --color-header-bg: var(--color-background);
+
+  // Motion — book-ink calm, not corporate snap. The workhorse durations get
+  // a touch more room to settle than the house defaults (still well under
+  // J-9's 400ms ceiling), and the one place spring/bounce is licensed at all
+  // — toast entry, success checkmark, per J-9.4 — settles instead of
+  // bouncing: overshoot damped down, not springy. Deliberately NOT touched:
+  // --duration-instant (hard constraint) and --duration-fast, which drives
+  // hover feedback — J-9.1 pins that at 150ms as a direct-response
+  // invariant, not a per-theme knob, and focus-ring timing stays fixed for
+  // the same reason. --transition-colors/-opacity/-transform/-shadow/-all
+  // aren't redeclared either: they reference these tokens by var() and
+  // re-resolve to the new values automatically wherever they're consumed
+  // inside this theme, the same cascade mechanism the derived color
+  // overlays rely on.
+  --duration-normal: 280ms;   // was 240ms — opacity/transform/shadow/accordions/tabs
+  --duration-enter:  320ms;   // was 280ms — arrivals get the most deliberate pace
+  --duration-exit:   200ms;   // was 220ms — leaves a beat quicker than it arrives
+  --duration-page:   380ms;   // was 350ms — page-level settle, just under the cap
+  --ease-bounce: cubic-bezier(0.22, 1.08, 0.36, 1);  // was (0.34, 1.56, 0.64, 1) — a soft single settle, not a springy overshoot
+  --spring-bouncy: 260, 24, 1;  // was 300, 10, 1 — same delight moments, damped from bouncy to settled
 }

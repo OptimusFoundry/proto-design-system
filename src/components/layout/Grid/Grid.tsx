@@ -1,12 +1,14 @@
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import {
 	Children,
 	type CSSProperties,
 	type ElementType,
 	type ReactNode,
+	useMemo,
 } from "react";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
+import { staggerContainerVariants, staggerItemVariants } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import {
 	type Breakpoint,
@@ -103,16 +105,6 @@ export interface GridProps {
 	className?: string;
 }
 
-// Animation variants for stagger effect
-const itemVariants: Variants = {
-	hidden: { opacity: 0, y: 10 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: DURATION.normal, ease: EASE_OUT },
-	},
-};
-
 /**
  * Grid component for CSS grid layouts.
  *
@@ -144,6 +136,16 @@ export function Grid({
 }: GridProps) {
 	const prefersReducedMotion = useReducedMotion();
 	const shouldAnimate = animate && !prefersReducedMotion;
+	const motionTokens = useMotionTokens();
+	const itemVariants = useMemo(
+		() =>
+			staggerItemVariants(
+				{ y: 10 },
+				motionTokens.duration.normal,
+				motionTokens.easeOut,
+			),
+		[motionTokens],
+	);
 
 	// Build CSS custom properties for responsive columns
 	const columnVars = buildColumnVars(columns);
@@ -178,21 +180,11 @@ export function Grid({
 	);
 
 	if (shouldAnimate) {
-		const customGridVariants: Variants = {
-			hidden: { opacity: 1 },
-			visible: {
-				opacity: 1,
-				transition: {
-					staggerChildren: staggerDelay,
-				},
-			},
-		};
-
 		return (
 			<motion.div
 				className={gridClassName}
 				style={inlineStyle}
-				variants={customGridVariants}
+				variants={staggerContainerVariants(staggerDelay)}
 				initial="hidden"
 				animate="visible"
 			>

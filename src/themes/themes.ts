@@ -55,7 +55,9 @@ export type ThemeName =
 	| "neon"
 	| "paper"
 	| "pixel"
-	| "terminal";
+	| "terminal"
+	| "whisper"
+	| "chalk";
 
 export interface Theme {
 	name: ThemeName;
@@ -362,6 +364,20 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "dark",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;600;700&display=swap",
+	},
+	whisper: {
+		name: "whisper",
+		label: "Whisper",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
+	},
+	chalk: {
+		name: "chalk",
+		label: "Chalk",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
 	},
 };
 

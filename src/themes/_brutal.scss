@@ -122,6 +122,27 @@
   --shadow-accent:  5px 5px 0 0 oklch(0% 0 0deg);
   --focus-ring-color: oklch(0% 0 0deg / 0.8);
   --color-header-bg: var(--color-base-100);
+  // Motion — the same "no softness anywhere" throughline as the flat black
+  // shadows and zero radius above. --ease-out swaps the house's decelerating
+  // "soft ease-out-quad" for true linear: Modal/Toast/Alert/Banner/Dropdown/
+  // Popover/DropdownMenu now stop dead instead of drifting to a stop.
+  // --duration-normal (the same set, plus PageTransition and the
+  // Grid/Stack/List stagger) drops 240ms -> 160ms — still above the
+  // untouched --duration-fast (150ms, still governs Dropdown/Popover/
+  // DropdownMenu open) so the duration ladder stays monotonic, just faster
+  // than the editorial default. --spring-gentle — the press-spring Button/
+  // LinkButton actually consume — moves from the house's underdamped
+  // 120/14/1 (damping ratio ~0.64, a soft bounce-back) to a
+  // near-critically-damped 500/40/1 (ratio ~0.89): a press now reads as a
+  // hard mechanical stamp/switch-click, not a squish. Left everything else
+  // alone on purpose: Tabs' indicator (--spring-stiff) and StatCard's
+  // counter (--spring-slow, already critically damped) were already
+  // mechanical enough at house defaults, and --duration-instant plus
+  // focus-ring timing stay untouched per the house hard rule (J-9.1) that
+  // focus feedback is never themed.
+  --ease-out:         linear;
+  --duration-normal:  160ms;
+  --spring-gentle:    500, 40, 1;
   // Every corner square, at every scale — cards/modals (radius-xl) are the
   // most visible surfaces, so a graduated scale here (the pre-fix 4/8/12px)
   // undercut the theme's own hard-edge premise worse than non-brutalist

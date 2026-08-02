@@ -35,6 +35,32 @@
 // Shadows stay hard-offset, zero-blur, ink-tinted (never the house indigo
 // glow default) — --shadow-primary/--shadow-accent now defined explicitly
 // so no component silently inherits the :root's soft indigo glow.
+// Motion: --ease-out/--ease-in-out remapped from the house soft
+// decelerate curve to literal `linear` — pixel art has no anti-aliasing
+// or smooth gradients, so nothing here should visually "decelerate" either;
+// nothing arrives at constant velocity like a smooth easing. Durations are
+// deliberately NOT touched: --duration-fast (150ms hovers) and
+// --duration-normal (240ms accordions/tabs) are J-9 hard-pinned house
+// values, and --duration-enter/exit/complex/page have no live component
+// consumer today (grepped — every current useMotionTokens() call site
+// reads .fast/.normal, never .enter/.exit), so overriding them would be
+// inert token noise, not an actual personality change. `linear` (not a
+// steps() function, which reads as more literally "pixel-stepped") is used
+// deliberately: parseMotionTokens.ts's parseEasing() only recognizes the
+// literal string "linear" or a cubic-bezier(...) — a steps() value fails
+// its regex, silently falls back to the house curve for every JS-driven
+// motion/react consumer (Modal/Drawer/Popover/Dropdown/Tabs/Toast/Banner/
+// DatePicker/Stack/Grid/PageTransition all read easeOut through that
+// bridge), and would split the theme into "stepped CSS, smooth JS" — the
+// opposite of a coherent personality. `linear` parses correctly on both
+// sides of the CSS/JS bridge. This also reaches the DataTable/Skeleton
+// shimmer loop (var(--ease-in-out), infinite), which now sweeps at
+// constant speed instead of an organic ease — closer to a cartridge
+// loading bar than a soft pulse. --ease-bounce/--ease-elastic (toast
+// entry, success checkmark per J-9.4) and the --spring-* tokens
+// (Tabs' indicator) are left at house defaults — those are the reserved
+// single-use delight/structural exceptions, not this theme's general
+// motion language.
 
 [data-theme="pixel"] {
   color-scheme: light;
@@ -139,9 +165,17 @@
   --shadow-accent:  3px 3px 0 0 var(--shadow-color);
 
   // Focus ring — thick, flush-offset, matches the theme's chunky-edge law.
+  // Timing intentionally NOT overridden here (focus rings are instant,
+  // never themed — J-9.1 hard rule).
   --focus-ring-color: oklch(48% 0.112 243deg / 0.5);
   --focus-ring-width: 4px;
   --focus-ring-offset: 0;
+
+  // Motion — constant-velocity, not decelerating (see file header for the
+  // full rationale, incl. why `linear` and not steps()). Durations are
+  // untouched: --duration-fast/--duration-normal stay house-pinned per J-9.
+  --ease-out: linear;
+  --ease-in-out: linear;
 
   // Header chrome
   --color-header-bg: var(--color-base-100);

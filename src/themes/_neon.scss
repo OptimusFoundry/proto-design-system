@@ -3,6 +3,47 @@
 // =============================================================================
 // Blinding neon accents on pure white. High voltage meets minimalism.
 // Like neon signs in daylight. Electric shock aesthetic.
+//
+// Motion — genuine deviation, not decoration: "electric shock" wants a
+// register that jolts into place and buzzes at rest, not one that glides
+// or breathes. Every override below was grepped to a real consumer first
+// (see MotionProvider.tsx/parseMotionTokens.ts for the bridge) so nothing
+// here is a silent no-op.
+// - --ease-out swaps the house's soft decelerate for a front-loaded expo
+//   snap (near-full velocity immediately, flattens hard at the end) —
+//   reaches every --transition-colors/-opacity/-transform/-shadow hover/
+//   press in kit.css plus the Dropdown/DropdownMenu/Popover/Modal/Alert/
+//   Banner/Drawer entrances (confirmed motionTokens.easeOut consumers).
+//   Durations are untouched (still 150ms hover / 240ms modal-enter per
+//   J-9.1) — only the curve shape changes, so this reads as sharper, not
+//   faster.
+// - Three structural springs get pushed toward critical damping (zeta
+//   ~0.9-1.06 — a crisp snap-to-state, not an overshoot; J-9.4 reserves
+//   the bounce/overshoot register for delight moments, which this theme
+//   doesn't newly touch): --spring-gentle (Button/LinkButton press, zeta
+//   .639->.896), --spring-stiff (Tabs indicator, zeta .75->1.057 — snaps
+//   to the new tab like a relay, zero wobble), --spring-slow (StatCard
+//   counter, zeta 1.0->1.054 — a fast digital-readout tick instead of a
+//   slow analog climb).
+// - The ambient/looping family goes faster and harder-edged to read as a
+//   buzzing neon tube instead of a slow breathing pulse: --duration-
+//   ambient (Skeleton/DataTable shimmer, 1500ms->950ms), --duration-
+//   slower (Spinner/Button spin + Skeleton/Spinner pulse, 500ms->380ms),
+//   --duration-slowest (Progress indeterminate, 700ms->520ms — still
+//   over the 400ms transition ceiling, same as house's own 700ms, because
+//   that ceiling governs state transitions, not infinite ambient loops),
+//   and --ease-in-out (all four, cubic-bezier(0.4,0,0.2,1) ->
+//   cubic-bezier(0.65,0,0.35,1) — a harder mid-swing snap instead of a
+//   smooth breathe).
+// - --duration-fast (hover, 150ms) and --duration-normal (accordion/tabs
+//   + Modal/Alert/Banner entrance, 240ms) stay at house values — J-9.1
+//   names both as fixed. --duration-instant and focus-ring timing are
+//   never touched, per the hard rule. --duration-enter/-exit/-page/
+//   -complex are declared in _motion.scss but grepped to zero component
+//   consumers — retuning them would be invisible, not a real change.
+//   --ease-bounce/-elastic and --spring-bouncy/-wobbly stay at house
+//   default too: also zero current consumers, and J-9.4 scopes that
+//   overshoot register to delight moments this theme doesn't add.
 
 [data-theme="neon"] {
   color-scheme: light;
@@ -125,4 +166,15 @@
   --radius-md: 6px;
   --radius-lg: 10px;
   --radius-xl: 14px;
+
+  // Motion — see header rationale. --duration-fast/-normal, --duration-
+  // instant, and focus-ring timing are never touched.
+  --ease-out:         cubic-bezier(0.12, 1, 0.28, 1);
+  --ease-in-out:      cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-ambient: 950ms;
+  --duration-slower:  380ms;
+  --duration-slowest: 520ms;
+  --spring-gentle:    360, 34, 1;
+  --spring-stiff:     560, 50, 1;
+  --spring-slow:      260, 34, 1;
 }

@@ -36,6 +36,17 @@
   z-index: var(--z-popover);
 }
 
+// Popover's own card chrome, stripped when `unstyled` is set (see
+// Popover.tsx) — for a child that already renders its own full surface
+// (DropdownMenu), keeping both stacks two borders/shadows/radii on top of
+// each other instead of one.
+.unstyled {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 // =============================================================================
 // PLACEMENT
 // =============================================================================
@@ -159,4 +170,8 @@
 
 .body {
   padding: var(--space-4);
+}
+
+.bodyUnstyled {
+  padding: 0;
 }

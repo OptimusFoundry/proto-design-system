@@ -1,9 +1,9 @@
 import { AlertCircle, CheckCircle, Info, X, XCircle } from "lucide-react";
 import { motion } from "motion/react";
-import { memo, type ReactNode } from "react";
+import { memo, type ReactNode, useMemo } from "react";
 import { createPortal } from "react-dom";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Toast.module.scss";
 
@@ -20,10 +20,6 @@ const TOAST_VARIANTS = {
 } as const;
 
 const TOAST_TRANSITION_REDUCED = { duration: 0 } as const;
-const TOAST_TRANSITION_NORMAL = {
-	duration: DURATION.normal,
-	ease: EASE_OUT,
-} as const;
 
 export type ToastVariant = "default" | "success" | "warning" | "error";
 export type ToastPosition =
@@ -78,10 +74,18 @@ export const Toast = memo(function Toast({
 	className,
 }: ToastProps) {
 	const prefersReducedMotion = useReducedMotion();
+	const motionTokens = useMotionTokens();
 
-	const transition = prefersReducedMotion
-		? TOAST_TRANSITION_REDUCED
-		: TOAST_TRANSITION_NORMAL;
+	const transition = useMemo(
+		() =>
+			prefersReducedMotion
+				? TOAST_TRANSITION_REDUCED
+				: {
+						duration: motionTokens.duration.normal,
+						ease: motionTokens.easeOut,
+					},
+		[prefersReducedMotion, motionTokens],
+	);
 
 	return (
 		<motion.output

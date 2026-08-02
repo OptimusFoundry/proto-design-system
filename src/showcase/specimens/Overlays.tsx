@@ -193,6 +193,7 @@ function DropdownMenuDemo({
 			open={open}
 			onOpenChange={setOpen}
 			align="start"
+			unstyled
 		>
 			<DropdownMenu
 				items={items}

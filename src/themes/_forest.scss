@@ -88,6 +88,39 @@
 // - Previously-claimed "6 missing tokens" / accent-bg-not-in-:root-fallback
 //   issues no longer apply: every leaf token in the contract is defined
 //   directly in this file (verified: 0 SKIPs on the full 30-pair check).
+//
+// Motion: slower, heavier settle — two coherent overrides, everything else
+// stays house default:
+// - --duration-normal: 240ms -> 280ms, borrowing the house's own
+//   (currently-unused-by-components) --duration-enter value rather than
+//   inventing a new number. Drives Modal/Alert/Toast/Banner/Drawer/
+//   PageTransition/List/Grid+Stack mount stagger — a night old-growth
+//   floor under dense canopy doesn't rush; a ~17% slower "normal" reads as
+//   unhurried without drifting toward the 400ms ceiling. --duration-fast
+//   (150ms, hover) is deliberately untouched — it drives
+//   --transition-colors, the literal J-9.1 hover timing fixed house-wide;
+//   changing it would break that rule via the back door. --duration-instant
+//   and focus-ring timing are never touched.
+// - --spring-gentle: 120,14,1 -> 90,15,1 (damping ratio 0.64 -> 0.79,
+//   still underdamped but closer to critical). This is Button/LinkButton's
+//   default press-spring: lower stiffness slows the rise (a heavier press,
+//   like weight settling into wet duff) and the firmer ratio trims the
+//   bounce-back to a bare whisper rather than an obvious spring-back —
+//   weighted, not lively. Deliberately distinct from sibling forest-light's
+//   near-critical 120,20,1 (ζ0.91, a crisp "clean daylight" settle with no
+//   give) and from blueprint's stiff 260,30,1 snap — this is its own,
+//   slower-and-heavier point on the spectrum, not a copy of either.
+// --ease-out is left at house default: duration + spring already carry the
+// "deliberate, weighty" identity on their own, and forcing a re-curved
+// deceleration on top (forest-light's soft-diffuse curve, or anything
+// close to it) would blur this theme's own reference into its sibling's.
+// --spring-stiff (Tabs indicator) and --spring-slow (StatCard counter) stay
+// house default — retuning either purely because it's reachable would drift
+// the token's role away from what its name promises elsewhere in the
+// system (same reasoning blueprint's and forest-light's own motion notes
+// give). --ease-bounce/--ease-elastic/--spring-bouncy/--spring-wobbly are
+// untouched per J-9.4: bounce is a delight reservation, not a routine-motion
+// lever, and this theme has no delight moment that calls for it.
 
 @import "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap";
 
@@ -222,4 +255,10 @@
 
   // Header background (more visible in forest theme)
   --color-header-bg: var(--color-base-200);
+
+  // Motion — slower, heavier settle (see header rationale). --duration-fast
+  // (hover, 150ms) and --duration-instant (focus ring, 0ms) are never
+  // touched.
+  --duration-normal: 280ms;
+  --spring-gentle: 90, 15, 1;
 }

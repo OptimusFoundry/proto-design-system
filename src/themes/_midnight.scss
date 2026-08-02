@@ -49,18 +49,75 @@
   --color-border: oklch(46% 0.012 240deg);        // Lc -17.3 / 2.95:1 (was Lc 0.0)
   --color-border-hover: oklch(58% 0.016 240deg);  // shifted with border to stay lighter/more-visible than the resting hairline
 
-  // Shadow colors (minimal for OLED — shadows barely register on a true-black
-  // surface, so these lean on opacity/spread rather than lightness; ink-
-  // tinted at the base-ramp hue (240deg), never flat black).
-  --shadow-color: oklch(0% 0 0deg / 0.4);
-  --shadow-color-strong: oklch(0% 0 0deg / 0.6);
-  --shadow-xs: 0 1px 2px 0 oklch(0% 0 240deg / 0.3);
-  --shadow-sm: 0 2px 4px -1px oklch(0% 0 240deg / 0.35), 0 1px 2px -1px oklch(0% 0 240deg / 0.25);
-  --shadow-md: 0 8px 16px -4px oklch(0% 0 240deg / 0.4), 0 2px 4px -2px oklch(0% 0 240deg / 0.25);
-  --shadow-lg: 0 20px 32px -8px oklch(0% 0 240deg / 0.45), 0 4px 8px -4px oklch(0% 0 240deg / 0.3);
-  --shadow-xl: 0 32px 48px -12px oklch(0% 0 240deg / 0.5), 0 8px 16px -8px oklch(0% 0 240deg / 0.35);
-  --shadow-primary: 0 8px 24px 0 oklch(76% 0.115 265deg / 0.25);
-  --shadow-accent: 0 8px 24px 0 oklch(75% 0.130 180deg / 0.2);
+  // Border-width — J-10.4: stays house default 1px (--border-width-sm), NOT
+  // remapped. Midnight's identity (sealed OLED instrument bezel) is carried
+  // by surface treatment — true-black fields, tight "display bezel" radii,
+  // and the glow-based elevation system below — not by line weight. A
+  // thicker hairline here would read as a brutalist/blueprint outline, which
+  // fights the "seamless glowing hardware" brief and would visually compete
+  // with glow for the depth cue that J-10.5 assigns it (border at rest,
+  // depth-signal on lift — see below). The border is already forced brighter
+  // than a normal dark theme's just to clear Lc15 against literal 0% black
+  // (see --color-border above); making it thicker on top of that would read
+  // as emphasis it doesn't need. Line-weight-as-identity is a real, earned
+  // move for other themes (brutal, blueprint) — it's not this one's brief.
+
+  // =========================================================================
+  // ELEVATION — glow, not cast shadow
+  // =========================================================================
+  // On a literal oklch(0% 0 0) canvas a conventional dark drop-shadow has
+  // nowhere to go darker than the surface it's cast on — it's optically
+  // inert (the previous version of this file conceded as much: "shadows
+  // barely register on a true-black surface"). Rather than keep leaning on a
+  // house formula that structurally can't work here, elevation is
+  // reconceived as light emission: raised surfaces on a sealed
+  // instrument-panel read as catching more of an ambient cool backlight
+  // (H240, matching the base ramp/border hue) the higher they sit, the way a
+  // cockpit bezel's raised edge picks up a rim of light rather than casting
+  // a shadow into an already-black recess. This is still "one implied light
+  // source" per the house shadow-craft rule — it's just a light source
+  // instead of a light-blocker, and it stays as scarce as the house rule
+  // intends: the ambient H240 glow is the only tone used structurally, and
+  // the more saturated primary/accent-hued blooms below are reserved for
+  // CTA/editorial moments only (same structural-vs-editorial split `glow`
+  // uses for its own shadow ramp — see themes/_glow.scss).
+  //
+  // Elevation logic — two things move together as level increases:
+  //   1. Radius/spread grow (tighter rim -> wider halo), so higher surfaces
+  //      don't just glow *harder*, they glow *bigger*, the way light falloff
+  //      actually widens with distance from a surface.
+  //   2. Layer count grows 1 -> 2 -> 3: xs/sm are a single soft rim (barely
+  //      lifted — thumbs, resting cards, tab pills); md/lg add a second,
+  //      wider ambient bloom layered under the rim (real lift — card hover,
+  //      tooltip, dropdowns/toasts); xl (modal/drawer/sidebar, top of the
+  //      stack) adds a third, widest, softest halo on top of both. A single
+  //      flat glow reads as a sticker; a stacked near-rim + far-bloom reads
+  //      as a surface actually catching light at a distance.
+  // A conventional downward-offset dark contact shadow is deliberately
+  // dropped rather than kept as a token gesture — against literal 0% black
+  // it would render as fully transparent (no headroom below L0%) and a
+  // shadow nobody can see is worse than one honestly not attempted. The
+  // faint vertical offset that does appear at lg/xl (4px/8px, always
+  // downward) isn't a cast shadow — it's the same single implied light
+  // source read as slightly overhead, so higher surfaces sit fractionally
+  // further "toward" it. J-10.5's "shadow on lift" contract is satisfied by
+  // glow standing in for shadow here: cards still hold a plain 1px border at
+  // rest with no glow (`.outlined`), and only gain the glow ramp on
+  // `:hover`/`.elevated` — the rest/lift split is unchanged, only the lift
+  // signal's physics changed.
+  --shadow-color:        oklch(80% 0.04 240deg / 0.22);
+  --shadow-color-strong: oklch(88% 0.055 240deg / 0.42);
+  --shadow-xs: 0 0 3px 0 var(--shadow-color);
+  --shadow-sm: 0 0 8px 1px var(--shadow-color), 0 0 2px 0 oklch(85% 0.05 240deg / 0.3);
+  --shadow-md: 0 0 4px 0 oklch(85% 0.05 240deg / 0.4), 0 0 20px 2px oklch(75% 0.045 240deg / 0.22);
+  --shadow-lg: 0 4px 6px 0 oklch(88% 0.055 240deg / 0.45), 0 4px 32px 4px oklch(75% 0.05 240deg / 0.28);
+  --shadow-xl: 0 8px 8px 0 var(--shadow-color-strong), 0 8px 48px 6px oklch(76% 0.055 240deg / 0.32), 0 16px 96px 12px oklch(70% 0.04 240deg / 0.16);
+  // Editorial/CTA-only blooms — hue-specific (primary violet-blue / accent
+  // cyan) instead of the structural H240 ambient tone, reserved for
+  // Hero/CTA glow moments (mirrors --shadow-primary/-accent's existing role
+  // elsewhere in the kit; not used for everyday surface elevation).
+  --shadow-primary: 0 0 16px 0 oklch(76% 0.115 265deg / 0.45), 0 0 40px 4px oklch(76% 0.115 265deg / 0.25);
+  --shadow-accent:  0 0 16px 0 oklch(75% 0.130 180deg / 0.4), 0 0 40px 4px oklch(75% 0.130 180deg / 0.22);
 
   // Primary (vibrant against black) — chroma brought into sRGB gamut at this
   // hue/lightness (0.24 was clipping; max in-gamut at L70% H265 is ~0.156)
@@ -120,4 +177,87 @@
 
   // Header background (more visible in OLED theme)
   --color-header-bg: var(--color-base-300);
+
+  // Radius — tightened off the stock ladder into an instrument-panel corner
+  // language: B612 Mono (an aviation/cockpit-display typeface) + Geologica's
+  // geometric sans + true-black OLED surfaces read as sealed hardware, not a
+  // soft SaaS card stack, so corners stay closer to square than the house
+  // default (2/4/8/12/20). Deliberately not as severe as blueprint's CAD
+  // near-right-angles (2/3/4/6) — this is a display bezel, not a drafting
+  // sheet. Monotonic per J-10.1 (button/input stay --radius-md; card sits at
+  // --radius-lg or --radius-xl) and J-10.2-safe (card radius is always larger
+  // than the button/input radius nested inside it: 10/14 > 6).
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  // =========================================================================
+  // MOTION — snap-to-detent, not glide-to-rest
+  // =========================================================================
+  // The same "sealed hardware, light does the work" logic recurs on the
+  // motion axis: an instrument panel's controls are mechanical, not
+  // upholstered — a rocker switch or altimeter needle doesn't ease into a
+  // resting position with a soft cushioned tail, it snaps to the next
+  // detent and stops. Two systemic tokens carry this into nearly every
+  // interactive surface via tokens/_motion.scss's --transition-* presets
+  // and the motion/react bridge (MotionProvider -> useMotionTokens):
+  //   - --duration-fast   150ms -> 100ms (Dropdown/DropdownMenu/Popover/
+  //     Drawer's quick-reveal edge), and
+  //   - --duration-normal 240ms -> 180ms (Modal/Toast/Alert/Banner
+  //     enter-exit, Grid/Stack/List's stagger step, PageTransition default)
+  // both tighten toward "instant readout," not toward zero: --duration-
+  // instant (0ms) and focus-ring timing stay house-default per the hard
+  // rule (J-9.1 — focus is never themed), and neither number goes anywhere
+  // near the 400ms ceiling.
+  //
+  // --ease-out reshapes with them: the house curve (0.22, 1, 0.36, 1) is a
+  // *soft* ease-out-quad with a long, cushioned tail; this theme swaps to
+  // (0.16, 1, 0.3, 1) — a steeper initial burst that decelerates hard into
+  // its stop, the same "snap on, then the halo settles" physics as the
+  // glow-based elevation above, applied to time instead of light.
+  //
+  // --ease-in-out (the only ambient-loop easing actually wired to CSS —
+  // Skeleton's shimmer/pulse, Spinner's pulse, Progress's indeterminate
+  // sweep) goes further, to `linear`: a soft ease-in-out "breathing" loop
+  // reads as biological, which fights the brief. A constant-velocity sweep
+  // reads as a radar/HUD scan-line instead — still ambient, now mechanical.
+  //
+  // Springs (JS-only, motion/react) get the same damping-up treatment,
+  // targeted at exactly the three presets this kit's components actually
+  // consume (checked against call sites, not assumed):
+  //   - --spring-stiff  (Tabs' selected-tab indicator) 400/30/1 -> 500/40/1
+  //     — damping ratio 0.75 -> 0.89, so the indicator locks into its new
+  //     tab position like a mechanical selector hitting a detent, with
+  //     less residual settle-wobble than the already-understated house
+  //     value.
+  //   - --spring-gentle (Button's press-spring, motion's default preset)
+  //     120/14/1 -> 260/30/1 — damping ratio 0.64 -> 0.93 (still just under
+  //     critical, not clamped dead) so a press reads as a toggle-switch
+  //     throw with a positive, decisive stop, not the house's soft
+  //     upholstered rebound.
+  //   - --spring-slow   (StatCard's counter tween) 100/20/1 -> 220/30/1 —
+  //     both are critically-damped-or-just-past (no overshoot either way),
+  //     but the higher stiffness makes the count-up converge like a
+  //     mechanical tally locking to its final digit, not a gentle
+  //     contemplative climb.
+  //
+  // Deliberately NOT touched: --spring-bouncy/--ease-bounce/--ease-elastic
+  // (J-9.4 reserves genuine bounce for toast-entry/success-delight moments
+  // only, and — checked against every call site in proto-design-system/ —
+  // nothing in this kit currently wires a component to them by default;
+  // overriding a token with no observable effect would be a decorative
+  // gesture, not a considered one), and every duration this theme's live
+  // components don't actually read (--duration-enter/-exit/-complex/-page/
+  // -slow/-slower/-slowest/-ambient — confirmed unconsumed via
+  // useMotionTokens by grepping every call site), which stay at house
+  // default rather than drift for their own sake.
+  --duration-fast: 100ms;
+  --duration-normal: 180ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: linear;
+  --spring-stiff: 500, 40, 1;
+  --spring-gentle: 260, 30, 1;
+  --spring-slow: 220, 30, 1;
 }

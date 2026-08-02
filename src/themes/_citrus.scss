@@ -100,6 +100,32 @@
 // role (structural CTA fill vs. alarm state) and by primary/error each
 // moving through visibly different hover/active families; every other
 // pair clears 20deg+.
+//
+// Motion — genuine deviation, not decoration: crate-label pace is a
+// fruit-stall snap (goods appear and clear quickly), and Figtree's own
+// "soft optical bounce" (see Fonts note above) already set the theme's
+// tactile register, so the overrides carry that into the two places the
+// motion bridge actually reaches instead of leaving it font-only.
+// - --duration-normal/-enter/-exit each cut ~19-21% (240->195, 280->230,
+//   220->175) — modals/dropdowns/Alert/Banner/Stack+Grid+List stagger/
+//   PageTransition all read brisker. The enter>exit ratio (0.79 house ->
+//   0.76 here) is preserved so entrances still feel a hair more
+//   deliberate than exits, same shape as house, just faster throughout —
+//   one coherent "quicker" move, not competing durations pulling apart.
+// - --spring-gentle (Button/LinkButton's default press-spring, confirmed
+//   the only consumer: both call useMotionConfig() with no preset arg)
+//   loosened 120,14,1 -> 150,12,1 — damping ratio 0.64 -> 0.49, giving
+//   press a little more give/settle-overshoot without crossing into
+//   --spring-wobbly's shape (zeta 0.45) or delight-moment bounce
+//   (--spring-bouncy, zeta 0.29) — a subtle everyday snap, not a toast
+//   pop. Reads as the "soft optical bounce" font trait made tactile.
+// --duration-fast (hover, 150ms per J-9.1) and --duration-instant/focus-
+// ring timing are untouched, per the hard rule. --ease-bounce/-elastic and
+// --spring-bouncy/-wobbly/-stiff/-slow stay at house default — J-9.4
+// reserves bounce/spring character for delight moments (toast, success),
+// not routine nav/hover/tabs/counters, and Tabs' indicator (spring.stiff)
+// and StatCard's counter (spring.slow) have no citrus-specific reason to
+// diverge from house.
 
 [data-theme="citrus"] {
   color-scheme: light;
@@ -217,4 +243,11 @@
 
   // Chrome — was missing; added per contract (light/ember both set this).
   --color-header-bg: var(--color-base-100);
+
+  // Motion — see header rationale. --duration-fast (hover) and
+  // --duration-instant (focus ring) are never touched.
+  --duration-normal: 195ms;
+  --duration-enter:  230ms;
+  --duration-exit:   175ms;
+  --spring-gentle:   150, 12, 1;
 }

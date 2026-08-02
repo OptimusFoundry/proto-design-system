@@ -58,6 +58,8 @@
 @use "paper";
 @use "pixel";
 @use "terminal";
+@use "whisper";
+@use "chalk";
 
 // Import base styles
 @use "../base/reset";

@@ -60,6 +60,39 @@
 //
 // Fonts: serif/display alias sans per the house sans-only migration
 // (CLAUDE.md) — no Fraunces reference here.
+//
+// Motion: smoother/fluid personality, two coherent overrides, everything
+// else (incl. --duration-normal) stays house default:
+// - --ease-out: swapped to the house's --ease-smooth curve
+//   (cubic-bezier(0.25, 0.1, 0.25, 1)) — a more even, gradually-settling
+//   deceleration than the default ease-out-quad's quicker initial snap.
+//   This is the curve nearly every entrance/exit in the system reads
+//   (Modal, Dropdown, Grid/Stack/List mount stagger, Toast, Banner, Alert,
+//   plus --transition-opacity/-transform/-shadow/-all), so it reshapes the
+//   whole theme toward "settles like diffused canopy light," matching the
+//   overcast/lichen-paper reference and Karla's rounded, non-mechanical
+//   letterforms — not a forced personality, the file's own brief (soft
+//   light, organic type, "clean minimal," never corporate-sharp) already
+//   points here.
+// - --spring-gentle: 120,14,1 -> 120,20,1 (damping ratio 0.64 -> 0.91,
+//   near-critical). This is Button/LinkButton's default press-spring;
+//   house's underdamped value gives a small bounce-back, the near-critical
+//   version glides to rest with no oscillation — same "unhurried, settled"
+//   direction as the ease-out swap, not a conflicting one.
+// --duration-normal, --duration-fast (the literal J-9.1 150ms hover / 240ms
+// accordion-tab timings), --duration-instant, and focus-ring timing are
+// left untouched — nothing about this theme's brief calls for a pace
+// change, only a settling-quality one. --spring-stiff (Tabs indicator) and
+// --spring-slow (StatCard counter) stay house default for the same reason
+// blueprint's motion note gives: retuning a token purely because it's
+// convenient would drift its role away from what its name promises
+// elsewhere. --ease-bounce/--ease-elastic/--spring-bouncy/--spring-wobbly
+// are untouched per J-9.4 (bounce is a delight reservation, not a routine-
+// motion lever). Sibling dark theme `forest` currently carries no motion
+// overrides of its own (house default throughout), so there is no
+// cross-theme coherence question to resolve here — this pass doesn't
+// depend on, and doesn't need to match, forest's (still house-default)
+// motion.
 
 [data-theme="forest-light"] {
   color-scheme: light;
@@ -192,4 +225,10 @@
   --color-text-disabled: oklch(72% 0.020 145deg);
 
   --color-header-bg: var(--color-base-100);
+
+  // Motion — smoother/fluid settle (see header rationale). --duration-fast
+  // (hover, 150ms) and --duration-instant (focus ring, 0ms) are never
+  // touched.
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --spring-gentle: 120, 20, 1;
 }

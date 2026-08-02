@@ -74,6 +74,35 @@
 //   border scores nearly identically (Lc 19.9/1.42:1) — pushing further
 //   would mean abandoning hairline weight for a heavier line the rest of
 //   the house system doesn't use; left matching the house baseline.
+//
+// Motion: punchy, poppy personality — the soda-can-label energy expressed as
+// timing, not just color. Two coherent overrides, everything else stays
+// house default:
+// - --duration-normal: 240ms -> 200ms, a ~17% cut. Speeds up the things this
+//   token actually drives (Modal/Toast fade+rise, Grid/Stack/List mount
+//   stagger, Accordion collapse) toward a snappier, more energetic register.
+//   --duration-fast (150ms — the literal J-9.1 hover rule, via
+//   --transition-colors) and --duration-instant (0ms focus ring) are
+//   deliberately untouched; this theme doesn't get to move either through
+//   the back door.
+// - --spring-gentle: 120,14,1 -> 320,13,1 (damping ratio 0.64 -> 0.36, more
+//   underdamped). This is Button/LinkButton's default press-spring (J-9.2's
+//   "buttons scale 0.98 on press"). House's value settles with almost no
+//   overshoot; the retuned version pops back with a visible springy
+//   overshoot on release — like a can lid snapping open — while settling in
+//   about the same real time as house (the higher stiffness offsets the
+//   lower damping ratio), so it reads as livelier, not slower.
+// --spring-stiff (Tabs indicator) and --spring-slow (StatCard counter) stay
+// house default: the Tabs indicator is nav, which J-9.4 explicitly excludes
+// from bounce/spring personality, and StatCard's counter role is "settled
+// tally" — retuning either would drift the token away from the role its
+// name promises elsewhere in the system (same reasoning blueprint/candy
+// already applied to these two). --ease-bounce/-elastic and
+// --spring-bouncy/-wobbly are also left at house default — verified no live
+// component reads them beyond Foundations' token-listing table, so tuning
+// them now would be speculative, not theme-motivated. --ease-out stays
+// default too: the duration + press-spring changes above already carry this
+// theme's punch without reshaping every transition curve site-wide.
 [data-theme="ember"] {
   color-scheme: light;
 
@@ -180,4 +209,9 @@
   // state so it stays visible against the now-lighter primary too.
   --focus-ring-color: oklch(56% 0.140 52deg / 0.55);
   --color-header-bg: var(--color-base-100);
+
+  // Motion — punchy/poppy (see header rationale). --duration-fast (hover,
+  // 150ms) and --duration-instant (focus ring, 0ms) are never touched.
+  --duration-normal: 200ms;
+  --spring-gentle: 320, 13, 1;
 }

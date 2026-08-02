@@ -114,6 +114,55 @@
 // dashboard face. Barlow Condensed's narrow forms read as tuning-dial
 // numerals (88.1 / 101.5 FM); Oswald is the console's stenciled panel
 // labeling; B612 Mono (see above) is the readout face.
+//
+// Motion (2026-08 motion sweep) — analog-instrument weight: this theme's
+// physical vocabulary is a VU needle with real inertia, a tuning dial that
+// glides to a station, and a console toggle with resistance — never a flat
+// digital snap. Six coherent overrides (grep-confirmed against live
+// consumers), everything else stays house default:
+// - --spring-slow (StatCard's counter, its only consumer): 100,20,1 (zeta
+//   1.0, critically damped, zero overshoot) -> 130,14,1.2 (zeta 0.56). This
+//   is the one token that gets to be literal: a VU meter's whole design
+//   language is a needle that swings past its reading and settles back —
+//   the house default's clean, overshoot-free tally is the one thing a real
+//   VU needle never does.
+// - --spring-gentle (Button/LinkButton's whileHover/whileTap press spring,
+//   the "gentle" preset useMotionConfig defaults to): 120,14,1 (zeta 0.64)
+//   -> 220,32,1.3 (zeta 0.95, near-critical) — house's soft squish reads as
+//   a plastic UI spring; a console toggle has resistance and stops
+//   decisively, so this settles firmly with negligible rebound, plus mass
+//   1.3 for a touch more perceived heft on press.
+// - --spring-stiff (Tabs' active-indicator slide, its only consumer):
+//   400,30,1 (zeta 0.75) -> 260,28,1.3 (zeta 0.76 — same damping character,
+//   lower stiffness + added mass) — same lightly-underdamped feel, just
+//   slower to settle, so the indicator reads as a needle gliding to a new
+//   station instead of a digital tab snapping over.
+// - --ease-out (the broadest shared curve — every --duration-fast hover
+//   transition plus every --duration-normal-driven Accordion/Sidebar/
+//   DataGrid/Table/Toast/Alert/Banner entrance): house's snappy
+//   ease-out-quad (0.22, 1, 0.36, 1) -> ease-out-cubic (0.33, 1, 0.68, 1),
+//   a longer decelerating tail that reads as momentum bleeding off rather
+//   than a crisp digital stop. --duration-fast itself (150ms, J-9.1's hover
+//   rule) and --duration-instant (0ms, focus ring) are untouched — only the
+//   curve changes, never the hover clock.
+// - --duration-normal: 240ms -> 280ms (+17%, well clear of the 400ms
+//   ceiling) — panel-weight moments (Accordion expand, Sidebar collapse,
+//   Toast/Alert/Banner enter) get a touch more dwell to read as a physical
+//   console panel with resistance, not an instant digital toggle.
+// - --duration-ambient (Skeleton/DataTable's loading shimmer, its only
+//   consumer): 1500ms -> 1800ms — the shimmer sheen is the one token that
+//   maps directly onto this theme's central visual motif (a backlit dial
+//   glowing through frosted glass); slowed to read as a warm filament
+//   breathing rather than a fast mechanical scan.
+// - Declined: --ease-bounce/--ease-elastic/--spring-bouncy/--spring-wobbly
+//   have zero live consumers anywhere in the component tree (grep-confirmed
+//   — only Foundations.tsx's token-list showcase references their names);
+//   retuning tokens nothing renders would be speculative, not
+//   theme-motivated. Same for --duration-enter/-exit/-complex/-page (no
+//   live consumer). --ease-in-out (Progress indeterminate, Spinner/Skeleton
+//   pulse) and --duration-slower/-slowest stay house default — no
+//   radio-specific story beyond "generic ambient," unlike --duration-ambient
+//   above which ties directly to the dial-glow motif.
 
 @import "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=B612+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap";
 
@@ -248,4 +297,14 @@
 
   --focus-ring-color: oklch(78% 0.13 55deg / 0.5);
   --color-header-bg: var(--color-base-100);
+
+  // Motion — analog-instrument weight (see header rationale). --duration-
+  // fast (hover, 150ms, J-9.1) and --duration-instant (focus ring, 0ms) are
+  // never touched.
+  --ease-out:         cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-normal:  280ms;
+  --duration-ambient: 1800ms;
+  --spring-gentle:    220, 32, 1.3;
+  --spring-stiff:     260, 28, 1.3;
+  --spring-slow:      130, 14, 1.2;
 }

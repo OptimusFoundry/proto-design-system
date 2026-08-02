@@ -1,12 +1,14 @@
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import {
 	Children,
 	type CSSProperties,
 	type ElementType,
 	type ReactNode,
+	useMemo,
 } from "react";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
+import { staggerContainerVariants, staggerItemVariants } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import { type Responsive, resolveResponsive } from "../../../utils/responsive";
 import styles from "./Stack.module.scss";
@@ -97,16 +99,6 @@ export interface StackProps {
 	style?: CSSProperties;
 }
 
-// Animation variants for stagger effect
-const itemVariants: Variants = {
-	hidden: { opacity: 0, y: 12 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: DURATION.normal, ease: EASE_OUT },
-	},
-};
-
 /** Build CSS custom properties for a Responsive<string> value at each breakpoint */
 function buildStringVars(
 	prefix: string,
@@ -165,6 +157,16 @@ export function Stack({
 }: StackProps) {
 	const prefersReducedMotion = useReducedMotion();
 	const shouldAnimate = animate && !prefersReducedMotion;
+	const motionTokens = useMotionTokens();
+	const itemVariants = useMemo(
+		() =>
+			staggerItemVariants(
+				{ y: 12 },
+				motionTokens.duration.normal,
+				motionTokens.easeOut,
+			),
+		[motionTokens],
+	);
 
 	// Build responsive CSS custom properties
 	// Direction
@@ -221,21 +223,11 @@ export function Stack({
 	);
 
 	if (shouldAnimate) {
-		const containerVariants: Variants = {
-			hidden: { opacity: 1 },
-			visible: {
-				opacity: 1,
-				transition: {
-					staggerChildren: staggerDelay,
-				},
-			},
-		};
-
 		return (
 			<motion.div
 				className={stackClassName}
 				style={computedStyle}
-				variants={containerVariants}
+				variants={staggerContainerVariants(staggerDelay)}
 				initial="hidden"
 				animate="visible"
 			>

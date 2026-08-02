@@ -102,6 +102,63 @@
 // everywhere choice. Note it's shared with `_brutal.scss`'s mono half, so it
 // is not bespoke to this theme alone — flagged, not changed, since a font
 // swap was out of scope for this repair pass.
+//
+// Motion — genuine deviation, not decoration: terminal's premise is P1-
+// phosphor persistence (the glow overshoots a hair when struck, then settles
+// — warm, mechanical, vintage), the opposite of sibling theme `matrix`'s
+// cold zero-overshoot "digital rain" precision (matrix deliberately
+// overdamps its springs to kill overshoot; this theme deliberately keeps
+// it). Every touchpoint below is a grep-confirmed live consumer, same
+// discipline matrix/cosmos/mercury's headers already use:
+//  - --spring-gentle (Button/LinkButton press — useMotionConfig()'s no-
+//    preset default, its only consumer): 120,14,1 (zeta 0.64, wn 10.95
+//    rad/s) -> 260,20,1 (zeta 20/(2*sqrt(260))=0.62, wn 16.12 rad/s) — same
+//    soft-bloom damping ratio as house, ~47% faster natural frequency: a
+//    decisive mechanical key-click that still shows a hair of phosphor
+//    overshoot on release, not matrix's near-critical (zeta 0.97) dead-stop
+//    click.
+//  - --spring-stiff (Tabs' active-indicator, its only consumer): 400,30,1
+//    (zeta 0.75 — house's own faint built-in overshoot) -> 380,24,1 (zeta
+//    24/(2*sqrt(380))=0.62, wn ~19.5 rad/s, essentially unchanged pace) —
+//    amplifies house's faint overshoot into a visible small bloom-and-settle
+//    as the cursor lands in its new cell. The opposite move from matrix's
+//    1.34 (matrix overdamps this same spring to erase the overshoot).
+//  - --spring-slow (StatCard counter, its only consumer): 100,20,1 (zeta
+//    1.0, critically damped, wn 10 rad/s) -> 55,15,1 (zeta
+//    15/(2*sqrt(55))=1.01, still critical, wn 7.42 rad/s, ~26% slower) — no
+//    jitter on the settled numeral (a bouncing final digit would misread),
+//    just an unhurried odometer-tally cadence instead of matrix's sped-up
+//    fast-decrypt tally.
+//  - --duration-slower (Spinner/Button-loading spin + both components'
+//    reduced-motion pulse fallback) and --duration-ambient (Skeleton/
+//    DataTable shimmer) — both grep-confirmed consumers, both ambient/
+//    looping indicators rather than state-transitions, so outside J-9.1's
+//    400ms transition cap (house's own defaults already sit at 500ms/
+//    1500ms for exactly this reason): 500ms->600ms and 1500ms->1800ms, the
+//    same +20% factor applied to both rather than two arbitrary numbers — a
+//    working terminal doesn't rush its own "busy" cue; the bump reads as
+//    heavier/mechanical, not sleek-modern.
+//  - --duration-fast (150ms hover, J-9.1) and --duration-instant (focus
+//    ring) are the two hard-fixed values and stay untouched.
+//  - --duration-normal declined: Accordion's expand/collapse transition
+//    (Accordion.module.scss) reads this token directly, and J-9.1 fixes
+//    accordions at 240ms — retuning the shared token here would risk the
+//    same hard-rule collision matrix's own -27% cut doesn't flag for itself.
+//  - --duration-enter/-exit/-complex/-page and --spring-bouncy/-wobbly have
+//    no live consumer anywhere in this codebase (grep-verified — zero hits
+//    outside _motion.scss itself, same finding matrix/cosmos/mercury already
+//    document), left at house default.
+//  - --ease-out/--ease-in-out stay at house default: the broadest shared
+//    levers in the system (18 and 5 direct CSS consumers respectively, plus
+//    14 components reading motionTokens.easeOut) — recoloring either would
+//    read as a blanket global reskin, not a specific bloom/persistence
+//    choice, the same restraint matrix/cosmos apply to these two tokens.
+//  - --ease-linear stays untouched: it drives the Spinner/Button spin
+//    keyframe, where constant angular velocity is physically correct
+//    regardless of theme.
+//  - --ease-bounce/--ease-elastic stay at house default — no live consumer,
+//    and J-9.4 reserves spring/bounce character for delight moments (toast
+//    entry, success) this pass doesn't touch.
 
 @import "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;600;700&display=swap";
 
@@ -220,4 +277,13 @@
 
   // Header background (more visible in terminal theme)
   --color-header-bg: var(--color-base-300);
+
+  // Motion — see header rationale (phosphor persistence: bloom-and-settle,
+  // not matrix's zero-overshoot precision). --duration-fast (hover) and
+  // --duration-instant (focus ring) are never touched.
+  --spring-gentle: 260, 20, 1;
+  --spring-stiff:  380, 24, 1;
+  --spring-slow:   55, 15, 1;
+  --duration-slower:  600ms;
+  --duration-ambient: 1800ms;
 }

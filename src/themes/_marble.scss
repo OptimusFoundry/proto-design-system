@@ -55,6 +55,37 @@
 //   inconsistent with this file's own ink-tinted shadows two lines down —
 //   retinted to the theme's vein-ink hue (h235).
 //
+// Motion: the theme concept is a polished stone slab — low-friction glide
+// (marble is famously slippery underfoot) but zero springy rebound (stone is
+// dense and inert, and the voice is editorial-restrained, never bubbly —
+// J-11.8). Two coherent levers, everything else at house default:
+// - --ease-out: cubic-bezier(0.16, 0.84, 0.44, 1), a longer float phase than
+//   house's ease-out-quad (0.22, 1, 0.36, 1) with a firm, no-overshoot
+//   landing — reads as sliding across a polished surface and settling flush,
+//   not snapping to a stop. This is the curve nearly every entrance/exit and
+//   default transition reads (Modal, Dropdown, Toast, Banner, Alert, Grid/
+//   Stack/List mount, --transition-opacity/-transform/-shadow/-all, and
+//   -colors' hover crossfade) — duration stays whatever each of those was
+//   already set to (--duration-fast's 150ms hover floor is untouched, only
+//   its curve shape moves), so J-9.1's ms counts hold exactly.
+// - --spring-gentle (Button's press-feedback preset) and --spring-stiff
+//   (Tabs' active-indicator preset) both move from house's underdamped
+//   (zeta 0.64 and 0.75 — a soft rebound/slight overshoot) toward critical:
+//   gentle to 200,32,1.6 (zeta ~0.89, added mass for stone's weight) and
+//   stiff to 380,40,1 (zeta ~1.03, a hair past critical). Both settle to
+//   their target with no bounce-back, like a chisel line landing exactly on
+//   a vein rather than wobbling into place.
+// --duration-normal (accordion/tabs' 240ms) is left untouched — the ease/
+// spring changes above already carry this theme's identity, and moving that
+// number buys nothing further while adding an unforced deviation from J-9.1.
+// --spring-bouncy/--spring-wobbly/--spring-slow, --ease-bounce/--ease-
+// elastic/--ease-in/--ease-in-out/--ease-linear, and all other durations
+// stay house default: --spring-bouncy/--ease-bounce are J-9.4's shared
+// delight-moment pair (toast entry, success checkmark) — this theme has no
+// stated reason to retune the one place bounce is actually licensed, so it
+// doesn't; --spring-slow (StatCard's counter) is already critically damped
+// (zeta 1.0, "settled tally") and retuning it wouldn't change its read.
+//
 // Fonts: kept "Libre Caslon Text" (sans) + "DM Mono" (mono) — themes.ts's
 // googleFontsHref for this theme already loads exactly these two families,
 // and that file is out of scope for this pass, so the names themselves
@@ -177,4 +208,10 @@
 
   --focus-ring-color: oklch(30% 0.057 232deg / 0.40);
   --color-header-bg: var(--color-base-100);
+
+  // Motion — polished stone: low-friction glide, zero springy rebound (see
+  // header rationale). --duration-instant and focus-ring timing untouched.
+  --ease-out:      cubic-bezier(0.16, 0.84, 0.44, 1);   // long float, firm no-overshoot stop
+  --spring-gentle: 200, 32, 1.6;   // Button press — zeta ~0.89, weighted settle, no rebound
+  --spring-stiff:  380, 40, 1;     // Tabs indicator — zeta ~1.03, lands with no wobble
 }

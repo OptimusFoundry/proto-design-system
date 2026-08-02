@@ -8,10 +8,18 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./MultiSelect.module.scss";
+
+// Hoisted to module scope so the object reference is stable across renders;
+// motion restarts an in-progress enter/exit transition if the menu's
+// `variants` object gets a brand new identity on every parent re-render.
+const menuVariants = {
+	hidden: { opacity: 0, scale: 0.95, y: -4 },
+	visible: { opacity: 1, scale: 1, y: 0 },
+};
 
 export type MultiSelectSize = "sm" | "md" | "lg";
 export type MultiSelectVariant = "default" | "outline";
@@ -91,16 +99,11 @@ export function MultiSelect({
 	const selectedItems = items.filter((item) => value.has(item.id));
 	const enabledItems = items.filter((item) => !item.disabled);
 	const prefersReducedMotion = useReducedMotion();
-
-	// Animation variants
-	const menuVariants = {
-		hidden: { opacity: 0, scale: 0.95, y: -4 },
-		visible: { opacity: 1, scale: 1, y: 0 },
-	};
+	const motionTokens = useMotionTokens();
 
 	const transition = prefersReducedMotion
 		? { duration: 0 }
-		: { duration: DURATION.fast, ease: EASE_OUT };
+		: { duration: motionTokens.duration.fast, ease: motionTokens.easeOut };
 
 	// Handle click outside
 	useEffect(() => {

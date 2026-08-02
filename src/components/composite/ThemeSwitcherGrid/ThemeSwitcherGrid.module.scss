@@ -1,4 +1,4 @@
-@use "../../../mixins/motion" as motion;
+@use "../../../mixins" as *;
 
 .grid {
 	display: flex;
@@ -24,7 +24,7 @@
 	cursor: pointer;
 	user-select: none;
 
-	@include motion.transition(
+	@include transition(
 		(background-color, border-color, color, transform, box-shadow)
 	);
 

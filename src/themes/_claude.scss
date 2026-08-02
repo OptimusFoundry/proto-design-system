@@ -91,6 +91,57 @@
 //   distinct roles (muted terracotta CTA vs. vivid red-orange danger) even
 //   at a glance; a bigger hue split was not pursued because it would have
 //   pulled error toward warning's amber (hue 75) instead.
+//
+// 2026-08 motion pass (docs/design-docs/12-judgment.md J-9; token map
+// verified against actual component wiring — grep, not assumption — before
+// touching anything):
+// - --duration-fast (drives every hover transition plus the Dropdown/
+//   DropdownMenu/Popover/DatePicker/MultiSelect/Drawer entrances) and
+//   --duration-instant/focus-ring timing are untouched. J-9.1's "hovers are
+//   always 150ms" and the focus-ring-never-themed rule are house-wide
+//   contracts, not this theme's to renegotiate.
+// - --duration-normal: 240ms -> 300ms (+25%, still clear of the 400ms
+//   ceiling). This is the one duration token this pass moves, and it's
+//   deliberate: Modal entry, the Grid/Stack/List mount stagger, Accordion's
+//   expand/collapse, and PageTransition's default all read it (grep-
+//   verified), so a single change reaches every "something settles into
+//   place" moment site-wide — the same lever `_blueprint.scss` pulls the
+//   other direction (-20%, for a decisive CAD identity); here it expresses
+//   this file's own "unhurried, considered" language from the top of this
+//   header instead.
+// - --ease-out: house's swift-start curve (0.22, 1, 0.36, 1) replaced with a
+//   gentler easeOutSine-family curve (0.39, 0.575, 0.565, 1) — no near-
+//   instant initial velocity spike, a continuous unhurried glide to rest
+//   instead of a quick snap that then coasts. This is the highest-leverage
+//   motion token in the system (Modal, Dropdown, Grid/Stack/List stagger,
+//   PageTransition, DatePicker/MultiSelect/Popover, plus
+//   --transition-opacity/-transform/-shadow/-all), so retuning it alone
+//   reshapes the theme's whole motion signature toward "settles" rather
+//   than "snaps."
+// - --spring-gentle (Button/LinkButton's default press-spring): 120,14,1 ->
+//   100,18,1.3 — damping ratio 0.64 -> 0.79 (computed: damping /
+//   (2*sqrt(stiffness*mass))), i.e. less underdamped, near-critical. Lower
+//   stiffness plus higher mass reads as heavier, like a glazed ceramic piece
+//   settling into place rather than a soft plastic squish; the reduced
+//   overshoot keeps that added weight from reading sluggish or bouncy.
+// - --spring-slow (StatCard's counter tally): 100,20,1 -> 70,18,1.2 —
+//   damping ratio 1.0 -> 0.98 (still critically damped, no new overshoot
+//   introduced), just a slower climb to the final number: a considered
+//   count-up instead of a rushed one, the same "unhurried" idea applied to
+//   numerals.
+// - Declined: --spring-stiff (Tabs indicator) has no claude-specific story —
+//   it's already the stiffest house preset, and slowing a tab-switch would
+//   read as lag, not character, so it stays house default (the same call
+//   `_blueprint.scss` makes for this token). --ease-bounce/-elastic and
+//   --spring-bouncy/-wobbly — J-9.4's delight-only reservation (toast entry,
+//   success checkmark) — are also left at house default: unlike
+//   `_archive.scss` (reshaped into a mechanical settle) or `_candy.scss`
+//   (amplified into a bigger bounce), claude's literary/considered register
+//   has no delight-moment story that wants its own distinct overshoot
+//   shape, and house's already-modest bounce doesn't clash with "unhurried"
+//   the way an untouched snap or an excess wobble would have. Inventing a
+//   bounce personality here would be forcing a mood this theme doesn't
+//   actually have, not expressing the one it does.
 
 @import "https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap";
 
@@ -210,4 +261,14 @@
 
   --radius-xs: 4px; --radius-sm: 6px; --radius-md: 10px;
   --radius-lg: 16px; --radius-xl: 24px;
+
+  // Motion — unhurried, considered settle (see header for the full token
+  // map/rationale). --duration-fast/-instant and focus-ring timing are
+  // untouched per the hard rule; --spring-stiff and the delight-only
+  // bounce/elastic family are left at house default (no claude-specific
+  // story for either).
+  --duration-normal: 300ms;
+  --ease-out:      cubic-bezier(0.39, 0.575, 0.565, 1);
+  --spring-gentle: 100, 18, 1.3;
+  --spring-slow:   70, 18, 1.2;
 }

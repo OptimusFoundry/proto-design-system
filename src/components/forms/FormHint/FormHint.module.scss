@@ -43,6 +43,8 @@
   .icon {
     color: var(--color-muted);
   }
+
+  @include animate(fade-in, $duration: var(--duration-fast));
 }
 
 .error {
@@ -59,4 +61,6 @@
   .icon {
     color: var(--color-success);
   }
+
+  @include animate(fade-in, $duration: var(--duration-fast));
 }

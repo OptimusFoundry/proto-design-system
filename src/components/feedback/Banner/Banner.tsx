@@ -7,9 +7,9 @@ import {
 	XCircle,
 } from "lucide-react";
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Banner.module.scss";
 
@@ -23,10 +23,6 @@ const BANNER_VARIANTS = {
 } as const;
 
 const BANNER_TRANSITION_REDUCED = { duration: 0 } as const;
-const BANNER_TRANSITION_NORMAL = {
-	duration: DURATION.normal,
-	ease: EASE_OUT,
-} as const;
 
 export type BannerType = "info" | "success" | "warning" | "error" | "feature";
 export type BannerVariant = "filled" | "light" | "lighter" | "stroke";
@@ -88,11 +84,18 @@ export function Banner({
 	className,
 }: BannerProps) {
 	const prefersReducedMotion = useReducedMotion();
+	const motionTokens = useMotionTokens();
 
-	const transition =
-		prefersReducedMotion || !animate
-			? BANNER_TRANSITION_REDUCED
-			: BANNER_TRANSITION_NORMAL;
+	const transition = useMemo(
+		() =>
+			prefersReducedMotion || !animate
+				? BANNER_TRANSITION_REDUCED
+				: {
+						duration: motionTokens.duration.normal,
+						ease: motionTokens.easeOut,
+					},
+		[prefersReducedMotion, animate, motionTokens],
+	);
 
 	const iconElement = icon || typeIcons[type];
 

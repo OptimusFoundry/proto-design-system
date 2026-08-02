@@ -7,10 +7,24 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { useMotionTokens } from "../../../context/MotionProvider";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { DURATION, EASE_OUT } from "../../../motion";
 import { cn } from "../../../utils/cn";
 import styles from "./Modal.module.scss";
+
+// Hoisted to module scope so the object references are stable across
+// renders; motion restarts an in-progress enter/exit transition if the
+// backdrop/modal `variants` objects get a brand new identity on every
+// parent re-render.
+const backdropVariants = {
+	hidden: { opacity: 0 },
+	visible: { opacity: 1 },
+};
+
+const modalVariants = {
+	hidden: { opacity: 0, scale: 0.95, y: 8 },
+	visible: { opacity: 1, scale: 1, y: 0 },
+};
 
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 
@@ -74,6 +88,7 @@ export function Modal({
 }: ModalProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const prefersReducedMotion = useReducedMotion();
+	const motionTokens = useMotionTokens();
 	const [showContent, setShowContent] = useState(false);
 
 	// Handle dialog open/close
@@ -131,20 +146,9 @@ export function Modal({
 
 	const hasHeader = title || description || icon || showCloseButton;
 
-	// Animation variants
-	const backdropVariants = {
-		hidden: { opacity: 0 },
-		visible: { opacity: 1 },
-	};
-
-	const modalVariants = {
-		hidden: { opacity: 0, scale: 0.95, y: 8 },
-		visible: { opacity: 1, scale: 1, y: 0 },
-	};
-
 	const transition = prefersReducedMotion
 		? { duration: 0 }
-		: { duration: DURATION.normal, ease: EASE_OUT };
+		: { duration: motionTokens.duration.normal, ease: motionTokens.easeOut };
 
 	return (
 		<dialog

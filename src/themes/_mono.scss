@@ -99,4 +99,22 @@
   --shadow-accent:  0 8px 24px 0 oklch(30% 0 0deg / 0.18);
   --focus-ring-color: oklch(20% 0 0deg / 0.45);
   --color-header-bg: var(--color-base-100);
+  // Motion: the typewriter identity above is mechanical, not organic — a
+  // key strikes and stops decisively, it doesn't settle with a soft wobble.
+  // --ease-out is the default deceleration curve behind nearly every CSS
+  // transition (colors/opacity/transform/shadow) and any motion/react
+  // component that reads it; swapping the house's soft ease-out-quad for a
+  // sharper near-expo curve reads as a firm mechanical stop everywhere at
+  // once, with no duration change — --duration-fast (hover, 150ms) and
+  // --duration-normal (accordion/tabs, 240ms) stay at house values per J-9.1.
+  // --ease-bounce/--spring-bouncy stay scoped to their existing delight
+  // moments (toast entry, Button press-spring) per J-9.4 — only their
+  // character changes, from a springy overshoot to a restrained, almost-
+  // critically-damped snap-back (damping ratio ~0.29 house → ~0.76 here),
+  // so even this theme's "bounce" reads as decisive rather than playful.
+  // Enter/exit/page/complex durations and every other spring are left at
+  // house default — no theme-specific reason to touch them.
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce:   cubic-bezier(0.34, 1.16, 0.64, 1);
+  --spring-bouncy: 340, 28, 1;
 }
