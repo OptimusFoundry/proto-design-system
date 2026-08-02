@@ -212,11 +212,15 @@
   --color-error-bg:      oklch(95% 0.020 25deg); // chroma trimmed at this L to stay in-gamut
   --color-error-content: oklch(97% 0.010 25deg); // chroma trimmed at this L to stay in-gamut
 
-  --color-info:         oklch(55% 0.090 230deg); // chroma trimmed to stay in-gamut at this hue/L
-  --color-info-hover:   oklch(48% 0.085 230deg);
-  --color-info-active:  oklch(42% 0.075 230deg);
-  --color-info-bg:      oklch(95% 0.020 230deg);
-  --color-info-content: oklch(97% 0.010 230deg);
+  // Hue nudged 230->205deg (harmony pass): the old 230deg sat only 5deg from
+  // --color-secondary's 235deg, reading as the same slate-blue as a brand
+  // color. 205deg keeps info in the blue/cyan family (still well inside the
+  // 190-250deg convention) while giving secondary real separation (30deg).
+  --color-info:         oklch(55% 0.090 205deg); // chroma trimmed to stay in-gamut at this hue/L
+  --color-info-hover:   oklch(48% 0.085 205deg);
+  --color-info-active:  oklch(42% 0.075 205deg);
+  --color-info-bg:      oklch(95% 0.020 205deg);
+  --color-info-content: oklch(97% 0.010 205deg);
 
   // Shadows — misty soft-elevation system, unchanged this pass (see header
   // Shadows note: still tinted to the prior revision's warm ink, not the

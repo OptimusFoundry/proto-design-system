@@ -294,10 +294,12 @@
   // the BASE color itself also clears Lc75/AA with margin when used directly
   // as chip text/icon on its own -bg (a real Badge/Tag usage, not just
   // -content-on-base). -content unified onto one lavender ivory.
-  --color-success: oklch(45% 0.098 158deg);           // Lc 77.5 / 6.43:1 on success-bg
-  --color-success-hover: oklch(40% 0.088 158deg);
-  --color-success-active: oklch(35% 0.077 158deg);
-  --color-success-bg: oklch(96% 0.045 158deg);
+  // success hue widened from 158 (only 12deg off --color-accent's hue170,
+  // effectively near-identical) to 140 — 30deg clear of accent, still green.
+  --color-success: oklch(45% 0.098 140deg);           // Lc 77.5 / 6.43:1 on success-bg
+  --color-success-hover: oklch(40% 0.088 140deg);
+  --color-success-active: oklch(35% 0.077 140deg);
+  --color-success-bg: oklch(96% 0.045 140deg);
   --color-success-content: oklch(98% 0.006 290deg);
   --color-warning: oklch(47% 0.09 84deg);             // Lc 75.3 / 6.07:1 on warning-bg — was 54% (4.513:1, AA-borderline)
   --color-warning-hover: oklch(41% 0.08 84deg);

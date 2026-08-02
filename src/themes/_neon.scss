@@ -116,11 +116,15 @@
   --color-success-active: oklch(62% 0.25 150deg);  // was missing entirely
   --color-success-bg: oklch(96% 0.06 150deg);
   --color-success-content: oklch(15% 0.05 150deg);
-  --color-warning: oklch(88% 0.2 90deg);
-  --color-warning-hover: oklch(83% 0.22 90deg);
-  --color-warning-active: oklch(78% 0.2 90deg);  // was missing entirely
-  --color-warning-bg: oklch(97% 0.05 90deg);
-  --color-warning-content: oklch(20% 0.06 90deg);
+  // Warning hue nudged 90deg->65deg: at 90deg it sat only 10deg from the
+  // accent's neon-yellow 100deg, so status meaning (warning) and brand
+  // (accent) blended into the same near-yellow. 65deg is still convention-
+  // appropriate amber and now clearly reads apart from accent.
+  --color-warning: oklch(88% 0.2 65deg);
+  --color-warning-hover: oklch(83% 0.22 65deg);
+  --color-warning-active: oklch(78% 0.2 65deg);  // was missing entirely
+  --color-warning-bg: oklch(97% 0.05 65deg);
+  --color-warning-content: oklch(20% 0.06 65deg);
   --color-error: oklch(62% 0.28 25deg);
   --color-error-hover: oklch(57% 0.3 25deg);
   --color-error-active: oklch(52% 0.28 25deg);  // was missing entirely

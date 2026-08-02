@@ -59,20 +59,24 @@
   --color-accent-active: oklch(51% 0.14 15deg);
   --color-accent-content: oklch(96% 0.020 85deg);
   --color-accent-bg: oklch(94% 0.05 15deg);
-  --color-success: oklch(55% 0.14 145deg);
-  --color-success-hover: oklch(63% 0.14 145deg);
-  --color-success-active: oklch(47% 0.14 145deg);
-  --color-success-bg: oklch(90% 0.035 145deg);
+  // success hue split off from --color-primary's exact hue145 (was an
+  // identical match) to hue120 — still reads green, 25deg clear of primary.
+  --color-success: oklch(55% 0.118 120deg);
+  --color-success-hover: oklch(63% 0.14 120deg);
+  --color-success-active: oklch(47% 0.10 120deg);
+  --color-success-bg: oklch(90% 0.035 120deg);
   --color-success-content: oklch(96% 0.020 85deg);
   --color-warning: oklch(77% 0.15 65deg);
   --color-warning-hover: oklch(68% 0.15 65deg);
   --color-warning-active: oklch(60% 0.13 65deg);
   --color-warning-bg: oklch(93% 0.040 65deg);
   --color-warning-content: oklch(16% 0.04 65deg);
-  --color-error: oklch(50% 0.18 25deg);
-  --color-error-hover: oklch(58% 0.18 25deg);
-  --color-error-active: oklch(42% 0.18 25deg);
-  --color-error-bg: oklch(91% 0.035 25deg);
+  // error hue moved from 25 (only 10deg off --color-accent's hue15) to
+  // 355 — 20deg clear of accent, still reads red.
+  --color-error: oklch(50% 0.18 355deg);
+  --color-error-hover: oklch(58% 0.18 355deg);
+  --color-error-active: oklch(42% 0.16 355deg);
+  --color-error-bg: oklch(91% 0.035 355deg);
   --color-error-content: oklch(96% 0.020 85deg);
   --color-info: oklch(48% 0.10 220deg);
   --color-info-hover: oklch(56% 0.1 220deg);

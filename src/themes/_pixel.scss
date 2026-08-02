@@ -132,10 +132,12 @@
   --color-success-bg:      oklch(93% 0.035 145deg);
   --color-success-content: oklch(97% 0.006 145deg);
 
-  --color-warning:         oklch(87% 0.140 88deg);   // Lc 80.7 / 13.49:1
-  --color-warning-hover:   oklch(82% 0.150 88deg);   // Lc 71.6 / 11.40:1
-  --color-warning-active:  oklch(78% 0.155 88deg);   // Lc 64.8 / 9.95:1
-  --color-warning-bg:      oklch(94% 0.035 88deg);
+  // Hue nudged 88->96 (was only 16deg from --color-accent's 72deg gold —
+  // a success/coin-highlight collision risk); still amber per convention.
+  --color-warning:         oklch(87% 0.140 96deg);   // Lc 80.7 / 13.49:1
+  --color-warning-hover:   oklch(82% 0.150 96deg);   // Lc 71.6 / 11.40:1
+  --color-warning-active:  oklch(78% 0.155 96deg);   // Lc 64.8 / 9.95:1
+  --color-warning-bg:      oklch(94% 0.035 96deg);
   --color-warning-content: oklch(13% 0.020 66deg);
 
   --color-error:         oklch(48% 0.192 25deg);

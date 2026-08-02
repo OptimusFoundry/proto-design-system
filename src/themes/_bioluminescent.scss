@@ -4,8 +4,9 @@
 // Deep-sea abyss with three distinct glowing creatures as the interactive
 // palette: jellyfish cyan (primary), siphonophore violet (secondary),
 // phosphorescent-algae green (accent + success share the family, distinct
-// hues 158/148deg). Warning stays a coral-amber anglerfish lure, error a
-// deep-vent red.
+// hues 158/128deg — widened from an original 158/148 split during a
+// harmony pass, since 10deg let status-success blend into brand-accent).
+// Warning stays a coral-amber anglerfish lure, error a deep-vent red.
 //
 // 2026-07 contrast/gamut refit (computed via theme-contrast-check.mjs plus
 // the same apcaLc/wcagRatio algorithm run standalone for hover/active states
@@ -212,11 +213,15 @@
 
   // Semantic colors (ocean life) — full base/-hover/-active/-bg/-content
   // set, every value in-gamut, verified via theme-contrast-check.mjs.
-  --color-success:         oklch(76% 0.15 148deg);
-  --color-success-hover:   oklch(86% 0.10 148deg);
-  --color-success-active:  oklch(67% 0.16 148deg);
-  --color-success-bg:      oklch(18% 0.05 148deg);
-  --color-success-content: oklch(12% 0.03 148deg);
+  // Success hue nudged 148deg->128deg: at 148deg it sat only 10deg from
+  // accent's phosphorescent-algae 158deg, blending status meaning into the
+  // brand accent. 128deg stays in the same algae-green family (and inside
+  // the success hue convention) while reading as a clearly distinct hue.
+  --color-success:         oklch(76% 0.15 128deg);
+  --color-success-hover:   oklch(86% 0.10 128deg);
+  --color-success-active:  oklch(67% 0.16 128deg);
+  --color-success-bg:      oklch(18% 0.05 128deg);
+  --color-success-content: oklch(12% 0.03 128deg);
 
   --color-warning:         oklch(80% 0.14 78deg);
   --color-warning-hover:   oklch(89% 0.08 78deg);

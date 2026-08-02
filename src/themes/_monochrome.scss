@@ -18,6 +18,14 @@
 // 900 (previously byte-identical to `brutal`'s ramp) are retuned here too,
 // so no rung collides across the two files anymore.
 //
+// Semantic harmony fix (this pass): success/warning/error/info were all
+// literal chroma-0 black, indistinguishable from each other and from
+// primary/accent — confirmed a real usability defect, not part of the "no
+// color" brief. They now carry real, low-to-moderate chroma (green/amber/
+// red/blue) — see the semantics block below for the exact values and
+// rationale. --color-primary/-secondary/-accent and the base/content ramp
+// stay exactly pure black/white/gray, unchanged.
+//
 // Border was Lc 22.0 / 1.48:1 against the L98 background — clears the APCA
 // hairline floor but fails WCAG 1.4.11's 3:1 non-text floor, and it's the
 // *sole* boundary cue on Input/TextArea/Select/Checkbox/Radio/Card, since
@@ -122,28 +130,38 @@
   --color-accent-content: oklch(100% 0 0deg);
   --color-accent-bg: oklch(90% 0 0deg);   // was missing — rendered transparent under Compositions.module.scss's fill
 
-  // Semantic colors (all grayscale with pattern/icon differentiation).
-  // -active added to every family below — it was missing entirely, leaving
-  // pressed states with nowhere to fall back but the browser default.
-  --color-success: oklch(25% 0 0deg);
-  --color-success-hover: oklch(20% 0 0deg);
-  --color-success-active: oklch(16% 0 0deg);
-  --color-success-bg: oklch(95% 0 0deg);
+  // Semantic colors — real, low-to-moderate chroma hues (harmony pass).
+  // Previously all four families were literal chroma-0 black, indistinguishable
+  // from each other and from primary/secondary/accent — a genuine usability
+  // gap, not a defect of the "no color" premise (confirmed with the human
+  // directing this work). Chroma stays well under this theme's semantic-free
+  // neutral ramp's own restraint (0.07-0.11, vs. e.g. brutal's 0.15-0.26) so
+  // the four read as a quiet, legible state signal rather than "the one
+  // colorful theme wearing a monochrome label." Hues (green 145 / amber 75 /
+  // red 20 / blue 230) are >=45deg apart from each other and have no primary/
+  // secondary/accent hue to collide with (those three stay chroma-0 by design,
+  // unchanged). -active added to every family below — it was missing
+  // entirely, leaving pressed states with nowhere to fall back but the
+  // browser default.
+  --color-success: oklch(32% 0.075 145deg);
+  --color-success-hover: oklch(27% 0.08 145deg);
+  --color-success-active: oklch(22% 0.075 145deg);
+  --color-success-bg: oklch(95% 0.03 145deg);
   --color-success-content: oklch(100% 0 0deg);
-  --color-warning: oklch(40% 0 0deg);
-  --color-warning-hover: oklch(35% 0 0deg);
-  --color-warning-active: oklch(30% 0 0deg);
-  --color-warning-bg: oklch(92% 0 0deg);
+  --color-warning: oklch(42% 0.085 75deg);
+  --color-warning-hover: oklch(37% 0.08 75deg);
+  --color-warning-active: oklch(32% 0.065 75deg);
+  --color-warning-bg: oklch(92% 0.035 75deg);
   --color-warning-content: oklch(100% 0 0deg);
-  --color-error: oklch(0% 0 0deg);
-  --color-error-hover: oklch(15% 0 0deg);
-  --color-error-active: oklch(8% 0 0deg);
-  --color-error-bg: oklch(90% 0 0deg);
+  --color-error: oklch(38% 0.11 20deg);
+  --color-error-hover: oklch(32% 0.105 20deg);
+  --color-error-active: oklch(26% 0.095 20deg);
+  --color-error-bg: oklch(90% 0.035 20deg);
   --color-error-content: oklch(100% 0 0deg);
-  --color-info: oklch(50% 0 0deg);
-  --color-info-hover: oklch(45% 0 0deg);
-  --color-info-active: oklch(40% 0 0deg);
-  --color-info-bg: oklch(93% 0 0deg);
+  --color-info: oklch(42% 0.075 230deg);
+  --color-info-hover: oklch(36% 0.065 230deg);
+  --color-info-active: oklch(30% 0.055 230deg);
+  --color-info-bg: oklch(93% 0.03 230deg);
   --color-info-content: oklch(100% 0 0deg);
 
   // Shadow scale — was missing entirely; without it this theme silently

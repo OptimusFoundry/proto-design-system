@@ -186,15 +186,17 @@
   --color-accent-content: oklch(98% 0.010 180deg);
   --color-accent-bg: oklch(93% 0.045 180deg);
 
-  // Semantic colors — success given its own hue (150, vs primary's 145) so
-  // the two are no longer byte-identical; all four now carry -active and
-  // are refit to their real sRGB ceilings (bg washes included — the
-  // original error-bg/info-bg both silently exceeded gamut at L96).
-  --color-success: oklch(44% 0.115 150deg);
-  --color-success-hover: oklch(39% 0.098 150deg);
-  --color-success-active: oklch(34% 0.082 150deg);
-  --color-success-bg: oklch(95% 0.035 150deg);
-  --color-success-content: oklch(99% 0.010 150deg);
+  // Semantic colors — success hue widened from 150 (only 5deg off primary's
+  // 145 — still near-identical despite the "no longer byte-identical" fix
+  // documented above) to 125, a full 20deg clear of primary while staying
+  // green; all four now carry -active and are refit to their real sRGB
+  // ceilings (bg washes included — the original error-bg/info-bg both
+  // silently exceeded gamut at L96).
+  --color-success: oklch(44% 0.10 125deg);
+  --color-success-hover: oklch(39% 0.098 125deg);
+  --color-success-active: oklch(34% 0.082 125deg);
+  --color-success-bg: oklch(95% 0.035 125deg);
+  --color-success-content: oklch(99% 0.010 125deg);
   // warning: fixed-dark-content shape — hover/active LIGHTEN (not darken)
   // so contrast grows away from the fixed dark content, mirroring
   // editorial's documented fix for the same shape bug. Lc 64.5/71.5/78.8.

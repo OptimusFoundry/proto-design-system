@@ -160,12 +160,15 @@
   --color-success-content: oklch(100% 0 0deg);
   // Warning lightened a step (L78->L80) for more content-margin over the
   // Lc 60 UI floor (was Lc 62.8, now Lc 67.5) without pushing content past
-  // its own gamut ceiling.
-  --color-warning: oklch(80% 0.148 85deg);
-  --color-warning-hover: oklch(75% 0.139 85deg);
-  --color-warning-active: oklch(70% 0.13 85deg);
-  --color-warning-bg: oklch(96% 0.038 85deg);
-  --color-warning-content: oklch(18% 0.0465 85deg);
+  // its own gamut ceiling. Hue nudged 85->72deg (harmony pass): 85deg sat
+  // only 10deg from --color-accent's 95deg highlight yellow, a near-collision
+  // between a semantic and a brand color; 72deg keeps it a clear amber/gold
+  // (still inside the 50-95deg warning convention) with real separation.
+  --color-warning: oklch(80% 0.148 72deg);
+  --color-warning-hover: oklch(75% 0.139 72deg);
+  --color-warning-active: oklch(70% 0.13 72deg);
+  --color-warning-bg: oklch(96% 0.028 72deg);
+  --color-warning-content: oklch(18% 0.0465 72deg);
   --color-error: oklch(55% 0.202 25deg);
   --color-error-hover: oklch(50% 0.1836 25deg);
   --color-error-active: oklch(45% 0.1656 25deg);

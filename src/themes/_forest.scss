@@ -89,6 +89,11 @@
 //   issues no longer apply: every leaf token in the contract is defined
 //   directly in this file (verified: 0 SKIPs on the full 30-pair check).
 //
+// 2026-08 semantic-harmony pass: --color-success moved 140deg -> 122deg —
+// it sat only 5deg from --color-primary's 145deg canopy hue, a near-exact
+// match that blended status color into brand CTA color. See the success
+// token block below for the full rationale and refit numbers.
+//
 // Motion: slower, heavier settle — two coherent overrides, everything else
 // stays house default:
 // - --duration-normal: 240ms -> 280ms, borrowing the house's own
@@ -200,15 +205,22 @@
   --color-accent-content: oklch(13% 0.020 190deg);
   --color-accent-bg:      oklch(20% 0.028 190deg);
 
-  // Semantic: success — deliberately shares primary's green family (a
-  // "green = go" nature-theme choice) at a distinct L/C so it doesn't read
-  // as a literal duplicate of the primary CTA. base 68%->75%L.
-  // success-content now clears Lc 63.7/9.74:1 (was 51.8/7.47:1).
-  --color-success:         oklch(75% 0.222 140deg);
-  --color-success-hover:   oklch(83% 0.246 140deg);
-  --color-success-active:  oklch(65% 0.193 140deg);
-  --color-success-bg:      oklch(20% 0.050 140deg);
-  --color-success-content: oklch(12% 0.030 140deg);
+  // Semantic: success — green family (a "green = go" nature-theme choice),
+  // but pulled off primary's 145deg canopy hue to 122deg (a yellow-green
+  // fern cast): the prior 140deg sat only 5deg from primary, a near-exact
+  // hue match that let status color and brand CTA blend into each other.
+  // 122deg keeps success unambiguously green while reading as a genuinely
+  // separate material (fern vs. canopy) instead of a shade of the same CTA.
+  // Re-fit L/C for the new hue's own gamut ceiling (~90% of in-gamut max at
+  // each step, base/hover/active all verified in-gamut): success-content on
+  // success now Lc 65.3/10.14:1 (was 51.8/7.47:1 pre-repair; the 140deg
+  // predecessor at this same repair scored 63.7/9.74:1 — this hue clears
+  // with slightly more margin, not less).
+  --color-success:         oklch(77% 0.170 122deg);
+  --color-success-hover:   oklch(84% 0.180 122deg);
+  --color-success-active:  oklch(67% 0.150 122deg);
+  --color-success-bg:      oklch(20% 0.050 122deg);
+  --color-success-content: oklch(12% 0.030 122deg);
 
   // Semantic: warning — base 76%->78%L for real Lc60 headroom (was a
   // 1-point-margin near-miss at Lc 60.5; now Lc 63.7/9.64:1).

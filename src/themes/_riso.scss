@@ -50,11 +50,16 @@
   --color-success-active: oklch(32% 0.078 155deg);
   --color-success-bg: oklch(93% 0.05 155deg);
   --color-success-content: oklch(97% 0.015 85deg);
-  --color-warning: oklch(82% 0.18 90deg);
-  --color-warning-hover: oklch(90% 0.18 90deg);
-  --color-warning-active: oklch(74% 0.18 90deg);
-  --color-warning-bg: oklch(95% 0.05 90deg);
-  --color-warning-content: oklch(25% 0.12 85deg);
+  // warning hue moved off 90 — it was byte-identical to --color-accent
+  // (also 90deg, same L/C), a semantic/brand collision. 70deg still reads
+  // amber/gold, 20deg clear of accent; chroma refit to each step's in-gamut
+  // ceiling at the new hue (was authored past the ceiling at hue90 too —
+  // the prior warning-content-on-warning ⚠ out-of-gamut flag is now clear).
+  --color-warning: oklch(82% 0.13 70deg);
+  --color-warning-hover: oklch(90% 0.068 70deg);
+  --color-warning-active: oklch(74% 0.145 70deg);
+  --color-warning-bg: oklch(95% 0.033 70deg);
+  --color-warning-content: oklch(25% 0.05 85deg);
   --color-error: oklch(60% 0.26 15deg);
   --color-error-hover: oklch(68% 0.26 15deg);
   --color-error-active: oklch(52% 0.26 15deg);

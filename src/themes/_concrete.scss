@@ -50,21 +50,29 @@
   --color-success-active: oklch(44% 0.18 140deg);
   --color-success-bg: oklch(86% 0.03 140deg);
   --color-success-content: oklch(96% 0.005 140deg);
-  --color-warning: oklch(78% 0.130 45deg);
-  --color-warning-hover: oklch(76% 0.22 45deg);
-  --color-warning-active: oklch(60% 0.22 45deg);
+  // Hue moved 45->70 (was an exact match to --color-primary's 45deg — a
+  // brand/status collision). 70deg also reconciles a latent inconsistency:
+  // --color-warning-bg was already hand-tuned to 70deg while base/hover/
+  // active sat at 45, so the ramp didn't share one hue with itself.
+  --color-warning: oklch(78% 0.130 70deg);
+  --color-warning-hover: oklch(76% 0.22 70deg);
+  --color-warning-active: oklch(60% 0.22 70deg);
   --color-warning-bg: oklch(92% 0.05 70deg);
-  --color-warning-content: oklch(14% 0.02 45deg);
+  --color-warning-content: oklch(14% 0.02 70deg);
   --color-error: oklch(52% 0.25 25deg);
   --color-error-hover: oklch(60% 0.25 25deg);
   --color-error-active: oklch(44% 0.25 25deg);
   --color-error-bg: oklch(90% 0.04 25deg);
   --color-error-content: oklch(98% 0.01 25deg);
-  --color-info: oklch(48% 0.10 230deg);
-  --color-info-hover: oklch(56% 0.1 230deg);
-  --color-info-active: oklch(40% 0.1 230deg);
-  --color-info-bg: oklch(88% 0.02 230deg);
-  --color-info-content: oklch(96% 0.005 230deg);
+  // Hue moved 230->245 (was a literal duplicate of --color-accent's
+  // 48% 0.10 230deg — same brand/status collision as warning/primary above).
+  // 245deg also happens to clear gamut cleanly at this L/C where 230deg
+  // didn't (base and active were previously flagged out-of-gamut).
+  --color-info: oklch(48% 0.10 245deg);
+  --color-info-hover: oklch(56% 0.1 245deg);
+  --color-info-active: oklch(40% 0.1 245deg);
+  --color-info-bg: oklch(88% 0.02 245deg);
+  --color-info-content: oklch(96% 0.005 245deg);
   // Elevation: raking-sun cast + ground contact -----------------------------
   // A poured slab reads depth the way a work-site does at low sun: a hard,
   // near-zero-blur cast shadow thrown by a near-parallel light source, not a
