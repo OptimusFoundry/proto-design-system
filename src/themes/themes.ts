@@ -44,7 +44,13 @@ export type ThemeName =
 	| "paper"
 	| "pixel"
 	| "terminal"
-	| "whisper";
+	| "whisper"
+	| "regatta"
+	| "halftone"
+	| "konbini"
+	| "transit"
+	| "aurora"
+	| "espresso";
 
 export interface Theme {
 	name: ThemeName;
@@ -292,6 +298,48 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
+	},
+	regatta: {
+		name: "regatta",
+		label: "Regatta",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Inconsolata:wght@400;500;600;700&display=swap",
+	},
+	halftone: {
+		name: "halftone",
+		label: "Halftone",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Syne+Mono&display=swap",
+	},
+	konbini: {
+		name: "konbini",
+		label: "Konbini",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Anonymous+Pro:wght@400;700&display=swap",
+	},
+	transit: {
+		name: "transit",
+		label: "Transit",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap",
+	},
+	aurora: {
+		name: "aurora",
+		label: "Aurora",
+		colorScheme: "dark",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,100..900;1,100..900&family=Overpass+Mono:wght@400;500;600;700&display=swap",
+	},
+	espresso: {
+		name: "espresso",
+		label: "Espresso",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=PT+Mono&display=swap",
 	},
 };
 

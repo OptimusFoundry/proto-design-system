@@ -1,0 +1,169 @@
+// =============================================================================
+// KONBINI THEME
+// =============================================================================
+// Reference: a Japanese convenience-store interior — fluorescent-lit white
+// steel shelving, and the printed label system stocked on it: a red hot-food
+// counter sticker, a cool blue drink-fridge strip, a green fresh-food tag,
+// thermal receipt tape. Commercial and organised, not contemplative; the
+// register is retail signage (crisp, dense, legible under hard overhead
+// light), which is what keeps it clear of this catalog's other Japanese
+// reference (_zen.scss's ink-wash garden — cool stone, warm sumi ink, soft
+// restraint). Nothing here is shared with that theme: different hue set,
+// opposite temperature logic, opposite corner/shadow language.
+//
+// Palette structure — the shelf/label split. The canvas is fluorescent white
+// (h248, chroma 0.005-0.012: a cool cast, not a neutral gray, because
+// tube-lit white steel never photographs neutral). Against it the brand and
+// semantic families sit on two polarities, and the split is a gamut fact
+// worked into the reference rather than fought: hues whose sRGB peak sits
+// deep (orange-red h47, red h22, blue h252) are printed as saturated fills
+// carrying white ink — the hot-counter sticker and the alert strips; hues
+// whose peak sits high (blue h210, teal h172, green h140, amber h78) are
+// bright label stock carrying near-black ink — the fridge strip and the
+// shelf tags. Every fill is authored at ~97% of the true in-gamut sRGB
+// chroma at its own L/h (computed, not estimated), so nothing clips.
+//
+// Hue budget, all seven roles >=25deg apart so no status ever reads as
+// brand and no two statuses read as each other:
+//   error 22 · primary 47 · warning 78 · success 140 · accent 172 ·
+//   secondary 210 · info 252
+//
+// Content ink is h248 — the same cool cast as the canvas, pushed to real
+// chroma (45-61% of ceiling per tier). Thermal receipt print is not warm
+// black; under a 5000K tube it reads blue-graphite, and at this scale the
+// ink is the largest colored area on any screen, so a flat neutral gray
+// would have thrown away the theme's one ambient material cue.
+//
+// Fonts: Zen Kaku Gothic New (sans) + Anonymous Pro (mono). The sans is a
+// Japanese geometric gothic with wide apertures and a tall x-height — built
+// for signage legibility at small optical sizes, which is exactly the shelf-
+// talker job. The mono is a fixed-width face with hard-disambiguated digits
+// and a slightly mechanical rhythm: it reads as receipt tape / barcode
+// numerals in the eyebrow + meta role rather than as a coder terminal.
+// (The sans's name overlaps "zen" in spelling only — unrelated to the
+// _zen.scss theme or its reference.)
+//
+// Radius/shadow/motion: printed labels have die-cut corners and sit flat
+// under diffuse overhead light, so radii are tight (2-8px, never pill-soft)
+// and shadows are shallow, tight-blurred and cool-ink tinted from a single
+// high source — a shelf edge's contact shadow, not an ambient glow. Motion
+// overrides only --ease-out (a front-loaded decelerate that arrives and
+// stops, reaching every hover/press transition) and --spring-stiff (Tabs
+// indicator, pushed to near-critical damping) — retail chrome should feel
+// operated, not animated. Durations stay at house values: J-9.1 pins
+// --duration-fast/-normal as a cross-theme cadence, and this theme has no
+// argument with it.
+
+[data-theme="konbini"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Zen Kaku Gothic New", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Anonymous Pro", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Base scale — fluorescent-lit white steel shelving, h248 throughout.
+  --color-background: oklch(97.5% 0.010 248deg);
+  --color-base-50:  oklch(99% 0.004 248deg);
+  --color-base-100: oklch(96.5% 0.011 248deg);
+  --color-base-200: oklch(93% 0.014 248deg);
+  --color-base-300: oklch(88% 0.018 248deg);
+  --color-base-400: oklch(76% 0.034 248deg);
+  --color-base-500: oklch(62% 0.042 248deg);
+  --color-base-600: oklch(49% 0.042 248deg);
+  --color-base-700: oklch(38% 0.030 248deg);
+  --color-base-800: oklch(28% 0.024 248deg);
+  --color-base-900: oklch(20% 0.019 248deg);
+  --color-base-950: oklch(12% 0.014 248deg);
+
+  // Content — blue-graphite receipt ink, 61/53/50/45% of the in-gamut
+  // chroma ceiling at each tier's lightness.
+  --color-base-content:           oklch(20% 0.038 248deg);
+  --color-base-content-secondary: oklch(38% 0.055 248deg);
+  --color-base-content-tertiary:  oklch(49% 0.068 248deg);
+  --color-muted:                  oklch(49% 0.068 248deg);
+  --color-text-disabled:          oklch(70% 0.075 248deg);   // non-content only — Lc 46.9 / 2.48:1, clears the Lc30 floor
+
+  // Surfaces climb toward the tube's own white while keeping the cast —
+  // shelf faces read brighter than the aisle, never warmer.
+  --color-surface:          oklch(99.2% 0.004 248deg);
+  --color-surface-elevated: oklch(99.8% 0.001 248deg);
+  --color-surface-overlay:  oklch(20% 0.030 248deg / 0.55);
+
+  // Border — a printed shelf rule, sized to clear WCAG 1.4.11's 3:1
+  // non-text floor rather than sit at the Lc15 hairline minimum.
+  --color-border:       oklch(63% 0.050 248deg);
+  --color-border-hover: oklch(48% 0.062 248deg);
+
+  // Primary — hot-food-counter sticker red-orange. Deep fill, white ink.
+  --color-primary:         oklch(55% 0.149 47deg);
+  --color-primary-hover:   oklch(50% 0.136 47deg);
+  --color-primary-active:  oklch(45% 0.123 47deg);
+  --color-primary-content: oklch(98% 0.010 47deg);
+
+  // Secondary — drink-fridge strip blue. Bright label stock, dark ink;
+  // hover darkens *into* higher chroma rather than washing out.
+  --color-secondary:         oklch(84% 0.141 210deg);
+  --color-secondary-hover:   oklch(78% 0.131 210deg);
+  --color-secondary-active:  oklch(72% 0.121 210deg);
+  --color-secondary-content: oklch(20% 0.036 210deg);
+
+  // Accent — fresh-food shelf tag, teal-green. 32deg off success so an
+  // editorial highlight never reads as a success state.
+  --color-accent:         oklch(86% 0.162 172deg);
+  --color-accent-hover:   oklch(80% 0.151 172deg);
+  --color-accent-active:  oklch(74% 0.140 172deg);
+  --color-accent-content: oklch(20% 0.040 172deg);
+  --color-accent-bg:      oklch(94% 0.071 172deg);
+
+  // Semantics — printed status tags. Each -bg wash is authored at ~80% of
+  // its own in-gamut ceiling, so a soft state still reads as colored stock.
+  --color-success:         oklch(86% 0.269 140deg);
+  --color-success-hover:   oklch(80% 0.250 140deg);
+  --color-success-active:  oklch(74% 0.232 140deg);
+  --color-success-bg:      oklch(94% 0.094 140deg);
+  --color-success-content: oklch(20% 0.045 140deg);
+
+  --color-warning:         oklch(82% 0.164 78deg);
+  --color-warning-hover:   oklch(76% 0.154 78deg);
+  --color-warning-active:  oklch(70% 0.142 78deg);
+  --color-warning-bg:      oklch(94% 0.042 78deg);
+  --color-warning-content: oklch(20% 0.045 78deg);
+
+  --color-error:         oklch(55% 0.216 22deg);
+  --color-error-hover:   oklch(50% 0.197 22deg);
+  --color-error-active:  oklch(45% 0.177 22deg);
+  --color-error-bg:      oklch(94% 0.024 22deg);
+  --color-error-content: oklch(98% 0.009 22deg);
+
+  --color-info:         oklch(52% 0.152 252deg);
+  --color-info-hover:   oklch(47% 0.138 252deg);
+  --color-info-active:  oklch(42% 0.124 252deg);
+  --color-info-bg:      oklch(94% 0.024 252deg);
+  --color-info-content: oklch(98% 0.008 252deg);
+
+  // Shadows — single high diffuse source, cool receipt-ink tint, tight
+  // blur: a label's contact shadow against steel, not an ambient glow.
+  --shadow-color:        oklch(25% 0.030 248deg / 0.10);
+  --shadow-color-strong: oklch(25% 0.030 248deg / 0.20);
+  --shadow-xs: 0 1px 1px 0 oklch(25% 0.030 248deg / 0.07);
+  --shadow-sm: 0 1px 2px 0 oklch(25% 0.030 248deg / 0.09), 0 1px 1px -1px oklch(25% 0.030 248deg / 0.06);
+  --shadow-md: 0 3px 6px -2px oklch(25% 0.030 248deg / 0.11), 0 1px 2px -1px oklch(25% 0.030 248deg / 0.07);
+  --shadow-lg: 0 8px 14px -4px oklch(25% 0.030 248deg / 0.13), 0 2px 4px -2px oklch(25% 0.030 248deg / 0.08);
+  --shadow-xl: 0 16px 24px -8px oklch(25% 0.030 248deg / 0.16), 0 4px 8px -4px oklch(25% 0.030 248deg / 0.09);
+  --shadow-primary: 0 6px 16px 0 oklch(55% 0.149 47deg / 0.30);
+  --shadow-accent:  0 6px 16px 0 oklch(86% 0.162 172deg / 0.30);
+
+  --focus-ring-color: oklch(55% 0.149 47deg / 0.45);
+  --color-header-bg: var(--color-base-50);
+
+  // Die-cut label corners — tight, never pill-soft.
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  --ease-out:      cubic-bezier(0.16, 0.9, 0.3, 1);
+  --spring-stiff:  520, 46, 1;
+}

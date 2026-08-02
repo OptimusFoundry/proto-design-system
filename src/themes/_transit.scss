@@ -1,0 +1,180 @@
+// =============================================================================
+// TRANSIT THEME (WAYFINDING SIGNAGE)
+// =============================================================================
+// Reference: mid-century metro wayfinding — Unimark's 1970 NYCTA Graphics
+// Standards Manual and the Johnston-era London Underground. Every brand and
+// semantic hue below is fitted to a real line hex converted to OKLCH, not
+// invented: MTA A/C/E #0039A6 (h262), MTA 7 #B933AD (h332), MTA N/Q/R/W
+// #FCCC0A (h91) / LU Circle #FFD300 (h94), MTA 4/5/6 #00933C (h149) / LU
+// District #00782A (h147), LU Bakerloo #B36305 (h60), MTA 1/2/3 #EE352E (h28)
+// / LU Central #E32017 (h29), MTA T #00ADD0 (h219). Canvas is glazed station
+// tile, ink is signage graphite.
+//
+// Route assignment — the one non-obvious call. A rider tells lines apart by
+// hue alone, so all seven hues sit >=30deg apart (29 / 62 / 92 / 148 / 219 /
+// 261 / 332). Red and green are the two route colours a UI cannot spend on
+// brand: status meaning already owns them, and a red "secondary" button beside
+// a red destructive one is exactly the ambiguity a wayfinding system exists to
+// prevent. So error takes the authentic 1/2/3 route red and success the 4/5/6
+// green, both at full route intensity rather than muted status tints, and the
+// brand roles go to the three routes no semantic claims: A/C/E blue, 7 purple,
+// N/Q/R/W yellow. The palette still spans the map; the map just doesn't lie.
+//
+// Chroma is at 97-99% of the true sRGB ceiling for every solid fill, sweeping
+// lightness per hue and stopping at the lightest step whose content still
+// clears AA. Hover/active step down in L and take the ceiling at that L, so
+// states intensify rather than wash out.
+//
+// Ink carries h265 — a cool graphite, not neutral grey. Enamel signage black
+// is cast blue-black against warm tile, and the warm canvas (h85) vs cool ink
+// is the theme's whole tonal structure. Ink tint runs 46-55% of ceiling; the
+// top tier is held back so near-black doesn't read navy.
+//
+// Radius/shadow: an enamel plate screwed flush to a tile wall. Corners are
+// small and near-uniform (3/4/6/10px) — a die-cut plate, not a pill and not a
+// brutalist square. Shadows are tight, low-blur and graphite-cast: a plate
+// sits ~2mm off the wall, it does not float.
+//
+// Motion: --ease-out arrives and stops flat (a Solari board flap landing on
+// its detent, not an editorial glide), and --spring-stiff — the Tabs indicator
+// — is pushed to near-critical damping (zeta 0.98) so the active-route marker
+// snaps to its stop with no wobble. Everything else stays house default;
+// --duration-fast and focus-ring timing are never touched.
+//
+// Fonts: Manrope + Chivo Mono. Manrope's near-closed apertures, tall x-height
+// and even stroke width are what a signage grotesque needs to stay legible at
+// distance and at 11px, and its semi-geometric skeleton echoes Standard/
+// Akzidenz — the faces Unimark actually specified — without the cliché of
+// reaching for Helvetica itself. Chivo Mono is a grotesque-derived mono with
+// squared terminals and a flat-sided zero: it reads as a printed departure
+// board rather than a code editor, which suits mono's eyebrow/meta role here.
+
+[data-theme="transit"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Manrope", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Chivo Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Background — glazed station tile, warm off-white
+  --color-background: oklch(97.4% 0.012 85deg);
+
+  // Base scale (tile / grout, warm throughout — the ink is the cool half)
+  --color-base-50: oklch(98.5% 0.008 85deg);
+  --color-base-100: oklch(96.5% 0.016 85deg);
+  --color-base-200: oklch(93.5% 0.024 85deg);
+  --color-base-300: oklch(89% 0.032 85deg);
+  --color-base-400: oklch(74% 0.048 85deg);
+  --color-base-500: oklch(59% 0.046 85deg);
+  --color-base-600: oklch(46% 0.038 85deg);
+  --color-base-700: oklch(34% 0.026 85deg);
+  --color-base-800: oklch(26% 0.021 85deg);
+  --color-base-900: oklch(19% 0.017 85deg);
+  --color-base-950: oklch(12% 0.018 85deg);
+
+  // Content — signage graphite (h265), 46-55% of the sRGB ceiling at each tier
+  --color-base-content: oklch(20% 0.066 265deg);            // Lc 99.6 / 16.94:1
+  --color-base-content-secondary: oklch(40% 0.152 265deg);  // Lc 86.4 / 8.86:1
+  --color-base-content-tertiary: oklch(52% 0.147 265deg);   // Lc 72.7 / 5.23:1
+  --color-muted: oklch(52% 0.147 265deg);
+  --color-text-disabled: oklch(72% 0.080 265deg);           // Lc 43.8 / 2.31:1
+
+  // Surfaces — keep the canvas hue; a plate is glazed tile, not paper white
+  --color-surface: oklch(98.8% 0.011 85deg);
+  --color-surface-elevated: oklch(99.4% 0.006 85deg);
+  --color-surface-overlay: oklch(20% 0.060 265deg / 0.62);
+
+  // Borders — a ruled edge, not a suggestion: 3.03:1 clears WCAG 1.4.11's
+  // non-text floor so every Input/Card boundary is a real drawn line. Weight
+  // stays the house 1px hairline; only the colour is assertive.
+  --color-border: oklch(65% 0.086 265deg);                  // Lc 54.8 / 3.03:1
+  --color-border-hover: oklch(55% 0.115 265deg);
+
+  --shadow-color: oklch(30% 0.090 265deg / 0.10);
+  --shadow-color-strong: oklch(24% 0.080 265deg / 0.20);
+
+  // Primary — A/C/E route blue. Base sits lighter than the literal #0039A6
+  // (L40) so hover/active have two darker steps to fall through; active lands
+  // back on the reference lightness.
+  --color-primary: oklch(48% 0.209 261deg);        // white content 6.87:1
+  --color-primary-hover: oklch(43% 0.188 261deg);
+  --color-primary-active: oklch(38% 0.168 261deg);
+  --color-primary-content: oklch(100% 0 0deg);
+
+  // Secondary — 7 route purple
+  --color-secondary: oklch(52% 0.234 332deg);      // white content 6.31:1
+  --color-secondary-hover: oklch(47% 0.211 332deg);
+  --color-secondary-active: oklch(42% 0.190 332deg);
+  --color-secondary-content: oklch(100% 0 0deg);
+
+  // Accent — N/Q/R/W route yellow, the one fill in the theme that carries dark
+  // ink. Fitted to the reference lightness (L86) rather than darkened for
+  // white content: a yellow bullet with black type is the signage form itself.
+  --color-accent: oklch(86% 0.170 92deg);
+  --color-accent-hover: oklch(82% 0.167 92deg);
+  --color-accent-active: oklch(78% 0.158 92deg);
+  --color-accent-content: oklch(18% 0.046 92deg);  // Lc 78.5 / 12.27:1 on accent
+  --color-accent-bg: oklch(94% 0.073 92deg);
+
+  // Success — 4/5/6 route green
+  --color-success: oklch(50% 0.144 148deg);
+  --color-success-hover: oklch(45% 0.130 148deg);
+  --color-success-active: oklch(40% 0.116 148deg);
+  --color-success-bg: oklch(94% 0.092 148deg);
+  --color-success-content: oklch(100% 0 0deg);
+
+  // Warning — Bakerloo amber. Held at L79 rather than the more saturated L76:
+  // the extra lightness buys its ink Lc 64.5 (clear of the Lc 60 UI floor)
+  // where L76 scored 59.4, and hover/active recover chroma on the way down.
+  --color-warning: oklch(79% 0.150 62deg);
+  --color-warning-hover: oklch(74% 0.169 62deg);
+  --color-warning-active: oklch(69% 0.157 62deg);
+  --color-warning-bg: oklch(94% 0.034 62deg);
+  --color-warning-content: oklch(18% 0.051 62deg);
+
+  // Error — 1/2/3 route red, the palette's most saturated fill
+  --color-error: oklch(56% 0.229 29deg);           // white content 5.22:1
+  --color-error-hover: oklch(51% 0.204 29deg);
+  --color-error-active: oklch(46% 0.188 29deg);
+  --color-error-bg: oklch(94% 0.026 29deg);
+  --color-error-content: oklch(100% 0 0deg);
+
+  // Info — T route teal, 42deg off primary so the two blues never trade places
+  --color-info: oklch(52% 0.093 219deg);
+  --color-info-hover: oklch(47% 0.085 219deg);
+  --color-info-active: oklch(42% 0.076 219deg);
+  --color-info-bg: oklch(94% 0.038 219deg);
+  --color-info-content: oklch(100% 0 0deg);
+
+  --focus-ring-color: oklch(48% 0.209 261deg / 0.45);
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  // ==========================================================================
+  // TRANSIT DESIGN TOKENS
+  // ==========================================================================
+
+  --shadow-xs: 0 1px 0 var(--shadow-color);
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 2px 4px var(--shadow-color);
+  --shadow-lg: 0 4px 8px var(--shadow-color-strong);
+  --shadow-xl: 0 8px 16px var(--shadow-color-strong);
+  --shadow-2xl: 0 14px 28px var(--shadow-color-strong);
+  --shadow-primary: 0 6px 18px 0 oklch(48% 0.209 261deg / 0.30);
+  --shadow-accent: 0 6px 18px 0 oklch(86% 0.170 92deg / 0.38);
+
+  --color-header-bg: var(--color-base-100);
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
+
+  --border-width: 1px;
+  --border-width-thick: 2px;
+
+  // See header rationale.
+  --ease-out: cubic-bezier(0.22, 0.85, 0.18, 1);
+  --spring-stiff: 600, 48, 1;
+}

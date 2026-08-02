@@ -1,0 +1,176 @@
+// =============================================================================
+// REGATTA THEME
+// =============================================================================
+// Reference: a yacht club's flag locker and a modern racing team's livery —
+// white sailcloth canvas, navy rope/rigging ink, and a signal-flag hoist of
+// cobalt (primary), brass hardware (secondary) and racing red (accent). The
+// device is flag-hoist colour logic and deck-hardware precision, expressed
+// only in token values: no literal stripes, rope or anchor motifs.
+//
+// Hue plan (>=20deg separation everywhere, brand vs. semantic and semantic vs.
+// semantic): primary 262 cobalt, secondary 85 brass, accent 32 racing red;
+// error 8 crimson, warning 58 ochre, success 150, info 228. Accent (32) and
+// error (8) are the tightest pair at 24deg, so they are additionally split by
+// value — accent sits 6% L lighter — and red stays scarce by role (accent is
+// editorial, <=2 uses/page).
+//
+// Every brand/semantic literal is fit to ~97-99% of the true sRGB chroma
+// ceiling at its own L/h (bisected, not estimated), and the -bg washes to
+// 84-87% of theirs, so nothing here is a grey-tinted approximation of the
+// colour it names. Cobalt lands on the gamut cusp for 262deg (L54 is where
+// chroma peaks at 0.253) which is also the darkest point that still keeps
+// sailcloth ink above WCAG AA on the fill — the constraint and the maximum
+// coincide, so primary needed no compromise.
+//
+// Secondary is the one light-base/dark-ink family (brass hardware is bright
+// by nature; a 50%-L brass is just brown). Its hover/active darken like every
+// other family, which costs ink contrast rather than gaining it — Lc 74.6 ->
+// 69.3 -> 64.2, still clear of the Lc60 UI-text floor at the worst state.
+//
+// Fonts: Epilogue (sans) — a low-contrast grotesque with flat, clipped
+// terminals and tight apertures that read as machined rather than humanist,
+// matching deck-hardware precision at 11-15px. Inconsolata (mono) — narrow,
+// upright, high-legibility fixed pitch, the register of a printed race sheet
+// or instrument readout rather than a code editor.
+
+[data-theme="regatta"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Epilogue", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Inconsolata", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Background — sailcloth, not paper: a trace of 250deg cast at 71% of the
+  // in-gamut chroma available this close to white.
+  --color-background: oklch(98.3% 0.006 250deg);
+
+  // Base scale — one navy-rigging hue (250deg) end to end. Chroma peaks in the
+  // 600-900 band where the ramp does structural work and thins toward both
+  // ends so near-white steps stay sailcloth and near-black stays rope, not ink.
+  --color-base-50:  oklch(99.5% 0.002 250deg);
+  --color-base-100: oklch(97.5% 0.009 250deg);
+  --color-base-200: oklch(94%   0.016 250deg);
+  --color-base-300: oklch(89%   0.026 250deg);
+  --color-base-400: oklch(78%   0.045 250deg);
+  --color-base-500: oklch(64%   0.070 250deg);
+  --color-base-600: oklch(52%   0.090 250deg);
+  --color-base-700: oklch(41%   0.085 250deg);
+  --color-base-800: oklch(31%   0.070 250deg);
+  --color-base-900: oklch(22%   0.055 250deg);
+  --color-base-950: oklch(14%   0.038 250deg);
+
+  // Content — navy-log ink at 255deg, deliberately off the 250deg paper hue so
+  // text reads as ink laid on sailcloth rather than a darker sail. Every tier
+  // sits at exactly 60% of its in-gamut ceiling: enough that the blue is
+  // legible as a colour, short of the point where body copy turns violet.
+  --color-base-content:           oklch(20% 0.047 255deg); // Lc 102.7 / 17.6:1
+  --color-base-content-secondary: oklch(36% 0.073 255deg); // Lc  92.9 / 10.6:1
+  --color-base-content-tertiary:  oklch(50% 0.100 255deg); // Lc  77.7 /  5.8:1
+  --color-muted:                  oklch(50% 0.100 255deg); // aliases tertiary
+  --color-text-disabled:          oklch(72% 0.089 255deg); // Lc  46.6 /  2.4:1
+
+  // Surfaces keep the background's cast — cards are cut from the same cloth,
+  // separated by lightness only.
+  --color-surface:          oklch(99.2% 0.004 250deg);
+  --color-surface-elevated: oklch(99.6% 0.002 250deg);
+  --color-surface-overlay:  oklch(16%   0.050 255deg / 0.55);
+
+  // Border — a scribed hairline, at half the ceiling so the line is visibly
+  // navy at 1px. Hover jumps to rigging-weight chroma rather than just darker.
+  --color-border:       oklch(84% 0.041 250deg); // Lc 26.1 on background
+  --color-border-hover: oklch(66% 0.130 258deg);
+
+  // Primary — regatta cobalt, on the 262deg gamut cusp (see header).
+  --color-primary:         oklch(54% 0.250 262deg);
+  --color-primary-hover:   oklch(49% 0.228 262deg);
+  --color-primary-active:  oklch(44% 0.205 262deg);
+  --color-primary-content: oklch(98.6% 0.006 250deg);
+
+  // Secondary — brass deck hardware: the theme's only light-base family, with
+  // near-black brass-shadow ink for content (see header).
+  --color-secondary:         oklch(84% 0.171 85deg);
+  --color-secondary-hover:   oklch(81% 0.164 85deg);
+  --color-secondary-active:  oklch(78% 0.158 85deg);
+  --color-secondary-content: oklch(18% 0.032 85deg);
+
+  // Accent — racing red, the flag on the hoist. Editorial, kept scarce.
+  --color-accent:         oklch(54% 0.205 32deg);
+  --color-accent-hover:   oklch(49% 0.186 32deg);
+  --color-accent-active:  oklch(44% 0.168 32deg);
+  --color-accent-content: oklch(98.6% 0.006 250deg);
+  --color-accent-bg:      oklch(95%  0.022 32deg);
+
+  // Semantics — each base is dark enough to double as an inline status
+  // colour on the canvas (all clear Lc70+ as text), not only as a pill fill.
+  --color-success:         oklch(51% 0.140 150deg);
+  --color-success-hover:   oklch(46% 0.126 150deg);
+  --color-success-active:  oklch(41% 0.113 150deg);
+  --color-success-bg:      oklch(95% 0.071 150deg);
+  --color-success-content: oklch(98.6% 0.006 250deg);
+
+  --color-warning:         oklch(52% 0.124 58deg);
+  --color-warning-hover:   oklch(47% 0.112 58deg);
+  --color-warning-active:  oklch(42% 0.101 58deg);
+  --color-warning-bg:      oklch(95% 0.026 58deg);
+  --color-warning-content: oklch(98.6% 0.006 250deg);
+
+  --color-error:         oklch(48% 0.192 8deg);
+  --color-error-hover:   oklch(43% 0.172 8deg);
+  --color-error-active:  oklch(38% 0.153 8deg);
+  --color-error-bg:      oklch(95% 0.022 8deg);
+  --color-error-content: oklch(98.6% 0.006 250deg);
+
+  // Info 228deg rather than a second cobalt: 34deg clear of primary, and the
+  // sRGB blue valley here means its ceiling is only ~0.10 — this token is at
+  // 98% of it, not softened.
+  --color-info:         oklch(52% 0.100 228deg);
+  --color-info-hover:   oklch(47% 0.091 228deg);
+  --color-info-active:  oklch(42% 0.081 228deg);
+  --color-info-bg:      oklch(95% 0.026 228deg);
+  --color-info-content: oklch(98.6% 0.006 250deg);
+
+  // Shadows — hard midday light on a deck, one source overhead. Blur is held
+  // near 1.6-1.8x the offset (the house formula runs 2.5-3x) so edges stay
+  // legible instead of hazing out, and the ink is the ramp's own navy.
+  --shadow-color:        oklch(35% 0.090 255deg / 0.12);
+  --shadow-color-strong: oklch(30% 0.100 255deg / 0.24);
+
+  --shadow-xs: 0 1px 1px 0 oklch(35% 0.090 255deg / 0.10);
+  --shadow-sm:
+    0 1px 2px 0 oklch(35% 0.090 255deg / 0.12),
+    0 1px 1px -1px oklch(35% 0.090 255deg / 0.10);
+  --shadow-md:
+    0 3px 5px -2px oklch(35% 0.090 255deg / 0.14),
+    0 1px 2px -1px oklch(35% 0.090 255deg / 0.10);
+  --shadow-lg:
+    0 8px 13px -6px oklch(33% 0.095 255deg / 0.17),
+    0 3px 5px -2px oklch(35% 0.090 255deg / 0.10);
+  --shadow-xl:
+    0 16px 26px -12px oklch(30% 0.100 255deg / 0.22),
+    0 6px 10px -4px oklch(33% 0.095 255deg / 0.12);
+
+  --shadow-primary: 0 6px 18px 0 oklch(54% 0.250 262deg / 0.32);
+  --shadow-accent:  0 6px 18px 0 oklch(54% 0.205 32deg / 0.30);
+
+  --focus-ring-color: oklch(54% 0.250 262deg / 0.45);
+
+  --color-header-bg: var(--color-base-100);
+
+  // Radius — machined chamfer, not a soft fillet: tighter than the house
+  // ladder (2/4/8/12/20) at every step, but never 0, because a chamfered edge
+  // is what deck hardware actually has. xs/sm stay under 8px so Checkbox's
+  // 16px box isn't clipped into a circle.
+  --radius-xs:  1px;
+  --radius-sm:  2px;
+  --radius-md:  5px;
+  --radius-lg:  8px;
+  --radius-xl: 12px;
+
+  // Motion — a taut line reaches tension and stops dead; it does not glide in
+  // or wobble. --ease-out is front-loaded harder than the house curve (same
+  // durations, only the shape changes) and --spring-stiff (Tabs indicator) is
+  // pushed from zeta 0.75 to 1.00 — critically damped, zero overshoot.
+  --ease-out:      cubic-bezier(0.16, 0.9, 0.24, 1);
+  --spring-stiff:  440, 42, 1;
+}

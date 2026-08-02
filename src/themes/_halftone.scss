@@ -1,0 +1,182 @@
+// =============================================================================
+// HALFTONE THEME
+// =============================================================================
+// Reference: four-colour offset comic printing, Ben-Day era (Lichtenstein's
+// source material — 1960s newsstand comics on groundwood newsprint). The whole
+// palette is built as a press, not as a mood board: three ink plates plus a
+// key. Poster red (28deg) is the M+Y overprint, ink blue (258deg) the deep
+// blue plate, sun yellow (103deg) the Y plate; process cyan (235deg) and amber
+// (75deg) are the light plates. Nothing here draws literal dots — the device
+// is entirely in the token values.
+//
+// Two content polarities, decided by the press rather than by taste: in offset
+// there are exactly two things that can sit on top of an ink block — the paper
+// showing through (a knockout) or the black key plate. So the dark plates
+// (primary/secondary/success/error) take paper-white content and the light
+// plates (accent/warning/info) take key ink. Every fill is fit to 93-99% of
+// the true in-gamut sRGB chroma at its own L/h.
+//
+// Error is the magenta plate at 355deg, not "primary red again" — 33deg clear
+// of primary's 28deg and a visibly different crimson-magenta register, which
+// is the separation the whole point of having a red primary makes expensive.
+// Hue spacing: primary 28 / error 355 / warning 75 / accent 103 / success 155
+// / info 235 / secondary 258 — every adjacent pair >=20deg.
+//
+// Ink hue 262deg: a press "rich black" is K laid over the cyan/blue plate, so
+// the key ink carries the blue plate's own cast rather than being neutral. The
+// content ramp runs at 45-54% of its chroma ceiling, high enough that body
+// copy reads as blue-black ink on paper and not as grey.
+//
+// Paper is newsprint at 95deg, not white — a faint warm groundwood cast that
+// the cool ink sits against. base-50..950 stay on the ink hue: they are the
+// key plate at 5%/10%/25%/50% dot coverage, which is a different material from
+// the paper and shouldn't share its tint.
+//
+// Fonts: Baloo 2 (a heavy-set rounded display sans with the soft, inflated
+// terminals of hand-lettered comic balloon type, and a 400-800 variable range
+// that covers the body/heading/stat ladder) with Syne Mono (a wonky, slightly
+// mis-drawn monospace — the letterpress-slug irregularity that a clean grid
+// mono would lose) for eyebrows and meta.
+//
+// Shadows: a small real blur in key ink, plus a hard un-blurred red fringe on
+// the right edge of every step — plate misregistration, the printing artefact
+// that most reads as "this was run through a press." Deliberately not brutal's
+// flat zero-blur black offset. Radius stays 1-8px (ruled panel borders have a
+// corner, just barely) rather than brutal's absolute zero.
+
+[data-theme="halftone"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Baloo 2", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Syne Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Newsprint stock — warm groundwood, never pure white.
+  --color-background: oklch(98% 0.008 95deg);
+
+  // Key plate at rising dot coverage (ink hue, not paper hue — see header).
+  --color-base-50:  oklch(99.2% 0.003 262deg);
+  --color-base-100: oklch(96%   0.008 262deg);
+  --color-base-200: oklch(91%   0.014 262deg);
+  --color-base-300: oklch(84%   0.024 262deg);
+  --color-base-400: oklch(72%   0.038 262deg);
+  --color-base-500: oklch(60%   0.050 262deg);
+  --color-base-600: oklch(48%   0.056 262deg);
+  --color-base-700: oklch(37%   0.052 262deg);
+  --color-base-800: oklch(27%   0.046 262deg);
+  --color-base-900: oklch(19%   0.038 262deg);
+  --color-base-950: oklch(11%   0.026 262deg);
+
+  // Content — rich-black ink at 53/54/46/45% of its chroma ceiling.
+  --color-base-content:           oklch(15% 0.062 262deg); // Lc 101.5 / 18.62:1
+  --color-base-content-secondary: oklch(34% 0.090 262deg); // Lc  92.8 / 11.17:1
+  --color-base-content-tertiary:  oklch(48% 0.105 262deg); // Lc  78.4 /  6.23:1
+  --color-muted:                  oklch(48% 0.105 262deg); // aliases tertiary
+  --color-text-disabled:          oklch(72% 0.065 262deg); // Lc  44.7 /  2.34:1
+
+  --color-surface:          oklch(99.4% 0.004 95deg);
+  --color-surface-elevated: oklch(99.8% 0.002 95deg);
+  --color-surface-overlay:  oklch(14% 0.045 262deg / 0.55);
+
+  // Keyline, not hairline-as-afterthought: Lc 62.9 / 3.75:1 clears WCAG
+  // 1.4.11's 3:1 non-text bar, which most themes' borders in this catalog
+  // don't. Hover inks it up to near-key-black rather than adding weight.
+  --color-border:       oklch(60% 0.090 262deg); // Lc 62.9 / 3.75:1
+  --color-border-hover: oklch(20% 0.070 262deg); // Lc 100.6 / 17.21:1
+
+  --shadow-color:        oklch(20% 0.050 262deg / 0.22);
+  --shadow-color-strong: oklch(15% 0.055 262deg / 0.36);
+
+  // Primary — poster red, the M+Y overprint.
+  --color-primary:         oklch(56% 0.226 28deg);  // content Lc -76.5 / 5.07:1
+  --color-primary-hover:   oklch(50% 0.202 28deg);
+  --color-primary-active:  oklch(44% 0.179 28deg);
+  --color-primary-content: oklch(99% 0.004 95deg);
+
+  // Secondary — the deep blue plate.
+  --color-secondary:         oklch(51% 0.187 258deg); // content Lc -81.7 / 5.73:1
+  --color-secondary-hover:   oklch(45% 0.166 258deg);
+  --color-secondary-active:  oklch(39% 0.145 258deg);
+  --color-secondary-content: oklch(99% 0.004 95deg);
+
+  // Accent — the yellow plate, key ink on top. Darkening for hover/active
+  // costs ink contrast (Lc 87.4 -> 77.9 -> 69.2); every step still clears the
+  // Lc 60 UI-text floor, so the usual press-gets-darker direction stands.
+  --color-accent:         oklch(90% 0.187 103deg);
+  --color-accent-hover:   oklch(85% 0.176 103deg);
+  --color-accent-active:  oklch(80% 0.166 103deg);
+  --color-accent-content: oklch(13% 0.042 262deg);
+  --color-accent-bg:      oklch(94% 0.128 103deg);
+
+  --color-success:         oklch(52% 0.128 155deg); // C+Y overprint
+  --color-success-hover:   oklch(46% 0.113 155deg);
+  --color-success-active:  oklch(40% 0.099 155deg);
+  --color-success-bg:      oklch(94% 0.078 155deg);
+  --color-success-content: oklch(99% 0.004 95deg);
+
+  // Warning — light amber plate; its lightness ladder is compressed (80/78/76)
+  // because the sRGB ceiling at 75deg collapses fast below L76 and key ink on
+  // the active step would drop under Lc 60.
+  --color-warning:         oklch(80% 0.166 75deg);
+  --color-warning-hover:   oklch(78% 0.162 75deg);
+  --color-warning-active:  oklch(76% 0.158 75deg);
+  --color-warning-bg:      oklch(94% 0.040 75deg);
+  --color-warning-content: oklch(13% 0.042 262deg);
+
+  // Error — the magenta plate itself, 33deg off primary (see header).
+  --color-error:         oklch(54% 0.219 355deg);
+  --color-error-hover:   oklch(48% 0.195 355deg);
+  --color-error-active:  oklch(42% 0.172 355deg);
+  --color-error-bg:      oklch(94% 0.028 355deg);
+  --color-error-content: oklch(99% 0.004 95deg);
+
+  // Info — process cyan. Chroma climbs as it darkens (0.123 -> 0.147) because
+  // the gamut widens downward here; the press-gets-stronger read is the same.
+  --color-info:         oklch(79% 0.123 235deg);
+  --color-info-hover:   oklch(77% 0.135 235deg);
+  --color-info-active:  oklch(75% 0.147 235deg);
+  --color-info-bg:      oklch(94% 0.028 235deg);
+  --color-info-content: oklch(13% 0.042 262deg);
+
+  --focus-ring-color: oklch(56% 0.226 28deg / 0.45);
+  --focus-ring-width: 3px;
+
+  --color-header-bg: var(--color-base-100);
+
+  // Misregistration: key-ink cast with a hard, un-blurred red plate edge on
+  // the right of each step, growing with elevation.
+  --shadow-xs:
+    0 1px 2px 0 oklch(20% 0.050 262deg / 0.18),
+    1px 0 0 0 oklch(56% 0.226 28deg / 0.16);
+  --shadow-sm:
+    0 2px 4px -1px oklch(20% 0.050 262deg / 0.20),
+    2px 0 0 0 oklch(56% 0.226 28deg / 0.18);
+  --shadow-md:
+    0 4px 8px -2px oklch(20% 0.050 262deg / 0.22),
+    3px 0 0 0 oklch(56% 0.226 28deg / 0.20);
+  --shadow-lg:
+    0 8px 14px -3px oklch(18% 0.052 262deg / 0.26),
+    4px 0 0 0 oklch(56% 0.226 28deg / 0.22);
+  --shadow-xl:
+    0 14px 24px -5px oklch(15% 0.055 262deg / 0.32),
+    6px 0 0 0 oklch(56% 0.226 28deg / 0.24);
+  --shadow-primary: 0 6px 16px 0 oklch(56% 0.226 28deg / 0.34);
+  --shadow-accent:  0 6px 16px 0 oklch(90% 0.187 103deg / 0.40);
+
+  // Panel corners are ruled, not rounded — but a printed rule has a corner,
+  // which is what separates this from brutal's absolute zero.
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 5px;
+  --radius-xl: 8px;
+
+  // Motion — a press stamp, not a glide. --ease-out holds near-constant
+  // velocity and then arrives dead (the platen hitting the paper), and
+  // --spring-gentle (Button/LinkButton press) drops to damping ratio ~0.56,
+  // a visible ink-stamp rebound — deliberately the opposite direction from
+  // brutal's near-critical 0.89 stamp and neon's 0.90 snap.
+  --ease-out:      cubic-bezier(0.32, 0.72, 0.18, 1);
+  --spring-gentle: 380, 22, 1;
+}

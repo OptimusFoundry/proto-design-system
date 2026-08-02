@@ -1,0 +1,189 @@
+// =============================================================================
+// ESPRESSO THEME (ROASTERY COUNTER)
+// =============================================================================
+// Reference: a third-wave specialty roastery — unbleached-paper cream at the
+// counter, the roast-colour gradation from crema to French roast carrying the
+// ink and the structural brand, the copper glow through a sample-roaster's
+// viewing window as the accent, and the bright cupping-note register of a
+// hand-lettered tasting chalkboard as the secondary. Not diner brown-on-brown:
+// the whole point of a specialty menu board is that the tasting notes are
+// *vivid* against the roast.
+//
+// The warm family (roast H28 -> crema-ink H42 -> copper H55) is one deliberate
+// continuous roast gradation rather than three unrelated hues — that gradation
+// IS the reference, the same way paper's premise is a two-material paper/ink
+// split. What breaks out of it is the citrus-green secondary (H134) and the
+// cream canvas (H86), which is exactly the chalkboard's own contrast move.
+// Primary stays 30deg off the ink hue and roughly 3x its chroma, so a filled
+// button never reads as a darker run of body copy.
+//
+// Semantic hues are placed for real separation from the brand triad and from
+// each other: error moved to the 340-360 branch (352deg, a cupping-note berry
+// red) rather than the usual 25deg, because the roast primary already owns
+// that end of the wheel — at 25deg the two would have sat 3deg apart. Warning
+// 88deg sits 33deg off copper; success 158deg sits 24deg off the citrus
+// secondary, far enough that a green Tag never reads as a secondary button.
+//
+// Every brand and semantic literal is fitted to 94-99% of the true sRGB chroma
+// ceiling at its own L/h (swept per hue, then contrast-checked), and the
+// -bg washes to 82-88% — chroma this theme can't reach is gamut, not taste.
+// Dark fills darken on hover/active and track the ceiling down with lightness,
+// so states intensify rather than wash toward the canvas; warning is the one
+// light-fill/dark-ink family, so it lightens instead (the only direction that
+// grows contrast for that polarity).
+//
+// Type: Familjen Grotesk + PT Mono. The grotesque has a slightly quirky,
+// drawn-not-generated skeleton (the flared leg, the open apertures) that reads
+// as hand-lettered signage without dropping to a script; PT Mono is a narrow,
+// low-contrast machine face — the roast-log/scale-readout register against it.
+//
+// Accepted trade-off: --color-warning as text directly on --color-warning-bg
+// scores only Lc 20.4 — no component renders that pair (Tag's warning variant
+// uses --color-warning-content, Lc 92.1; Banner uses --color-base-content,
+// Lc 92.8), and darkening a bright amber far enough to double as body ink
+// would cost the "warning yellow" identity. Same call paper and ember made.
+
+[data-theme="espresso"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Familjen Grotesk", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "PT Mono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Canvas — unbleached filter paper, chroma-committed rather than an
+  // off-white hedge.
+  --color-background: oklch(96.5% 0.028 86deg);
+
+  // Base scale (counter/paper family) — hue rotates 86deg -> 40deg as it
+  // darkens, so the ramp physically walks the roast gradation from raw paper
+  // through cinnamon into French roast instead of fading to gray.
+  --color-base-50:  oklch(96.5% 0.028 86deg);
+  --color-base-100: oklch(93.5% 0.034 84deg);
+  --color-base-200: oklch(89%   0.040 80deg);
+  --color-base-300: oklch(83%   0.044 75deg);
+  --color-base-400: oklch(68%   0.048 68deg);
+  --color-base-500: oklch(53%   0.046 60deg);
+  --color-base-600: oklch(41%   0.042 54deg);
+  --color-base-700: oklch(31%   0.036 48deg);
+  --color-base-800: oklch(22%   0.030 44deg);
+  --color-base-900: oklch(15%   0.024 42deg);
+  --color-base-950: oklch(9.5%  0.018 40deg);
+
+  // Content ink (crema family) — hue held at 42deg, its own material against
+  // the H86 canvas. Chroma sits at 49-61% of the sRGB ceiling per tier: high
+  // enough that body copy is unmistakably roast-brown rather than warm gray,
+  // and well under primary's 0.126 so it can't be mistaken for a link.
+  --color-base-content:           oklch(21% 0.042 42deg);  // Lc 97.7, 16.21:1 — 61% of ceiling
+  --color-base-content-secondary: oklch(38% 0.058 42deg);  // Lc 86.8,  9.27:1 — 50%
+  --color-base-content-tertiary:  oklch(47% 0.070 42deg);  // Lc 77.4,  6.38:1 — 49%
+  --color-muted:                  oklch(47% 0.070 42deg);  // aliases tertiary
+  --color-text-disabled:          oklch(66% 0.075 42deg);  // non-content only — Lc 52.3, 2.90:1
+
+  // Surfaces keep the canvas chroma — a cup on a counter is still the same
+  // warm stock, never a white cut-out.
+  --color-surface:          oklch(98%   0.018 86deg);
+  --color-surface-elevated: oklch(99.2% 0.008 86deg);
+  --color-surface-overlay:  oklch(15% 0.024 42deg / 0.48);
+
+  // Borders carry the roast tint and clear WCAG 1.4.11's 3:1 non-text floor
+  // at hairline weight (the gap paper had to repair after the fact).
+  --color-border:       oklch(62% 0.055 62deg);  // Lc 57.6, 3.34:1
+  --color-border-hover: oklch(52% 0.058 58deg);  // Lc 71.0, 5.05:1
+
+  --shadow-color:        oklch(28% 0.055 45deg / 0.10);
+  --shadow-color-strong: oklch(24% 0.060 42deg / 0.18);
+
+  // Primary — French-roast brown, 95% of the H28 ceiling at L32. Hover/active
+  // darken and ride the ceiling down (98%/99%), so the fill gets denser rather
+  // than duller. Content is the canvas cream, never white.
+  --color-primary:         oklch(32%   0.126 28deg);  // Lc -96.0 / 12.47:1
+  --color-primary-hover:   oklch(27%   0.111 28deg);  // Lc -98.5 / 14.55:1
+  --color-primary-active:  oklch(22.5% 0.094 28deg);  // Lc -100.2 / 16.29:1
+  --color-primary-content: oklch(97.5% 0.020 86deg);
+
+  // Secondary — chalkboard citrus green, the tasting-note register. 96% of the
+  // H134 ceiling; the one cool-side family in the theme and the reason this
+  // doesn't collapse into brown-on-brown.
+  --color-secondary:         oklch(50% 0.138 134deg);  // Lc -78.1 / 5.32:1
+  --color-secondary-hover:   oklch(44% 0.124 134deg);  // Lc -84.9 / 6.93:1
+  --color-secondary-active:  oklch(38% 0.108 134deg);  // Lc -90.7 / 8.95:1
+  --color-secondary-content: oklch(97.5% 0.020 86deg);
+
+  // Accent — copper through the sample-roaster window, 97% of the H55 ceiling.
+  // Dark-base/light-content like primary: a mid-lightness copper can't hold
+  // dark ink at Lc60 without giving up the chroma that makes it copper.
+  --color-accent:         oklch(50% 0.121 55deg);  // Lc -80.2 / 5.81:1
+  --color-accent-hover:   oklch(44% 0.108 55deg);  // Lc -86.6 / 7.51:1
+  --color-accent-active:  oklch(38% 0.094 55deg);  // Lc -92.0 / 9.60:1
+  --color-accent-content: oklch(97.5% 0.020 86deg);
+  --color-accent-bg:      oklch(93% 0.037 55deg);  // 88% of ceiling — a real copper wash
+
+  // Semantics — functional hues, placed for separation (see header), each
+  // fitted to its own ceiling rather than a shared "safe" chroma.
+  --color-success:         oklch(47% 0.104 158deg);
+  --color-success-hover:   oklch(42% 0.094 158deg);
+  --color-success-active:  oklch(37% 0.083 158deg);
+  --color-success-bg:      oklch(94% 0.078 158deg);
+  --color-success-content: oklch(97.5% 0.020 86deg);
+  // Warning is the only light-fill family, so hover/active LIGHTEN — for a
+  // light fill under dark ink, darkening moves the two together and loses
+  // contrast. Lc 69.5 / 75.1 / 80.3 across the three states.
+  --color-warning:         oklch(82% 0.162 88deg);
+  --color-warning-hover:   oklch(85% 0.155 88deg);
+  --color-warning-active:  oklch(88% 0.144 88deg);
+  --color-warning-bg:      oklch(94% 0.060 88deg);
+  --color-warning-content: oklch(23% 0.048 60deg);
+  // Error at 352deg, not the conventional 25deg — the roast primary owns
+  // 28deg, and a 3deg gap would make a destructive button indistinguishable
+  // from the default one.
+  --color-error:         oklch(48% 0.192 352deg);
+  --color-error-hover:   oklch(43% 0.176 352deg);
+  --color-error-active:  oklch(38% 0.155 352deg);
+  --color-error-bg:      oklch(94% 0.030 352deg);
+  --color-error-content: oklch(97.5% 0.020 86deg);
+  --color-info:         oklch(50% 0.098 232deg);
+  --color-info-hover:   oklch(45% 0.090 232deg);
+  --color-info-active:  oklch(40% 0.082 232deg);
+  --color-info-bg:      oklch(94% 0.030 232deg);
+  --color-info-content: oklch(97.5% 0.020 86deg);
+
+  --focus-ring-color: oklch(42% 0.155 34deg / 0.45);
+
+  --color-header-bg: var(--color-base-100);
+
+  // ==========================================================================
+  // ESPRESSO DESIGN TOKENS
+  // ==========================================================================
+
+  // Roast-brown cast, one implied overhead light — the negative-spread soft
+  // recipe (a diffuse shop-window falloff), deliberately not paper's stacked
+  // Material elevation math.
+  --shadow-xs: 0 1px 2px -1px oklch(28% 0.055 45deg / 0.10);
+  --shadow-sm: 0 2px 5px -2px oklch(28% 0.055 45deg / 0.12), 0 1px 2px -1px oklch(28% 0.055 45deg / 0.07);
+  --shadow-md: 0 8px 18px -6px oklch(28% 0.055 45deg / 0.14), 0 2px 5px -3px oklch(28% 0.055 45deg / 0.08);
+  --shadow-lg: 0 18px 32px -10px oklch(26% 0.058 44deg / 0.17), 0 5px 10px -5px oklch(26% 0.058 44deg / 0.09);
+  --shadow-xl: 0 30px 48px -14px oklch(24% 0.060 42deg / 0.22), 0 10px 18px -9px oklch(24% 0.060 42deg / 0.11);
+  --shadow-primary: 0 8px 24px 0 oklch(32% 0.126 28deg / 0.32);
+  --shadow-accent:  0 8px 24px 0 oklch(50% 0.121 55deg / 0.30);
+
+  // Radius — hand-trimmed, not machine-perfect: a touch softer than the house
+  // scale but short of botanical's organic curve, so cards read as cut card
+  // stock rather than pebbles.
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --radius-xl: 18px;
+
+  // Motion — small-batch pace: deliberate, never rushed, and it settles. Two
+  // overrides only. --duration-normal 240ms -> 260ms slows the Modal/Toast/
+  // Banner entrances and the Grid/Stack/List mount stagger just under a
+  // tenth of a second, the difference between a pour and a pump.
+  // --spring-gentle (Button/LinkButton press) goes to zeta 0.75 — enough give
+  // to feel like a tamp compressing grounds, none of the house value's toy
+  // rebound. --duration-fast (150ms hover) and --duration-instant (focus ring)
+  // are never touched.
+  --duration-normal: 260ms;
+  --spring-gentle: 180, 20, 1;
+}
