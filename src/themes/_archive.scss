@@ -33,8 +33,8 @@
 // (Compositions.module.scss's upgrade banner paints default body content,
 // not accent-content, on accent-bg) — same documented exception _dark.scss
 // takes — but with this violet hue's gamut shape it scores well anyway
-// (Lc -97.5 / 15.55:1). The real pairing, base-content on accent-bg, scores
-// Lc -86.7 / 13.31:1.
+// (Lc -97.1 / 15.90:1). The real pairing, base-content on accent-bg, scores
+// Lc -86.4 / 13.60:1.
 //
 // Font: an all-monospace theme by brief (library microfilm terminal — call
 // numbers, frame counters, index cards) — IBM Plex Mono for both roles,
@@ -90,60 +90,61 @@
   --color-border:       oklch(50% 0.060 70deg);
   --color-border-hover: oklch(62% 0.100 70deg);
 
-  // Primary — the phosphor itself: bright fill (this hue's sRGB gamut
-  // peaks high-L, same shape as dark.scss's accent/warning) + near-black
-  // content. Lc 64.2/10.04:1.
-  --color-primary:         oklch(78% 0.140 70deg);
-  --color-primary-hover:   oklch(85% 0.100 70deg);
-  --color-primary-active:  oklch(68% 0.130 70deg);
-  --color-primary-content: oklch(10% 0.020 70deg);
+  // One-hue does not mean one-intensity. Every phosphor-hued role now sits
+  // at ~97% of the sRGB chroma ceiling for its own lightness (primary was at
+  // 83%, secondary 78-85%) — a tube's emission line is a narrow, fully
+  // saturated band, and a mid-chroma amber reads as a beige screenshot of a
+  // microfilm reader rather than the reader itself. #f9a219, was #f0a646.
+  --color-primary:         oklch(78% 0.164 70deg);
+  --color-primary-hover:   oklch(85% 0.114 70deg);
+  --color-primary-active:  oklch(68% 0.143 70deg);
+  --color-primary-content: oklch(8% 0.080 70deg);
 
   // Secondary — same phosphor hue, pulled deep + quiet (a dimmer region
   // of the same screen) instead of duplicating primary's brightness.
-  // Lc -85.1/7.65:1, was Lc 36.6 (below the UI-text floor) and out of gamut.
-  --color-secondary:         oklch(42% 0.075 70deg);
-  --color-secondary-hover:   oklch(50% 0.085 70deg);
-  --color-secondary-active:  oklch(34% 0.065 70deg);
+  --color-secondary:         oklch(42% 0.090 70deg);
+  --color-secondary-hover:   oklch(50% 0.107 70deg);
+  --color-secondary-active:  oklch(34% 0.074 70deg);
   --color-secondary-content: oklch(96% 0.020 70deg);
 
-  // Accent — deep ink-stamp violet (300deg), the one hue in this theme that
-  // isn't the phosphor amber. Editorial only (<=2 uses/page). Real pairing
-  // (accent-content on accent): Lc -82.0/6.84:1. Synthetic
-  // accent-content-on-accent-bg pairing (see header) also scores well here:
-  // Lc -97.5/15.55:1. Real accent-bg usage (base-content on accent-bg)
-  // scores Lc -86.7/13.31:1.
-  --color-accent:         oklch(46% 0.170 300deg);
-  --color-accent-hover:   oklch(52% 0.190 300deg);
-  --color-accent-active:  oklch(40% 0.150 300deg);
-  --color-accent-content: oklch(96% 0.020 300deg);
-  --color-accent-bg:      oklch(22% 0.060 300deg);
+  // Accent — the ink-stamp violet (300deg), the one hue in this theme that
+  // isn't the phosphor amber, and therefore the whole theme's contrast
+  // argument. It was the most under-used token in the file: 69% of ceiling
+  // on the fill, 48% on the -bg wash, which turned an archival due-date
+  // stamp into a grey-mauve. Now 97% and 92%: #710cc5 over #250146, against
+  // an amber screen. Real pairing (accent-content on accent) improves to
+  // Lc -82.1 / 7.27:1 from -82.0 / 6.84:1.
+  --color-accent:         oklch(46% 0.239 300deg);
+  --color-accent-hover:   oklch(52% 0.270 300deg);
+  --color-accent-active:  oklch(40% 0.209 300deg);
+  --color-accent-content: oklch(96% 0.021 300deg);
+  --color-accent-bg:      oklch(22% 0.115 300deg);
 
   // Semantics — deliberately off the phosphor hue (WCAG colorblind-safe
-  // convention), no longer aliased to primary/accent. Each below Lc60 UI
-  // floor + WCAG AA, gamut-checked.
-  --color-success:         oklch(48% 0.130 145deg); // was byte-identical to accent
-  --color-success-hover:   oklch(54% 0.140 145deg);
-  --color-success-active:  oklch(42% 0.120 145deg);
-  --color-success-bg:      oklch(20% 0.050 145deg);
-  --color-success-content: oklch(97% 0.030 145deg); // Lc -79.6 / 5.70:1
+  // convention), each at ~96-97% of its per-lightness ceiling, gamut-checked.
+  --color-success:         oklch(48% 0.147 145deg);
+  --color-success-hover:   oklch(54% 0.165 145deg);
+  --color-success-active:  oklch(42% 0.130 145deg);
+  --color-success-bg:      oklch(20% 0.066 145deg);
+  --color-success-content: oklch(98% 0.020 145deg);
 
-  --color-warning:         oklch(84% 0.140 95deg); // gold, distinct from primary's 70deg amber
-  --color-warning-hover:   oklch(91% 0.130 95deg);
-  --color-warning-active:  oklch(76% 0.140 95deg);
-  --color-warning-bg:      oklch(22% 0.050 95deg);
-  --color-warning-content: oklch(11% 0.030 95deg); // Lc 75.8 / 12.54:1
+  --color-warning:         oklch(84% 0.167 95deg); // gold, distinct from primary's 70deg amber
+  --color-warning-hover:   oklch(91% 0.138 95deg);
+  --color-warning-active:  oklch(76% 0.152 95deg);
+  --color-warning-bg:      oklch(22% 0.049 95deg);
+  --color-warning-content: oklch(11% 0.045 95deg);
 
-  --color-error:         oklch(52% 0.190 25deg);
-  --color-error-hover:   oklch(58% 0.200 25deg);
-  --color-error-active:  oklch(45% 0.180 25deg);
-  --color-error-bg:      oklch(22% 0.060 25deg);
-  --color-error-content: oklch(97% 0.012 25deg); // Lc -76.9 / 5.55:1, was Lc -55.8 / 2.83:1 (WCAG AA fail)
+  --color-error:         oklch(52% 0.205 25deg);
+  --color-error-hover:   oklch(58% 0.228 25deg);
+  --color-error-active:  oklch(45% 0.178 25deg);
+  --color-error-bg:      oklch(22% 0.090 25deg);
+  --color-error-content: oklch(98% 0.008 25deg);
 
-  --color-info:         oklch(48% 0.100 240deg); // was byte-identical to primary
-  --color-info-hover:   oklch(54% 0.105 240deg);
-  --color-info-active:  oklch(41% 0.090 240deg);
-  --color-info-bg:      oklch(22% 0.050 240deg);
-  --color-info-content: oklch(97% 0.010 240deg); // Lc -80.0 / 5.90:1
+  --color-info:         oklch(48% 0.107 240deg);
+  --color-info-hover:   oklch(54% 0.120 240deg);
+  --color-info-active:  oklch(41% 0.092 240deg);
+  --color-info-bg:      oklch(22% 0.053 240deg);
+  --color-info-content: oklch(97% 0.010 240deg);
 
   // Shadows — ink-tinted to the phosphor hue (70deg), one consistent
   // implied light source (positive Y offset, shrinking negative spread),
@@ -156,10 +157,10 @@
   --shadow-md: 0 8px 16px -4px oklch(6% 0.025 70deg / 0.5), 0 2px 4px -2px oklch(6% 0.025 70deg / 0.3);
   --shadow-lg: 0 20px 32px -8px oklch(6% 0.025 70deg / 0.6), 0 4px 8px -4px oklch(6% 0.025 70deg / 0.4);
   --shadow-xl: 0 32px 48px -12px oklch(6% 0.025 70deg / 0.7), 0 8px 16px -8px oklch(6% 0.025 70deg / 0.4);
-  --shadow-primary: 0 8px 24px 0 oklch(78% 0.140 70deg / 0.35);
-  --shadow-accent:  0 8px 24px 0 oklch(46% 0.170 300deg / 0.35);
+  --shadow-primary: 0 8px 24px 0 oklch(78% 0.164 70deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(46% 0.239 300deg / 0.35);
 
-  --focus-ring-color: oklch(78% 0.140 70deg / 0.5);
+  --focus-ring-color: oklch(78% 0.164 70deg / 0.5);
   --color-header-bg: var(--color-base-100);
 
   // Motion — the theme concept is a mechanical archival machine (crank-driven

@@ -5,16 +5,28 @@
 // override. Neutrals + text ramp keep the prior APCA-fitted achromatic system
 // (see inline note below); this pass re-derives every brand/semantic color.
 //
+// Point of view: an electric-indigo void with one molten-amber filament.
+// Primary (275deg) and accent (55deg) sit ~220deg apart and carry the whole
+// theme — one structural, one editorial. Secondary was moved 310deg -> 330deg
+// because at 35deg off primary it read as a second indigo rather than a third
+// voice. "Default" is not a licence to be flavourless.
+//
+// Every brand/semantic base, hover and active is fitted to ~97% of the true
+// in-gamut sRGB chroma ceiling at its own L/hue (computed, not guessed), and
+// hover states no longer trade chroma for lightness — the prior pass let
+// accent-hover fall to 0.09 of a 0.103 ceiling while accent sat at 0.135,
+// so hovering a CTA visibly drained it.
+//
 // Polarity split, fitted per-hue to where each hue's sRGB gamut actually
 // peaks (checked numerically, not eyeballed):
 //   - primary/secondary/success/error/info: gamut chroma peaks at LOW-MID L
-//     (indigo ~46deg L, magenta ~58deg L, green usable down to ~48deg L,
-//     red ~61deg L, blue ~71deg L) -> deep saturated fill + light content.
+//     (indigo ~48deg L, magenta ~70deg L, green usable down to ~48deg L,
+//     red ~62deg L, blue ~70deg L) -> deep saturated fill + light content.
 //     Matches how light.scss/oat treat these same roles (their dark-on-light
 //     polarity mirrors to light-on-dark here) and gives every content-on-base
-//     pair Lc 70-89, comfortably past the Lc 60 UI-text floor.
+//     pair Lc 65-83, comfortably past the Lc 60 UI-text floor.
 //   - accent/warning: gamut chroma peaks at HIGH L (amber ~74deg L, gold
-//     ~82deg L) -> bright fill + dark content, same direction as before.
+//     ~84deg L) -> bright fill + dark content, same direction as before.
 // Accepted trade-off: Tag.module.scss's success/error/info variants paint
 // the BASE color as text on -bg (not -content) — deep bases score Lc ~20-26
 // there (visibly tinted, not AA-body-text-grade). Its warning variant is the
@@ -74,60 +86,64 @@
   --color-border:       oklch(46% 0.022 275deg);   // Lc -17.0 / 2.78:1
   --color-border-hover: oklch(58% 0.026 275deg);   // Lc -31.6 / 4.61:1
 
-  // Primary — deep indigo-violet (gamut peaks ~46deg L for this hue), light
-  // content. Was a bright chip + dark ink pairing that was both out-of-gamut
-  // and under the Lc 60 UI-text floor (Lc 44.2); this direction gives every
-  // state Lc 73-86 with headroom to spare.
-  --color-primary:         oklch(52% 0.25 275deg);
-  --color-primary-hover:   oklch(54% 0.24 275deg);
-  --color-primary-active:  oklch(44% 0.25 275deg);
-  --color-primary-content: oklch(96% 0.013 275deg);
+  // Primary — electric indigo, sat at hue 275's actual sRGB chroma peak
+  // (L48, ceiling 0.297) rather than a lightness above it. Every state is
+  // held at ~97% of the in-gamut ceiling for its own L, so no state is
+  // vivid only by comparison to its neighbours.
+  --color-primary:         oklch(48% 0.288 275deg);
+  --color-primary-hover:   oklch(55% 0.244 275deg);
+  --color-primary-active:  oklch(41% 0.250 275deg);
+  --color-primary-content: oklch(97% 0.014 275deg);
 
-  --color-secondary:         oklch(50% 0.23 310deg);
-  --color-secondary-hover:   oklch(54% 0.24 310deg);
-  --color-secondary-active:  oklch(42% 0.19 310deg);
-  --color-secondary-content: oklch(96% 0.017 310deg);
+  // Secondary — hot magenta. Moved off 310deg: at 35deg from primary it read
+  // as a second indigo rather than a second voice, and 330deg is also where
+  // this end of the wheel's gamut is widest (ceiling 0.314 vs 310's 0.294),
+  // so the re-hue buys separation and saturation at once.
+  --color-secondary:         oklch(50% 0.223 330deg);
+  --color-secondary-hover:   oklch(56% 0.250 330deg);
+  --color-secondary-active:  oklch(43% 0.191 330deg);
+  --color-secondary-content: oklch(97% 0.020 330deg);
 
-  // Accent — signature burnt amber, kept bright (this hue's gamut peaks
-  // ~74deg L, going deep would just desaturate it to brown) + dark content.
-  // Active state accepted at Lc 50.5 (below the 60 target, above the Lc 45
-  // headline floor and 7.35:1 WCAG) — a pressed state is transient; base and
-  // hover both clear 60+.
-  --color-accent:         oklch(78% 0.135 55deg);
-  --color-accent-hover:   oklch(84% 0.09 55deg);
-  --color-accent-active:  oklch(70% 0.16 55deg);
-  --color-accent-content: oklch(10% 0.04 55deg);
-  --color-accent-bg:      oklch(25% 0.055 55deg);
+  // Accent — molten amber, the warm counterweight to primary's indigo and
+  // the only bright fill among the brand roles. Kept bright (this hue's
+  // gamut peaks ~74deg L); hover no longer collapses to 0.09 chroma —
+  // brightening a fill is not a licence to desaturate it.
+  --color-accent:         oklch(79% 0.140 55deg);
+  --color-accent-hover:   oklch(83% 0.108 55deg);
+  --color-accent-active:  oklch(73% 0.170 55deg);
+  --color-accent-content: oklch(8% 0.055 55deg);
+  --color-accent-bg:      oklch(25% 0.064 55deg);
 
-  --color-success:         oklch(48% 0.135 145deg);
-  --color-success-hover:   oklch(52% 0.145 145deg);
-  --color-success-active:  oklch(40% 0.11 145deg);
-  --color-success-bg:      oklch(24% 0.05 145deg);
-  --color-success-content: oklch(96% 0.035 145deg);
+  // Semantics — bases/hovers/actives at ~97% of their per-L ceiling; the
+  // -bg washes (Alert/Tag/Banner soft fills) went from 48-84% of ceiling to
+  // 85-94%, which is where the "everything is tinted charcoal" read came
+  // from — those washes cover far more screen area than the solid chips do.
+  --color-success:         oklch(48% 0.147 145deg);
+  --color-success-hover:   oklch(52% 0.160 145deg);
+  --color-success-active:  oklch(40% 0.124 145deg);
+  --color-success-bg:      oklch(24% 0.070 145deg);
+  --color-success-content: oklch(97% 0.040 145deg);
 
-  // Warning — stays bright + dark content (this hue's gamut peaks ~82deg L,
-  // same shape as accent). Active accepted at Lc 59.8 (rounds to the 60
-  // target; base 68.3, hover 78.9 clear it outright).
-  --color-warning:         oklch(80% 0.15 85deg);
-  --color-warning-hover:   oklch(86% 0.135 85deg);
-  --color-warning-active:  oklch(75% 0.145 85deg);
-  --color-warning-bg:      oklch(24% 0.05 85deg);
-  --color-warning-content: oklch(11% 0.035 85deg);
+  // Warning — stays bright + dark content (this hue's gamut peaks ~84deg L,
+  // same shape as accent). warning-bg is the one wash with almost no
+  // headroom: 0.052 of a 0.054 ceiling at L24.
+  --color-warning:         oklch(80% 0.156 85deg);
+  --color-warning-hover:   oklch(86% 0.150 85deg);
+  --color-warning-active:  oklch(75% 0.150 85deg);
+  --color-warning-bg:      oklch(24% 0.052 85deg);
+  --color-warning-content: oklch(10% 0.050 85deg);
 
-  // Error — was Lc -61.7 / 3.30:1 (below AA 4.5:1) and out-of-gamut; this
-  // hue's gamut actually peaks low-mid (~61deg L) so deep+light content both
-  // reads as proper alarm-red AND clears contrast (Lc -75 to -84 / 5.4-7.5:1).
-  --color-error:         oklch(52% 0.19 25deg);
-  --color-error-hover:   oklch(56% 0.20 25deg);
-  --color-error-active:  oklch(44% 0.155 25deg);
-  --color-error-bg:      oklch(24% 0.05 25deg);
-  --color-error-content: oklch(96% 0.013 25deg);
+  --color-error:         oklch(52% 0.206 25deg);
+  --color-error-hover:   oklch(56% 0.221 25deg);
+  --color-error-active:  oklch(44% 0.174 25deg);
+  --color-error-bg:      oklch(24% 0.088 25deg);
+  --color-error-content: oklch(97% 0.014 25deg);
 
-  --color-info:         oklch(48% 0.104 240deg);
-  --color-info-hover:   oklch(52% 0.112 240deg);
-  --color-info-active:  oklch(40% 0.086 240deg);
-  --color-info-bg:      oklch(24% 0.05 240deg);
-  --color-info-content: oklch(96% 0.014 240deg);
+  --color-info:         oklch(48% 0.108 240deg);
+  --color-info-hover:   oklch(52% 0.117 240deg);
+  --color-info-active:  oklch(40% 0.090 240deg);
+  --color-info-bg:      oklch(24% 0.054 240deg);
+  --color-info-content: oklch(97% 0.015 240deg);
 
   // Shadows — ink-tinted (275deg, matching the theme's neutral hue), never
   // flat rgba(0,0,0,x) black, one consistent implied light source.
@@ -138,10 +154,10 @@
   --shadow-md: 0 8px 16px -4px oklch(4% 0.02 275deg / 0.5), 0 2px 4px -2px oklch(4% 0.02 275deg / 0.3);
   --shadow-lg: 0 20px 32px -8px oklch(4% 0.02 275deg / 0.6), 0 4px 8px -4px oklch(4% 0.02 275deg / 0.4);
   --shadow-xl: 0 32px 48px -12px oklch(4% 0.02 275deg / 0.7), 0 8px 16px -8px oklch(4% 0.02 275deg / 0.4);
-  --shadow-primary: 0 8px 24px 0 oklch(52% 0.25 275deg / 0.35);
-  --shadow-accent:  0 8px 24px 0 oklch(78% 0.135 55deg / 0.30);
+  --shadow-primary: 0 8px 24px 0 oklch(48% 0.288 275deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(79% 0.140 55deg / 0.30);
 
   // Focus ring uses primary-hover, not primary, for extra on-dark visibility.
-  --focus-ring-color: oklch(54% 0.24 275deg / 0.55);
+  --focus-ring-color: oklch(55% 0.244 275deg / 0.55);
   --color-header-bg: var(--color-base-100);
 }

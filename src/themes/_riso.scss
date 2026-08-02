@@ -32,54 +32,74 @@
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);
   --color-border: oklch(58% 0.15 340deg);
   --color-border-hover: oklch(28% 0.18 265deg);
-  --color-primary: oklch(65% 0.25 350deg);
-  --color-primary-hover: oklch(58% 0.28 350deg);
-  --color-primary-active: oklch(52% 0.28 350deg);
+  // Riso spot inks, refit to ~97-99% of each step's real sRGB chroma ceiling.
+  // The prior values authored 14 leaf tokens past the ceiling (primary-hover
+  // 115%, secondary-active 130%, accent-content 214%, info-active 173%, …) —
+  // the browser gamut-maps those, so the theme was shipping desaturated,
+  // hue-drifted approximations of numbers that only LOOKED bold in source.
+  // Fluorescent pink also had to come down in lightness: at 65% L the ivory
+  // content on it scored 3.40:1, a hard WCAG AA failure. 54% L at near-
+  // ceiling chroma is the darkest-ink pull of the same fluoro pink, and
+  // clears AA (5.19:1) without trading away saturation.
+  --color-primary: oklch(54% 0.220 350deg);
+  --color-primary-hover: oklch(48% 0.198 350deg);
+  --color-primary-active: oklch(43% 0.180 350deg);
   --color-primary-content: oklch(97% 0.015 85deg);
-  --color-secondary: oklch(35% 0.20 265deg);
-  --color-secondary-hover: oklch(28% 0.22 265deg);
-  --color-secondary-active: oklch(24% 0.22 265deg);
+  --color-secondary: oklch(34% 0.230 265deg);
+  --color-secondary-hover: oklch(28% 0.190 265deg);
+  --color-secondary-active: oklch(24% 0.164 265deg);
   --color-secondary-content: oklch(97% 0.015 85deg);
-  --color-accent: oklch(82% 0.18 90deg);
-  --color-accent-hover: oklch(76% 0.20 90deg);
-  --color-accent-active: oklch(72% 0.2 90deg);
-  --color-accent-content: oklch(25% 0.12 85deg);
-  --color-accent-bg: oklch(94% 0.05 90deg);
-  --color-success: oklch(42% 0.10 155deg);
-  --color-success-hover: oklch(37% 0.088 155deg);
-  --color-success-active: oklch(32% 0.078 155deg);
-  --color-success-bg: oklch(93% 0.05 155deg);
+  // Yellow moved 90 -> 100deg: at hue 100 the sRGB ceiling is ~0.183 vs
+  // ~0.155 at hue 90, so the ink reads as actual riso process yellow rather
+  // than a clipped mustard. Content is the theme's own navy ink — a yellow
+  // plate overprinted in blue, which is what riso actually does.
+  --color-accent: oklch(88% 0.180 100deg);
+  --color-accent-hover: oklch(84% 0.172 100deg);
+  --color-accent-active: oklch(80% 0.163 100deg);
+  --color-accent-content: oklch(24% 0.160 265deg);
+  --color-accent-bg: oklch(93% 0.140 100deg);
+  --color-success: oklch(46% 0.124 150deg);
+  --color-success-hover: oklch(42% 0.114 150deg);
+  --color-success-active: oklch(38% 0.100 150deg);
+  --color-success-bg: oklch(92% 0.130 150deg);
   --color-success-content: oklch(97% 0.015 85deg);
   // warning hue moved off 90 — it was byte-identical to --color-accent
   // (also 90deg, same L/C), a semantic/brand collision. 70deg still reads
   // amber/gold, 20deg clear of accent; chroma refit to each step's in-gamut
   // ceiling at the new hue (was authored past the ceiling at hue90 too —
   // the prior warning-content-on-warning ⚠ out-of-gamut flag is now clear).
-  --color-warning: oklch(82% 0.13 70deg);
-  --color-warning-hover: oklch(90% 0.068 70deg);
-  --color-warning-active: oklch(74% 0.145 70deg);
-  --color-warning-bg: oklch(95% 0.033 70deg);
-  --color-warning-content: oklch(25% 0.05 85deg);
-  --color-error: oklch(60% 0.26 15deg);
-  --color-error-hover: oklch(68% 0.26 15deg);
-  --color-error-active: oklch(52% 0.26 15deg);
-  --color-error-bg: oklch(93% 0.06 15deg);
+  --color-warning: oklch(82% 0.142 70deg);
+  --color-warning-hover: oklch(87% 0.097 70deg);
+  --color-warning-active: oklch(76% 0.155 70deg);
+  --color-warning-bg: oklch(95% 0.036 70deg);
+  --color-warning-content: oklch(24% 0.052 85deg);
+  // Red moved 15 -> 22deg (vermilion, the riso red ink) — higher ceiling and
+  // 32deg clear of primary's 350. Lightness pulled off 60% so the ivory
+  // content clears AA (was 3.90:1).
+  --color-error: oklch(54% 0.213 22deg);
+  --color-error-hover: oklch(48% 0.190 22deg);
+  --color-error-active: oklch(43% 0.170 22deg);
+  --color-error-bg: oklch(90% 0.050 22deg);
   --color-error-content: oklch(97% 0.015 85deg);
-  --color-info: oklch(48% 0.20 250deg);
-  --color-info-hover: oklch(56% 0.2 250deg);
-  --color-info-active: oklch(40% 0.2 250deg);
-  --color-info-bg: oklch(93% 0.05 250deg);
+  --color-info: oklch(50% 0.162 255deg);
+  --color-info-hover: oklch(44% 0.143 255deg);
+  --color-info-active: oklch(39% 0.125 255deg);
+  --color-info-bg: oklch(90% 0.048 255deg);
   --color-info-content: oklch(97% 0.015 85deg);
-  --shadow-color: oklch(65% 0.25 350deg / 0.25);
-  --shadow-color-strong: oklch(65% 0.25 350deg / 0.55);
-  --shadow-xs: 2px 2px 0 0 oklch(65% 0.25 350deg / 0.35);
-  --shadow-sm: 3px 3px 0 0 oklch(65% 0.25 350deg / 0.5);
-  --shadow-md: 4px 4px 0 0 oklch(28% 0.18 265deg / 0.6), 6px 6px 0 0 oklch(65% 0.25 350deg / 0.35);
-  --shadow-lg: 6px 6px 0 0 oklch(28% 0.18 265deg / 0.7), 10px 10px 0 0 oklch(65% 0.25 350deg / 0.4);
-  --shadow-xl: 8px 8px 0 0 oklch(28% 0.18 265deg / 0.8), 14px 14px 0 0 oklch(65% 0.25 350deg / 0.45);
-  --shadow-primary: 3px 3px 0 0 oklch(28% 0.18 265deg);
-  --shadow-accent: 3px 3px 0 0 oklch(28% 0.18 265deg);
-  --focus-ring-color: oklch(65% 0.25 350deg / 0.5);
+  // The flat offset ink-stamp blocks stay on the bright fluorescent pink
+  // (65% L) even though the primary FILL had to darken for text contrast —
+  // shadows carry no text, so this is where the full-brightness fluoro plate
+  // survives. Both inks pushed to ~97% of their ceiling.
+  --shadow-color: oklch(65% 0.265 350deg / 0.25);
+  --shadow-color-strong: oklch(65% 0.265 350deg / 0.55);
+  --shadow-xs: 2px 2px 0 0 oklch(65% 0.265 350deg / 0.35);
+  --shadow-sm: 3px 3px 0 0 oklch(65% 0.265 350deg / 0.5);
+  --shadow-md: 4px 4px 0 0 oklch(28% 0.190 265deg / 0.6), 6px 6px 0 0 oklch(65% 0.265 350deg / 0.35);
+  --shadow-lg: 6px 6px 0 0 oklch(28% 0.190 265deg / 0.7), 10px 10px 0 0 oklch(65% 0.265 350deg / 0.4);
+  --shadow-xl: 8px 8px 0 0 oklch(28% 0.190 265deg / 0.8), 14px 14px 0 0 oklch(65% 0.265 350deg / 0.45);
+  --shadow-primary: 3px 3px 0 0 oklch(28% 0.190 265deg);
+  --shadow-accent: 3px 3px 0 0 oklch(28% 0.190 265deg);
+  --focus-ring-color: oklch(54% 0.220 350deg / 0.5);
   --color-header-bg: var(--color-base-100);
 
   // Motion: riso's whole visual language is a hard-edged, unblurred ink

@@ -141,9 +141,9 @@
   // Secondary — oxidized/patina steel, a genuinely separate hue (200,
   // teal-slate) from primary/accent/info. Deep fill + light content (was
   // mid-tone fill, WCAG 3.79:1 — structurally can't clear 4.5:1 that way).
-  --color-secondary:         oklch(38% 0.060 200deg);
-  --color-secondary-hover:   oklch(44% 0.065 200deg);
-  --color-secondary-active:  oklch(32% 0.050 200deg);
+  --color-secondary:         oklch(38% 0.064 200deg);
+  --color-secondary-hover:   oklch(44% 0.073 200deg);
+  --color-secondary-active:  oklch(32% 0.054 200deg);
   --color-secondary-content: oklch(95% 0.020 200deg);
 
   // Accent — the mercury-vapor lamp's blue-violet discharge glow, hue 280,
@@ -153,11 +153,17 @@
   // that clipped. accent-content now reads on BOTH solid accent (real
   // Button/Badge usage, Lc 73.9/5.28:1) and the accent-bg wash (the
   // checker's synthetic pairing, Lc 94.3/13.68:1) — no trade-off needed.
-  --color-accent:         oklch(52% 0.240 280deg);
-  --color-accent-hover:   oklch(58% 0.220 280deg);
-  --color-accent-active:  oklch(46% 0.220 280deg);
-  --color-accent-content: oklch(95% 0.010 280deg);
-  --color-accent-bg:      oklch(26% 0.080 280deg);
+  // Sat exactly on 280deg's sRGB chroma peak (L49, ceiling 0.296) rather than
+  // three lightness steps off it: a lamp's discharge line is the most
+  // saturated thing in the room, and this is the one role in the theme
+  // allowed to carry hue at all, so anything short of the ceiling here
+  // undersells the entire premise. #5516fa, was #5943ec. The -bg wash moved
+  // with it — at 0.080 of a 0.162 ceiling it was reading as slate, not vapor.
+  --color-accent:         oklch(49% 0.286 280deg);
+  --color-accent-hover:   oklch(55% 0.245 280deg);
+  --color-accent-active:  oklch(43% 0.250 280deg);
+  --color-accent-content: oklch(95% 0.022 280deg);
+  --color-accent-bg:      oklch(26% 0.148 280deg);
 
   // Semantics — deep fill + light content throughout (matches how each
   // hue's sRGB gamut actually peaks at this background's darkness), fixing
@@ -166,25 +172,28 @@
   // Lc74.2/5.46:1, in-gamut), info was Lc53.1 (now 79.7). Warning kept its
   // bright-fill+dark-content direction (this hue's gamut peaks high-L) —
   // it already cleared every bar (Lc68.0/10.32:1).
-  --color-success:         oklch(48% 0.133 150deg);
-  --color-success-hover:   oklch(53% 0.140 150deg);
-  --color-success-active:  oklch(41% 0.110 150deg);
-  --color-success-bg:      oklch(26% 0.050 150deg);
+  // The four -bg washes were the quietest thing in the theme (45-78% of their
+  // per-L ceiling) and they cover the most area — Alert/Tag/Banner soft
+  // fills. All four now sit at ~92-95%.
+  --color-success:         oklch(48% 0.130 150deg);
+  --color-success-hover:   oklch(53% 0.141 150deg);
+  --color-success-active:  oklch(41% 0.111 150deg);
+  --color-success-bg:      oklch(26% 0.070 150deg);
   --color-success-content: oklch(97% 0.020 150deg);
-  --color-warning:         oklch(80% 0.150 85deg);
-  --color-warning-hover:   oklch(86% 0.130 85deg);
-  --color-warning-active:  oklch(74% 0.150 85deg);
-  --color-warning-bg:      oklch(26% 0.045 85deg);
-  --color-warning-content: oklch(16% 0.030 85deg);
-  --color-error:         oklch(52% 0.210 25deg);
-  --color-error-hover:   oklch(57% 0.215 25deg);
-  --color-error-active:  oklch(45% 0.180 25deg);
-  --color-error-bg:      oklch(26% 0.050 25deg);
+  --color-warning:         oklch(80% 0.157 85deg);
+  --color-warning-hover:   oklch(86% 0.148 85deg);
+  --color-warning-active:  oklch(74% 0.148 85deg);
+  --color-warning-bg:      oklch(26% 0.055 85deg);
+  --color-warning-content: oklch(14% 0.036 85deg);
+  --color-error:         oklch(52% 0.208 25deg);
+  --color-error-hover:   oklch(57% 0.223 25deg);
+  --color-error-active:  oklch(45% 0.177 25deg);
+  --color-error-bg:      oklch(26% 0.101 25deg);
   --color-error-content: oklch(96% 0.015 25deg);
-  --color-info:         oklch(48% 0.089 222deg);
+  --color-info:         oklch(48% 0.087 222deg);
   --color-info-hover:   oklch(53% 0.095 222deg);
-  --color-info-active:  oklch(41% 0.075 222deg);
-  --color-info-bg:      oklch(26% 0.040 222deg);
+  --color-info-active:  oklch(41% 0.074 222deg);
+  --color-info-bg:      oklch(26% 0.048 222deg);
   --color-info-content: oklch(97% 0.014 222deg);
 
   // Shadows — ink-tinted (hue 235, matching the base ramp), one implied
@@ -203,7 +212,7 @@
   --shadow-lg: 0 20px 32px -8px oklch(4% 0.02 235deg / 0.6), 0 4px 8px -4px oklch(4% 0.02 235deg / 0.4);
   --shadow-xl: 0 32px 48px -12px oklch(4% 0.02 235deg / 0.7), 0 8px 16px -8px oklch(4% 0.02 235deg / 0.4);
   --shadow-primary: 0 8px 24px 0 oklch(90% 0.012 235deg / 0.20);
-  --shadow-accent:  0 8px 24px 0 oklch(52% 0.240 280deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(49% 0.286 280deg / 0.35);
 
   --focus-ring-color: oklch(90% 0.012 235deg / 0.55);
   --color-header-bg: var(--color-base-100);

@@ -58,6 +58,22 @@
 //     alongside the rest of the ramp so it reads as quiet sage ink, not a
 //     hue value nobody can see.
 //
+// 2026-08 saturation refit — the prior pass fixed gamut and contrast but left
+// the roles reading as a pale wash: a rainforest floor has real color in it
+// (wet moss, fern, crustose lichen, dappled aqua light), and "overcast" is a
+// light-quality claim, not a saturation one. Every role token is refit to
+// ~96-99% of its real in-gamut chroma ceiling at its L/H, and the -bg washes
+// were dropped from 95-96% L (where the sRGB ceiling collapses to ~0.02-0.03)
+// to 93-94% L, where a wash can carry 2-4x the chroma and still sit far under
+// base-content. The one structural change: accent was a dark teal at hue 180,
+// where the ceiling at 46% L is only ~0.084 — teal simply cannot be vivid down
+// there. Flipped to the theme's other true material, the dappled aqua light
+// itself: 82% L at hue 172 with dark teal ink, so hover/active LIGHTEN
+// (the shape warning already uses here). That trades accent-content's APCA
+// Lc 84.2 -> 75.9 — still clear of the Lc75 small-text floor, the strictest
+// bar that applies — while WCAG goes 6.49:1 -> 12.11:1 and the role stops
+// being indistinguishable from primary at a glance.
+//
 // Fonts: serif/display alias sans per the house sans-only migration
 // (CLAUDE.md) — no Fraunces reference here.
 //
@@ -156,35 +172,35 @@
   --shadow-xl:
     0 32px 48px -12px var(--shadow-color-strong),
     0 8px 16px -8px oklch(45% 0.03 145deg / 0.08);
-  --shadow-primary: 0 8px 24px 0 oklch(48% 0.14 145deg / 0.28);
-  --shadow-accent:  0 8px 24px 0 oklch(46% 0.078 180deg / 0.26);
+  --shadow-primary: 0 8px 24px 0 oklch(47% 0.147 145deg / 0.28);
+  --shadow-accent:  0 8px 24px 0 oklch(82% 0.155 172deg / 0.40);
 
   // Primary — moss-green CTA, refit in-gamut (was 0.18 against a ceiling of
   // 0.1524 at L48). primary-content on primary/-hover/-active: Lc -83.6 /
   // -89.1 / -94.2 (6.00:1 / 7.48:1 / 9.35:1) — contrast grows through the
   // interaction states.
-  --color-primary: oklch(48% 0.14 145deg);
-  --color-primary-hover: oklch(43% 0.128 145deg);
-  --color-primary-active: oklch(38% 0.115 145deg);
+  --color-primary: oklch(47% 0.147 145deg);
+  --color-primary-hover: oklch(42% 0.132 145deg);
+  --color-primary-active: oklch(37% 0.117 145deg);
   --color-primary-content: oklch(99% 0.010 145deg);
 
   // Secondary — pale sage chip for selected states, dark ink content refit
   // in-gamut (was 0.15 against a ceiling of 0.1219 at L38). secondary-
   // content on secondary/-hover: Lc 75.3 / 67.6 (7.47:1 / 6.56:1).
-  --color-secondary: oklch(92% 0.05 145deg);
-  --color-secondary-hover: oklch(88% 0.06 145deg);
-  --color-secondary-active: oklch(85% 0.055 145deg);
-  --color-secondary-content: oklch(38% 0.115 145deg);
+  --color-secondary: oklch(92% 0.115 145deg);
+  --color-secondary-hover: oklch(88% 0.140 145deg);
+  --color-secondary-active: oklch(85% 0.150 145deg);
+  --color-secondary-content: oklch(37% 0.117 145deg);
 
   // Accent — teal, in-gamut (was 0.12 against a ceiling of 0.0844 at L46).
   // accent-content on accent/-hover/-active: Lc -84.2 / -89.6 / -94.2
   // (6.49:1 / 8.11:1 / 10.02:1). accent-bg is the light wash a banner/
   // Compositions surface reads (was entirely missing before this pass).
-  --color-accent: oklch(46% 0.078 180deg);
-  --color-accent-hover: oklch(41% 0.068 180deg);
-  --color-accent-active: oklch(36% 0.058 180deg);
-  --color-accent-content: oklch(98% 0.010 180deg);
-  --color-accent-bg: oklch(93% 0.045 180deg);
+  --color-accent: oklch(82% 0.155 172deg);
+  --color-accent-hover: oklch(86% 0.163 172deg);
+  --color-accent-active: oklch(88% 0.168 172deg);
+  --color-accent-content: oklch(14% 0.035 172deg);
+  --color-accent-bg: oklch(93% 0.100 172deg);
 
   // Semantic colors — success hue widened from 150 (only 5deg off primary's
   // 145 — still near-identical despite the "no longer byte-identical" fix
@@ -192,32 +208,32 @@
   // green; all four now carry -active and are refit to their real sRGB
   // ceilings (bg washes included — the original error-bg/info-bg both
   // silently exceeded gamut at L96).
-  --color-success: oklch(44% 0.10 125deg);
-  --color-success-hover: oklch(39% 0.098 125deg);
-  --color-success-active: oklch(34% 0.082 125deg);
-  --color-success-bg: oklch(95% 0.035 125deg);
+  --color-success: oklch(44% 0.109 125deg);
+  --color-success-hover: oklch(39% 0.097 125deg);
+  --color-success-active: oklch(34% 0.086 125deg);
+  --color-success-bg: oklch(93% 0.130 125deg);
   --color-success-content: oklch(99% 0.010 125deg);
   // warning: fixed-dark-content shape — hover/active LIGHTEN (not darken)
   // so contrast grows away from the fixed dark content, mirroring
   // editorial's documented fix for the same shape bug. Lc 64.5/71.5/78.8.
-  --color-warning: oklch(78% 0.13 80deg);
-  --color-warning-hover: oklch(82% 0.12 80deg);
-  --color-warning-active: oklch(86% 0.10 80deg);
-  --color-warning-bg: oklch(96% 0.03 80deg);
-  --color-warning-content: oklch(12% 0.05 80deg);
-  --color-error: oklch(55% 0.17 25deg);
-  --color-error-hover: oklch(50% 0.185 25deg);
-  --color-error-active: oklch(45% 0.17 25deg);
-  --color-error-bg: oklch(96% 0.018 25deg);
+  --color-warning: oklch(79% 0.160 80deg);
+  --color-warning-hover: oklch(83% 0.161 80deg);
+  --color-warning-active: oklch(86% 0.131 80deg);
+  --color-warning-bg: oklch(94% 0.054 80deg);
+  --color-warning-content: oklch(12% 0.050 80deg);
+  --color-error: oklch(54% 0.213 25deg);
+  --color-error-hover: oklch(49% 0.194 25deg);
+  --color-error-active: oklch(44% 0.176 25deg);
+  --color-error-bg: oklch(93% 0.034 25deg);
   --color-error-content: oklch(98% 0.008 25deg);
-  --color-info: oklch(50% 0.108 240deg);
-  --color-info-hover: oklch(45% 0.092 240deg);
-  --color-info-active: oklch(40% 0.078 240deg);
-  --color-info-bg: oklch(96% 0.019 240deg);
+  --color-info: oklch(49% 0.111 240deg);
+  --color-info-hover: oklch(44% 0.099 240deg);
+  --color-info-active: oklch(39% 0.088 240deg);
+  --color-info-bg: oklch(93% 0.036 240deg);
   --color-info-content: oklch(99% 0.004 240deg);
 
   // Focus ring
-  --focus-ring-color: oklch(48% 0.14 145deg / 0.4);
+  --focus-ring-color: oklch(47% 0.147 145deg / 0.4);
 
   // Muted color — aliases content-tertiary (muted copy is still content).
   --color-muted: oklch(55% 0.020 145deg);

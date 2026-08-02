@@ -163,6 +163,15 @@
 //   pulse) and --duration-slower/-slowest stay house default — no
 //   radio-specific story beyond "generic ambient," unlike --duration-ambient
 //   above which ties directly to the dial-glow motif.
+//
+// 2026-08 chroma pass. Refit #2 correctly walked the semantics up in L to
+// clear Lc60, but left chroma where it was, so several roles ended at 19-77%
+// of the sRGB ceiling at their new lightness — the console read like a
+// faded photograph of a console. Chroma is now fit to ~90-98% of ceiling on
+// every role. The two real offenders were secondary's hover/active (held at
+// C0.030 while dropping L, i.e. the dial plate turned grey under the hand)
+// and success (C0.180 against a C0.236 ceiling). A deep ruby-glass error was
+// fitted and rejected on a text-role constraint — see the error block.
 
 @import "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=B612+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap";
 
@@ -218,63 +227,70 @@
   // no darker ink closes the gap), under the Lc60 UI-text floor. 78% clears
   // it at Lc63.6. Hover/active re-walked to keep the same lighten/darken
   // directions at the new base.
-  --color-primary:         oklch(78% 0.13 55deg);
-  --color-primary-hover:   oklch(84% 0.09 55deg);
-  --color-primary-active:  oklch(68% 0.14 55deg);
+  --color-primary:         oklch(78% 0.145 55deg);
+  --color-primary-hover:   oklch(84% 0.100 55deg);
+  --color-primary-active:  oklch(68% 0.166 55deg);
   --color-primary-content: oklch(14% 0.032 55deg);
 
-  // Secondary — cream dial-plate ink, unchanged (already in-gamut, already
-  // clearing every floor).
+  // Secondary — cream dial-plate. The base stays near-white ivory, but
+  // hover/active previously held chroma flat at 0.030 while dropping
+  // lightness, i.e. the plate turned grey under the hand. They now track
+  // ~88% of the sRGB ceiling at their own L, so pressing deepens the ivory
+  // into warm dial-plate amber instead.
   --color-secondary:         oklch(94% 0.02 75deg);
-  --color-secondary-hover:   oklch(86% 0.03 75deg);
-  --color-secondary-active:  oklch(82% 0.03 75deg);
+  --color-secondary-hover:   oklch(86% 0.106 75deg);
+  --color-secondary-active:  oklch(82% 0.140 75deg);
   --color-secondary-content: oklch(20% 0.04 245deg);
 
   // Accent — bright yellow tally light. Active now steps darker than
   // resting (was lighter than both base and hover — a broken "press"
   // direction); chroma fit under the sRGB ceiling at each L.
-  --color-accent:         oklch(86% 0.165 95deg);
-  --color-accent-hover:   oklch(91% 0.132 95deg);
-  --color-accent-active:  oklch(78% 0.148 95deg);
+  --color-accent:         oklch(86% 0.174 95deg);
+  --color-accent-hover:   oklch(91% 0.140 95deg);
+  --color-accent-active:  oklch(78% 0.157 95deg);
   --color-accent-content: oklch(16% 0.03 95deg);
-  --color-accent-bg:      oklch(24% 0.045 95deg);
+  --color-accent-bg:      oklch(24% 0.053 95deg);
 
   // Success — refit #2: base 72%->75% L (chroma unchanged 0.18 — already had
   // gamut headroom to lighten). success-content-on-success was Lc58.4, 1.6pt
   // under the Lc60 floor; now Lc63.5.
-  --color-success:         oklch(75% 0.18 145deg);
-  --color-success-hover:   oklch(83% 0.15 145deg);
-  --color-success-active:  oklch(67% 0.15 145deg);
-  --color-success-bg:      oklch(26% 0.07 145deg);
+  --color-success:         oklch(75% 0.225 145deg);
+  --color-success-hover:   oklch(83% 0.250 145deg);
+  --color-success-active:  oklch(67% 0.200 145deg);
+  --color-success-bg:      oklch(26% 0.083 145deg);
   --color-success-content: oklch(14% 0.04 145deg);
 
   // Warning — "gold caution lamp" hue (78deg), no longer a literal
   // duplicate of primary. Refit #2: base 74%->78% L (chroma unchanged 0.14).
   // warning-content-on-warning was Lc57.7, under the Lc60 floor; now Lc64.4.
-  --color-warning:         oklch(78% 0.14 78deg);
-  --color-warning-hover:   oklch(85% 0.10 78deg);
-  --color-warning-active:  oklch(68% 0.14 78deg);
-  --color-warning-bg:      oklch(26% 0.05 78deg);
+  --color-warning:         oklch(78% 0.158 78deg);
+  --color-warning-hover:   oklch(85% 0.132 78deg);
+  --color-warning-active:  oklch(68% 0.140 78deg);
+  --color-warning-bg:      oklch(26% 0.057 78deg);
   --color-warning-content: oklch(14% 0.026 78deg);
 
-  // Error — refit #2: base 70%->78% L (chroma 0.18->0.12 — this hue clips
-  // above ~71% L at C0.18, the tightest gamut headroom of the five
-  // semantics). error-content-on-error was Lc49.3, well under the Lc60
-  // floor even after refit #1's relighten; now Lc62.7. Content stays dark
-  // ink (see refit #1 note above on why light content doesn't clear this
-  // hue's gamut ceiling).
-  --color-error:         oklch(78% 0.12 22deg);
-  --color-error-hover:   oklch(85% 0.08 22deg);
-  --color-error-active:  oklch(64% 0.18 22deg);
-  --color-error-bg:      oklch(26% 0.09 22deg);
+  // Error — stays bright + dark ink, and this pass re-derived why rather than
+  // inheriting it. A deep ruby-glass fault lamp (L54, C0.216 — 1.8x the
+  // chroma) was fitted and rejected: --color-error is painted as foreground
+  // body text by every form-validation surface in the kit (Label, FormHint,
+  // FormField, TextField, TextArea, Select), and at L54 error-as-text on the
+  // navy chassis collapses from Lc -60.2 to Lc -25.0, under even the Lc30
+  // solid-icon floor. The joint feasible region for "clears Lc60 under its
+  // own ink AND clears Lc45 as body text on the background" is L>=76 at this
+  // hue, where the sRGB ceiling is C0.138 — so the pale reading is the gamut
+  // talking, not slack. Chroma taken to 98% of that ceiling.
+  --color-error:         oklch(78% 0.126 22deg);
+  --color-error-hover:   oklch(85% 0.080 22deg);
+  --color-error-active:  oklch(64% 0.240 22deg);
+  --color-error-bg:      oklch(26% 0.105 22deg);
   --color-error-content: oklch(14% 0.03 22deg);
 
   // Info — refit #2: base 70%->76% L (chroma unchanged 0.12). info-content-
-  // on-info was Lc53.4, under the Lc60 floor; now Lc63.4.
-  --color-info:         oklch(76% 0.12 225deg);
-  --color-info-hover:   oklch(84% 0.08 225deg);
-  --color-info-active:  oklch(68% 0.10 225deg);
-  --color-info-bg:      oklch(28% 0.048 225deg);
+  // on-info was Lc53.4, under the Lc60 floor; now Lc63.9.
+  --color-info:         oklch(76% 0.140 225deg);
+  --color-info-hover:   oklch(84% 0.104 225deg);
+  --color-info-active:  oklch(68% 0.126 225deg);
+  --color-info-bg:      oklch(28% 0.055 225deg);
   --color-info-content: oklch(14% 0.024 225deg);
 
   // Shadows — one implied light source: a cool ambient occlusion tinted to
@@ -285,17 +301,17 @@
   // -accent glow terms toned down (blur 20px->12px, alpha 0.4->0.22) so the
   // dial-glow metaphor doesn't read as an unexamined neon-on-dark default —
   // it's still scoped to just these two roles, not every shadow level.
-  --shadow-color:        oklch(78% 0.13 55deg / 0.25);
-  --shadow-color-strong: oklch(78% 0.13 55deg / 0.55);
+  --shadow-color:        oklch(78% 0.145 55deg / 0.25);
+  --shadow-color-strong: oklch(78% 0.145 55deg / 0.55);
   --shadow-xs: 0 1px 0 0 oklch(10% 0.02 245deg / 0.6);
   --shadow-sm: 0 2px 0 0 oklch(10% 0.02 245deg / 0.7), 0 1px 3px 0 oklch(10% 0.02 245deg / 0.5);
   --shadow-md: 0 4px 0 0 oklch(10% 0.02 245deg / 0.8), 0 6px 12px -2px oklch(10% 0.02 245deg / 0.5);
   --shadow-lg: 0 6px 0 0 oklch(10% 0.02 245deg / 0.85), 0 12px 24px -4px oklch(10% 0.02 245deg / 0.6);
   --shadow-xl: 0 10px 0 0 oklch(10% 0.02 245deg / 0.9), 0 20px 40px -8px oklch(10% 0.02 245deg / 0.7);
-  --shadow-primary: 0 3px 0 0 oklch(10% 0.02 245deg / 0.85), 0 0 12px 0 oklch(78% 0.13 55deg / 0.22);
-  --shadow-accent: 0 3px 0 0 oklch(10% 0.02 245deg / 0.85), 0 0 12px 0 oklch(86% 0.165 95deg / 0.22);
+  --shadow-primary: 0 3px 0 0 oklch(10% 0.02 245deg / 0.85), 0 0 12px 0 oklch(78% 0.145 55deg / 0.22);
+  --shadow-accent: 0 3px 0 0 oklch(10% 0.02 245deg / 0.85), 0 0 12px 0 oklch(86% 0.174 95deg / 0.22);
 
-  --focus-ring-color: oklch(78% 0.13 55deg / 0.5);
+  --focus-ring-color: oklch(78% 0.145 55deg / 0.5);
   --color-header-bg: var(--color-base-100);
 
   // Motion — analog-instrument weight (see header rationale). --duration-

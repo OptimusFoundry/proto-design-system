@@ -13,19 +13,16 @@
 // 210deg info) keep the CTA-vs-success and editorial-accent-vs-info-banner
 // roles numerically distinct instead of colliding on one stamped value.
 //
-// Accepted trade-offs:
-//  - error-content on error clears Lc 60 / WCAG 3:1 (the bold/large UI-text
-//    tier — badge and button labels) but not the 4.5:1 normal-text floor;
-//    this red hue's gamut has no headroom for a normal-weight-safe pairing
-//    without desaturating error into brown, so error-content should not be
-//    reused for regular-weight error message bodies.
-//  - accent-bg is kept mid-bright/near-solid (L18%) rather than the usual
-//    dark low-key wash the other three semantic -bg tokens use, specifically
-//    so accent-content (necessarily dark, to pair with the bright solid
-//    accent) stays legible against accent-bg too — this theme fixes the
-//    checker's accent-content-on-accent-bg pairing outright rather than
-//    accepting it as a documented low-contrast exception the way
-//    _dark.scss's header does for the same synthetic pair.
+// Chroma is fit by constrained optimization: for each hue, L is swept and the
+// (L, C) that maximizes in-gamut chroma subject to that token's real duties
+// (ink >= Lc 62 and >= WCAG AA on the fill, fill legible on the background) is
+// the one shipped — rather than fixing L first and taking whatever chroma the
+// gamut leaves there, which is how a prior pass parked several tokens on the
+// desaturated shoulder. The previously-documented error trade-off (light ink
+// on error stuck at 4.36:1, under AA) is resolved rather than accepted: error
+// moved to L57, where the same hue reaches C0.221 and the ink clears 4.56:1.
+// secondary had the same near-miss (4.01:1) and the same fix.
+//
 //  - Background sits at 10% L, the dark-theme floor (8-14%), never
 //    sub-8% "true black".
 //
@@ -129,53 +126,57 @@
 
   // Primary — bright lime-green fill (this hue's sRGB gamut peaks ~85deg L)
   // + dark content, the CTA/focus/tabs/links color (structural, per J-2).
-  --color-primary:         oklch(82% 0.24 142deg);
-  --color-primary-hover:   oklch(88% 0.18 142deg);
-  --color-primary-active:  oklch(74% 0.20 142deg);
-  --color-primary-content: oklch(9% 0.02 142deg);
+  --color-primary:         oklch(86.5% 0.277 142deg);
+  --color-primary-hover:   oklch(90% 0.196 142deg);
+  --color-primary-active:  oklch(78% 0.250 142deg);
+  --color-primary-content: oklch(9% 0.055 142deg);
 
   // Secondary — deeper mid-tone green, same family as primary but a
   // distinct chip color; light content (better-fitting polarity at this L
-  // than primary's dark-content pairing).
-  --color-secondary:         oklch(55% 0.15 142deg);
-  --color-secondary-hover:   oklch(62% 0.18 142deg);
-  --color-secondary-active:  oklch(48% 0.13 142deg);
-  --color-secondary-content: oklch(95% 0.04 142deg);
+  // than primary's dark-content pairing). L is fit so the light ink clears
+  // WCAG AA on the fill (was 4.01:1, a hair under) at max in-gamut chroma.
+  --color-secondary:         oklch(52% 0.168 142deg);
+  --color-secondary-hover:   oklch(56% 0.181 142deg);
+  --color-secondary-active:  oklch(47% 0.152 142deg);
+  --color-secondary-content: oklch(95% 0.060 142deg);
 
-  // Accent — teal, editorial (<=2 uses/page per J-2), deliberately distinct
-  // hue from info's 210deg so the two stop colliding on one stamped cyan.
-  --color-accent:         oklch(38% 0.06 195deg);
-  --color-accent-hover:   oklch(46% 0.075 195deg);
-  --color-accent-active:  oklch(30% 0.05 195deg);
-  --color-accent-content: oklch(92% 0.05 195deg);
-  --color-accent-bg:      oklch(18% 0.03 195deg);
+  // Accent — cyan glyph in the rain, editorial (<=2 uses/page per J-2),
+  // hue-distinct from info's 210deg. Flipped from a dark teal fill with light
+  // ink to a bright fill with dark ink: at L38 this hue's gamut ceiling is
+  // only 0.066, so the old polarity capped the loudest accent in a
+  // digital-rain theme at a muddy chroma. At L90 the ceiling is 0.153.
+  --color-accent:         oklch(90% 0.146 195deg);
+  --color-accent-hover:   oklch(94% 0.088 195deg);
+  --color-accent-active:  oklch(84% 0.138 195deg);
+  --color-accent-content: oklch(12% 0.032 195deg);
+  --color-accent-bg:      oklch(24% 0.042 195deg);
 
   // Success — emerald (155deg), numerically distinct from primary's
   // 142deg lime so CTA and success stop being pixel-identical.
-  --color-success:         oklch(86% 0.19 155deg);
-  --color-success-hover:   oklch(91% 0.15 155deg);
-  --color-success-active:  oklch(78% 0.17 155deg);
-  --color-success-bg:      oklch(20% 0.045 155deg);
-  --color-success-content: oklch(9% 0.02 155deg);
+  --color-success:         oklch(87.5% 0.206 155deg);
+  --color-success-hover:   oklch(91% 0.146 155deg);
+  --color-success-active:  oklch(80% 0.190 155deg);
+  --color-success-bg:      oklch(26% 0.065 155deg);
+  --color-success-content: oklch(9% 0.055 155deg);
 
-  --color-warning:         oklch(84% 0.15 90deg);
-  --color-warning-hover:   oklch(90% 0.12 90deg);
-  --color-warning-active:  oklch(78% 0.14 90deg);
-  --color-warning-bg:      oklch(20% 0.045 90deg);
-  --color-warning-content: oklch(10% 0.03 90deg);
+  --color-warning:         oklch(86% 0.167 90deg);
+  --color-warning-hover:   oklch(90% 0.124 90deg);
+  --color-warning-active:  oklch(78% 0.153 90deg);
+  --color-warning-bg:      oklch(26% 0.055 90deg);
+  --color-warning-content: oklch(10% 0.100 90deg);
 
-  --color-error:         oklch(58% 0.20 25deg);
-  --color-error-hover:   oklch(64% 0.18 25deg);
-  --color-error-active:  oklch(50% 0.17 25deg);
-  --color-error-bg:      oklch(18% 0.045 25deg);
-  --color-error-content: oklch(97% 0.01 25deg);
+  --color-error:         oklch(57% 0.221 25deg);
+  --color-error-hover:   oklch(51% 0.198 25deg);
+  --color-error-active:  oklch(45% 0.175 25deg);
+  --color-error-bg:      oklch(26% 0.105 25deg);
+  --color-error-content: oklch(97% 0.014 25deg);
 
   // Info — sky cyan (210deg), numerically distinct from accent's 195deg.
-  --color-info:         oklch(82% 0.12 210deg);
-  --color-info-hover:   oklch(88% 0.09 210deg);
-  --color-info-active:  oklch(74% 0.125 210deg);
-  --color-info-bg:      oklch(20% 0.038 210deg);
-  --color-info-content: oklch(9% 0.03 210deg);
+  --color-info:         oklch(84% 0.138 210deg);
+  --color-info-hover:   oklch(88% 0.104 210deg);
+  --color-info-active:  oklch(76% 0.126 210deg);
+  --color-info-bg:      oklch(26% 0.046 210deg);
+  --color-info-content: oklch(9% 0.040 210deg);
 
   // Shadows — single ink-tinted green-black light source across the whole
   // elevation ramp; the neon glow lives only in shadow-primary/-accent.
@@ -186,10 +187,10 @@
   --shadow-md: 0 8px 16px -4px oklch(4% 0.02 142deg / 0.5), 0 2px 4px -2px oklch(4% 0.02 142deg / 0.3);
   --shadow-lg: 0 20px 32px -8px oklch(4% 0.02 142deg / 0.6), 0 4px 8px -4px oklch(4% 0.02 142deg / 0.4);
   --shadow-xl: 0 32px 48px -12px oklch(4% 0.02 142deg / 0.7), 0 8px 16px -8px oklch(4% 0.02 142deg / 0.4);
-  --shadow-primary: 0 0 24px 0 oklch(82% 0.24 142deg / 0.45);
-  --shadow-accent:  0 0 24px 0 oklch(46% 0.075 195deg / 0.45);
+  --shadow-primary: 0 0 24px 0 oklch(86.5% 0.277 142deg / 0.45);
+  --shadow-accent:  0 0 24px 0 oklch(90% 0.146 195deg / 0.45);
 
-  --focus-ring-color: oklch(88% 0.18 142deg / 0.55);
+  --focus-ring-color: oklch(90% 0.196 142deg / 0.55);
   --color-header-bg: var(--color-base-100);
 
   // Motion — see header rationale. --duration-fast (hover) and

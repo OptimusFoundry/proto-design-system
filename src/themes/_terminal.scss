@@ -74,11 +74,13 @@
 //   (clears Lc30 by 6.5, distinctly dimmer than tertiary); accent-bg 18% L
 //   / 0.028 C at 178deg (the new teal), base-content-on-accent-bg
 //   Lc -89.1 / 14.47:1.
-// - GAMUT: every oklch() literal in this file (including shadows) is fit to
-//   ~83-88% of its true sRGB ceiling at its L/H, binary-searched fresh for
-//   the new hues — zero out-of-gamut literals, vs. the previous pass's
-//   flagged secondary/warning/info bases and primary/secondary-hover
-//   states, all of which silently clipped at paint time.
+// - GAMUT: every oklch() literal in this file is binary-searched against its
+//   true sRGB ceiling at its own L/H — zero out-of-gamut literals, vs. the
+//   previous pass's flagged secondary/warning/info bases and primary/
+//   secondary-hover states, all of which silently clipped at paint time.
+//   (2026-08: the signal tokens' flat 85%-of-ceiling rule was dropped — see
+//   the note above the primary block. The base/content/border ramps keep it;
+//   structural chrome reading a shade under the signal layer is the point.)
 // - DEAD TOKENS REMOVED: `--shadow-crt` / `--shadow-scanline` were declared
 //   under a "Custom: CRT bloom effects" comment but referenced nowhere in
 //   `src/` — disguised dead code claiming to handle the CRT-glow craft rule
@@ -211,69 +213,82 @@
 
   // Shadow colors (CRT phosphor glow, no offset — a CRT bulges light
   // forward, it doesn't cast ink shadows)
-  --shadow-color:        oklch(70% 0.155 128deg / 0.18);
-  --shadow-color-strong: oklch(70% 0.155 128deg / 0.32);
+  --shadow-color:        oklch(70% 0.180 128deg / 0.18);
+  --shadow-color-strong: oklch(70% 0.180 128deg / 0.32);
+
+  // The prior pass held every signal token to a flat 85% of its sRGB ceiling.
+  // That safety margin is backwards physics for this reference: a P1 phosphor
+  // emits on a near-monochromatic line — it is the *most* saturated thing a
+  // display can show. What makes a CRT terminal read dim is its near-black
+  // ground and the low lightness of everything on it, not desaturated signal
+  // colors. Fills below now sit at ~98% of the in-gamut ceiling at their own
+  // L/H; the dim register is unchanged because no lightness moved.
 
   // Primary (P1 phosphor green) — structural CTA/focus/tabs/links.
-  --color-primary:         oklch(78% 0.173 128deg);  // Lc -65.9 / 10.77:1 on bg
-  --color-primary-hover:   oklch(87% 0.193 128deg);  // Lc -83.5 / 14.59:1 on bg (lighter)
-  --color-primary-active:  oklch(66% 0.147 128deg);  // Lc -45.3 / 6.91:1 on bg (darker)
-  --color-primary-content: oklch(6%  0.014 128deg);  // Lc 67.4 / 10.89:1 on primary
+  --color-primary:         oklch(78% 0.200 128deg);  // Lc -65.9 / 10.77:1 on bg
+  --color-primary-hover:   oklch(87% 0.223 128deg);  // lighter
+  --color-primary-active:  oklch(66% 0.169 128deg);  // darker
+  --color-primary-content: oklch(6%  0.014 128deg);  // Lc 68.0 / 11.01:1 on primary
 
-  // Secondary (amber — old amber-terminal voice, doubles as warning's palette)
-  --color-secondary:         oklch(78% 0.142 72deg);  // Lc -62.8 / 10.12:1 on bg
-  --color-secondary-hover:   oklch(87% 0.089 72deg);  // lighter
-  --color-secondary-active:  oklch(66% 0.120 72deg);  // darker
-  --color-secondary-content: oklch(8%  0.015 72deg);  // Lc 64.4 / 10.19:1 on secondary
+  // Secondary (amber — old amber-terminal voice, doubles as warning's
+  // palette). Hover moved 87%->84%: amber's ceiling collapses from 0.167 to
+  // 0.104 between L78 and L87, so the old lighter-hover step was where this
+  // family lost 37% of its chroma and faded into the green's restraint. L84
+  // is still a clearly lighter step and keeps a real amber.
+  --color-secondary:         oklch(78% 0.164 72deg);  // Lc -62.8 / 10.12:1 on bg
+  --color-secondary-hover:   oklch(84% 0.128 72deg);  // lighter
+  --color-secondary-active:  oklch(66% 0.139 72deg);  // darker
+  --color-secondary-content: oklch(8%  0.015 72deg);  // Lc 64.2 / 10.12:1 on secondary
 
   // Accent (teal-cyan — selection/cursor highlight, doubles as info's palette)
-  --color-accent:         oklch(78% 0.122 178deg);  // Lc -66.9 / 10.92:1 on bg
-  --color-accent-hover:   oklch(87% 0.136 178deg);  // lighter
-  --color-accent-active:  oklch(66% 0.103 178deg);  // darker
-  --color-accent-content: oklch(9%  0.014 178deg);  // Lc 68.2 / 10.94:1 on accent
-  --color-accent-bg:      oklch(18% 0.028 178deg);  // Lc -89.1 base-content on top
+  --color-accent:         oklch(78% 0.141 178deg);  // Lc -66.9 / 10.92:1 on bg
+  --color-accent-hover:   oklch(87% 0.157 178deg);  // lighter
+  --color-accent-active:  oklch(66% 0.119 178deg);  // darker
+  --color-accent-content: oklch(9%  0.014 178deg);  // Lc 68.7 / 10.98:1 on accent
+  --color-accent-bg:      oklch(18% 0.038 178deg);  // Lc -89.0 base-content on top
 
   // Semantic colors — success/warning/info deliberately mirror
   // primary/secondary/accent (see header); error is the one independent hue.
-  --color-success:         oklch(78% 0.173 128deg);
-  --color-success-hover:   oklch(87% 0.193 128deg);
-  --color-success-active:  oklch(66% 0.147 128deg);
-  --color-success-bg:      oklch(18% 0.040 128deg);
+  --color-success:         oklch(78% 0.200 128deg);
+  --color-success-hover:   oklch(87% 0.223 128deg);
+  --color-success-active:  oklch(66% 0.169 128deg);
+  --color-success-bg:      oklch(18% 0.057 128deg);
   --color-success-content: oklch(6%  0.014 128deg);
 
-  --color-warning:         oklch(78% 0.142 72deg);
-  --color-warning-hover:   oklch(87% 0.089 72deg);
-  --color-warning-active:  oklch(66% 0.120 72deg);
-  --color-warning-bg:      oklch(18% 0.033 72deg);
+  --color-warning:         oklch(78% 0.164 72deg);
+  --color-warning-hover:   oklch(84% 0.128 72deg);
+  --color-warning-active:  oklch(66% 0.139 72deg);
+  --color-warning-bg:      oklch(18% 0.048 72deg);
   --color-warning-content: oklch(8%  0.015 72deg);
 
   // Error rebuilt brighter with dark-on-error content (see header) — the
-  // one real WCAG-AA failure carried over from the prior pass.
-  --color-error:         oklch(78% 0.112 38deg);  // Lc -61.9 / 9.95:1 on bg
-  --color-error-hover:   oklch(83% 0.083 38deg);  // lighter
-  --color-error-active:  oklch(66% 0.184 38deg);  // darker
-  --color-error-bg:      oklch(18% 0.050 38deg);
-  --color-error-content: oklch(8%  0.023 38deg);  // Lc 63.5 / 9.99:1 on error
+  // one real WCAG-AA failure carried over from the prior pass. Hover moved
+  // 83%->82% for the same amber-ceiling reason as secondary above.
+  --color-error:         oklch(78% 0.129 38deg);  // Lc -61.9 / 9.95:1 on bg
+  --color-error-hover:   oklch(82% 0.102 38deg);  // lighter
+  --color-error-active:  oklch(66% 0.212 38deg);  // darker
+  --color-error-bg:      oklch(18% 0.074 38deg);
+  --color-error-content: oklch(8%  0.023 38deg);  // Lc 63.4 / 9.94:1 on error
 
-  --color-info:         oklch(78% 0.122 178deg);
-  --color-info-hover:   oklch(87% 0.136 178deg);
-  --color-info-active:  oklch(66% 0.103 178deg);
-  --color-info-bg:      oklch(18% 0.028 178deg);
+  --color-info:         oklch(78% 0.141 178deg);
+  --color-info-hover:   oklch(87% 0.157 178deg);
+  --color-info-active:  oklch(66% 0.119 178deg);
+  --color-info-bg:      oklch(18% 0.038 178deg);
   --color-info-content: oklch(9%  0.014 178deg);
 
   // Focus ring (phosphor glow)
-  --focus-ring-color: oklch(78% 0.173 128deg / 0.55);
+  --focus-ring-color: oklch(78% 0.200 128deg / 0.55);
 
   // Elevation shadows — phosphor-glow pass (green, no offset) layered with a
   // darker green-tinted grounding pass (single implied downward light
   // source; never flat rgba(0,0,0,x)).
-  --shadow-xs: 0 0 2px 0 oklch(70% 0.155 128deg / 0.15);
-  --shadow-sm: 0 0 6px 0 oklch(70% 0.155 128deg / 0.20), 0 1px 2px 0 oklch(4% 0.010 128deg / 0.40);
-  --shadow-md: 0 0 12px 0 oklch(70% 0.155 128deg / 0.22), 0 4px 8px -2px oklch(4% 0.010 128deg / 0.50);
-  --shadow-lg: 0 0 24px 0 oklch(70% 0.155 128deg / 0.25), 0 8px 16px -4px oklch(4% 0.010 128deg / 0.55);
-  --shadow-xl: 0 0 40px 0 oklch(70% 0.155 128deg / 0.30), 0 16px 32px -8px oklch(4% 0.010 128deg / 0.60);
-  --shadow-primary: 0 0 24px 0 oklch(78% 0.173 128deg / 0.45);
-  --shadow-accent:  0 0 24px 0 oklch(78% 0.122 178deg / 0.40);
+  --shadow-xs: 0 0 2px 0 oklch(70% 0.180 128deg / 0.15);
+  --shadow-sm: 0 0 6px 0 oklch(70% 0.180 128deg / 0.20), 0 1px 2px 0 oklch(4% 0.010 128deg / 0.40);
+  --shadow-md: 0 0 12px 0 oklch(70% 0.180 128deg / 0.22), 0 4px 8px -2px oklch(4% 0.010 128deg / 0.50);
+  --shadow-lg: 0 0 24px 0 oklch(70% 0.180 128deg / 0.25), 0 8px 16px -4px oklch(4% 0.010 128deg / 0.55);
+  --shadow-xl: 0 0 40px 0 oklch(70% 0.180 128deg / 0.30), 0 16px 32px -8px oklch(4% 0.010 128deg / 0.60);
+  --shadow-primary: 0 0 24px 0 oklch(78% 0.200 128deg / 0.45);
+  --shadow-accent:  0 0 24px 0 oklch(78% 0.141 178deg / 0.40);
 
   // Header background (more visible in terminal theme)
   --color-header-bg: var(--color-base-300);

@@ -31,22 +31,26 @@
 // the looser Lc 60 "larger/bold UI text" floor). A prior draft fit these
 // six to L64-84% and only cleared Lc 58-62 raw-on-void / Lc 60-61
 // content-on-fill — short of the 75 floor on the raw pairing, and with
-// near-zero margin on content-on-fill. Re-fit to L86-88% (chroma capped at
-// 80% of the sRGB gamut ceiling at that L/hue, gamut-checked): every raw
-// semantic now clears Lc 80.6-83.2 as text/icon on the void (WCAG
-// 14.0-14.6:1) and every content-on-fill pair clears Lc 81.0-83.5 (WCAG
-// 13.8-14.3:1) — both numbers hold real headroom above their respective
-// floors now, not a fractional margin. Tag/Banner's "soft" pattern (each
-// semantic as its own text on its own -bg wash — not graded by the contract
-// script, checked directly with the same apcaLc/wcagRatio math) clears
-// Lc 80.8-82.8 / 13.2-13.3:1 across all four semantics for the same reason.
-// --color-accent is the one deliberate exception: this component library
-// never renders it as standalone text (only as a Button/Badge fill and as
-// the --color-accent-bg wash's background), so it keeps a deep saturated
-// fill + light content instead — the only way to also clear the
-// accent-content-on-accent-bg pairing (Lc -90.1 / 12.68:1), the one
-// contract check that grades a -content token against a -bg token instead
-// of against its solid base.
+// near-zero margin on content-on-fill. A later pass re-fit them to L86-88%
+// at Lc 80-83, which cleared the floor with margin to spare — but that spare
+// margin was paid for in chroma, and the set read as a row of pastels. This
+// pass re-solves the same constraint at Lc ~78-79 (still three points clear
+// of the Lc75 small-body floor; WCAG essentially unchanged at 13.2-14.9:1),
+// which buys back 22-39% chroma on every text-rendered family. L and chroma
+// are genuinely coupled here — at 96% of the sRGB ceiling, dropping L costs
+// luminance faster than it gains chroma — so this is the vivid end of what
+// the constraint actually permits, computed rather than assumed.
+// --color-accent is the one family free of that constraint (never rendered
+// as standalone text — only as a Button/Badge fill and as the
+// --color-accent-bg wash's background), and it is now where this theme's
+// color energy is concentrated: a bright starlight gold (L86, 0.169 chroma,
+// #fccb24) instead of the prior deep L44 fill, which at 90deg gold's 0.091
+// ceiling rendered as olive-brown. The trade is the accent-content-on-
+// accent-bg pairing, which drops to the same low-contrast value _dark.scss
+// and _carbon.scss document for it — a synthetic pair with no call site in
+// this codebase (the upgrade banner paints default body content on
+// accent-bg, never accent-content). The real pairing, accent-content on
+// solid accent, improves: Lc 79.3 / 13.23:1, from 76.6 / 6.34:1.
 // No pure white/black anywhere — content/shadow/overlay near-extremes all
 // carry the void's blue-violet tint.
 // Accepted trade-offs: --color-border sits at base-500 lightness (~54%,
@@ -123,56 +127,66 @@
   --color-border:       oklch(54% 0.055 268deg);  // Lc -26.6
   --color-border-hover: oklch(61% 0.050 268deg);  // Lc -36.2
 
-  // Primary — deep-space violet, structural CTA/focus/tabs/links. Light
-  // chip + dark ink (see header): legible both as Link/Icon/Tabs text on
-  // the void (Lc -81.9) and as a fill under primary-content (Lc 82.2).
-  --color-primary:         oklch(88% 0.050 288deg);
-  --color-primary-hover:   oklch(93% 0.028 288deg);
-  --color-primary-active:  oklch(68% 0.145 288deg);
+  // The six text-rendered families below are a constrained optimization, not
+  // a free chroma choice: each must clear Lc 75 as raw 12-15px text on the
+  // L8% void, and at 96% of the sRGB ceiling that couples L and chroma
+  // against each other (drop L for chroma and luminance falls faster than
+  // chroma rises). The prior pass solved it at Lc 80-83, which cost 22-39%
+  // of the achievable chroma and left the set reading as pastels. Re-solved
+  // at Lc ~78-79 — still three points clear of the small-body-text floor,
+  // WCAG essentially unchanged at 13.2-14.9:1 — buying back that chroma.
+  --color-primary:         oklch(86.5% 0.068 288deg);
+  --color-primary-hover:   oklch(92% 0.038 288deg);
+  --color-primary-active:  oklch(68% 0.172 288deg);
   --color-primary-content: oklch(11% 0.030 288deg);
 
   // Secondary — nebula magenta, structural secondary action.
-  --color-secondary:         oklch(88% 0.075 335deg);
-  --color-secondary-hover:   oklch(93% 0.040 335deg);
-  --color-secondary-active:  oklch(68% 0.210 335deg);
+  --color-secondary:         oklch(87% 0.099 335deg);
+  --color-secondary-hover:   oklch(92% 0.056 335deg);
+  --color-secondary-active:  oklch(68% 0.290 335deg);
   --color-secondary-content: oklch(11% 0.040 335deg);
 
-  // Accent — ember-gold starlight. The one family never rendered as
-  // standalone text in this component library, so it stays a deep
-  // saturated fill + light content instead of the light-chip convention
-  // above — see header for why.
-  --color-accent:         oklch(44% 0.085 90deg);
-  --color-accent-hover:   oklch(52% 0.095 90deg);
-  --color-accent-active:  oklch(36% 0.070 90deg);
-  --color-accent-content: oklch(93% 0.025 90deg);
-  --color-accent-bg:      oklch(26% 0.050 90deg);
+  // Accent — starlight gold, and this theme's hero. It is the one family
+  // never rendered as standalone text, so it is also the one family free of
+  // the Lc75-on-void constraint above — which the prior pass spent on a deep
+  // fill at L44, where 90deg gold's ceiling is 0.091 and the result is
+  // literally olive-brown (#65500b). Flipped to a bright fill at L86 where
+  // the same hue reaches 0.176: #fccb24, incandescent, twice the chroma, and
+  // Lc 79.3 against its dark ink (was 76.6). Cosmos now has a real
+  // relationship — a cold indigo void with one genuinely burning star —
+  // rather than seven equally pale tints.
+  --color-accent:         oklch(86% 0.169 90deg);
+  --color-accent-hover:   oklch(89% 0.135 90deg);
+  --color-accent-active:  oklch(80% 0.155 90deg);
+  --color-accent-content: oklch(12% 0.040 90deg);
+  --color-accent-bg:      oklch(26% 0.053 90deg);
 
   // Semantic: success — aurora green.
-  --color-success:         oklch(86% 0.189 150deg);
-  --color-success-hover:   oklch(91% 0.100 150deg);
-  --color-success-active:  oklch(68% 0.165 150deg);
-  --color-success-bg:      oklch(17% 0.031 150deg);
+  --color-success:         oklch(87% 0.230 150deg);
+  --color-success-hover:   oklch(92% 0.135 150deg);
+  --color-success-active:  oklch(68% 0.180 150deg);
+  --color-success-bg:      oklch(17% 0.053 150deg);
   --color-success-content: oklch(11% 0.030 150deg);
 
   // Semantic: warning — solar amber.
-  --color-warning:         oklch(88% 0.056 50deg);
-  --color-warning-hover:   oklch(93% 0.028 50deg);
-  --color-warning-active:  oklch(68% 0.150 50deg);
-  --color-warning-bg:      oklch(17% 0.033 50deg);
+  --color-warning:         oklch(86.5% 0.078 50deg);
+  --color-warning-hover:   oklch(92% 0.044 50deg);
+  --color-warning-active:  oklch(68% 0.174 50deg);
+  --color-warning-bg:      oklch(17% 0.055 50deg);
   --color-warning-content: oklch(12% 0.040 50deg);
 
   // Semantic: error — red-giant crimson.
-  --color-error:         oklch(88% 0.050 22deg);
-  --color-error-hover:   oklch(93% 0.022 22deg);
-  --color-error-active:  oklch(66% 0.195 22deg);
-  --color-error-bg:      oklch(17% 0.044 22deg);
+  --color-error:         oklch(86.5% 0.068 22deg);
+  --color-error-hover:   oklch(92% 0.039 22deg);
+  --color-error-active:  oklch(66% 0.218 22deg);
+  --color-error-bg:      oklch(17% 0.074 22deg);
   --color-error-content: oklch(11% 0.025 22deg);
 
   // Semantic: info — pulsar cyan.
-  --color-info:         oklch(87% 0.069 225deg);
-  --color-info-hover:   oklch(92% 0.034 225deg);
-  --color-info-active:  oklch(66% 0.098 225deg);
-  --color-info-bg:      oklch(17% 0.021 225deg);
+  --color-info:         oklch(85.5% 0.093 225deg);
+  --color-info-hover:   oklch(92% 0.049 225deg);
+  --color-info-active:  oklch(66% 0.121 225deg);
+  --color-info-bg:      oklch(17% 0.037 225deg);
   --color-info-content: oklch(11% 0.022 225deg);
 
   // Shadows — ink-blue-violet, never flat rgba(0,0,0,x); single implied
@@ -184,10 +198,10 @@
   --shadow-md: 0 8px 16px -4px oklch(3% 0.035 268deg / 0.65), 0 2px 4px -2px oklch(3% 0.035 268deg / 0.40);
   --shadow-lg: 0 20px 32px -8px oklch(2% 0.035 268deg / 0.75), 0 4px 8px -4px oklch(2% 0.035 268deg / 0.50);
   --shadow-xl: 0 32px 48px -12px oklch(2% 0.035 268deg / 0.85), 0 8px 16px -8px oklch(2% 0.035 268deg / 0.50);
-  --shadow-primary: 0 8px 32px 0 oklch(88% 0.050 288deg / 0.40);
-  --shadow-accent:  0 8px 32px 0 oklch(44% 0.085 90deg / 0.35);
+  --shadow-primary: 0 8px 32px 0 oklch(86.5% 0.068 288deg / 0.40);
+  --shadow-accent:  0 8px 32px 0 oklch(86% 0.169 90deg / 0.35);
 
-  --focus-ring-color: oklch(88% 0.050 288deg / 0.55);
+  --focus-ring-color: oklch(86.5% 0.068 288deg / 0.55);
   --color-header-bg: var(--color-base-100);
 
   // Motion — retuned at exactly the two places this system's motion bridge

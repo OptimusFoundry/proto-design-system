@@ -44,6 +44,16 @@
 //   base a step instead of darkening the content further (already pinned to
 //   its own gamut ceiling at L18).
 //
+// Saturation pass (later revision): the prior repair fixed gamut clipping but
+// left most hues 10-70% short of their real ceilings, and the grid-line border
+// at 29% of its own — a "technical drawing" theme whose cyan read as slate.
+// Every brand/semantic token is now fitted to 94-99% of the sRGB ceiling at
+// its own L/h, the border is a real drafting cyan (see its comment), and the
+// shadow cast is cyan rather than near-neutral. The one thing that could NOT
+// be pushed is primary's absolute chroma: it must stay <=~L55 to carry white
+// content at AA, and cyan's sRGB ceiling there is ~0.09. Documented at the
+// token rather than left looking like timidity.
+//
 // Motion: mechanical/precise personality — CAD software snapping to grid
 // points, not an editorial ease. Three coherent overrides, everything else
 // stays house default:
@@ -121,42 +131,57 @@
   --color-surface-elevated: oklch(99.6% 0.002 230deg);
   --color-surface-overlay: oklch(18% 0.015 230deg / 0.5);
 
-  // Border colors (grid lines) — already in-gamut, unchanged.
-  --color-border: oklch(85% 0.04 210deg);
-  --color-border-hover: oklch(65% 0.1 210deg);
+  // Border colors (grid lines) — the theme's literal premise ("cyan lines on
+  // white"), previously a near-neutral wash at 29% of its own chroma
+  // headroom (L85 c0.04 vs a 0.1375 ceiling) scoring Lc 23.7 / 1.52:1, i.e.
+  // failing WCAG 1.4.11's 3:1 non-text floor for every Input/Select/Card
+  // boundary that renders it. Refit to a real drafting cyan at 94% of the
+  // L62 ceiling: Lc 59.7 / 3.38:1. Width stays the house 1px hairline —
+  // only the color's saturation and legibility changed, not its weight role.
+  --color-border: oklch(62% 0.106 205deg);
+  --color-border-hover: oklch(52% 0.089 205deg);
 
-  // Shadow colors (technical, minimal)
-  --shadow-color: oklch(55% 0.05 210deg / 0.1);
-  --shadow-color-strong: oklch(45% 0.06 210deg / 0.18);
+  // Shadow colors — cyan-cast, not near-neutral: chroma pushed to ~90% of
+  // ceiling so the drop shadow reads as light through a blueprint print
+  // rather than generic gray.
+  --shadow-color: oklch(55% 0.085 205deg / 0.1);
+  --shadow-color-strong: oklch(45% 0.077 205deg / 0.18);
 
-  // Primary (blueprint cyan) — refit in-gamut (ceiling at L50/H210 is
-  // ~0.087; was 0.15, clipped to rgb(0,134,161)). White content 5.81:1.
-  --color-primary: oklch(50% 0.078 210deg);       // rgb(28,111,124)
-  --color-primary-hover: oklch(45% 0.071 210deg); // rgb(21,96,107)
-  --color-primary-active: oklch(40% 0.063 210deg); // rgb(16,81,90)
+  // Primary (blueprint cyan) — hue moved 210->205deg and chroma taken to
+  // 99% of the L50 ceiling (0.0861). This is the real constraint worth
+  // stating: a solid fill carrying white content has to stay at/below ~L55
+  // for AA, and cyan's sRGB chroma ceiling in that band is ~0.09 — the
+  // saturation ceiling here is the gamut's, not a design choice. What 205deg
+  // buys is purity: rgb(2,113,122) vs the old rgb(28,111,124), i.e. the red
+  // cast that made it read as slate teal is gone. White content 5.76:1.
+  --color-primary: oklch(50% 0.085 205deg);       // rgb(2,113,122)
+  --color-primary-hover: oklch(45% 0.076 205deg);
+  --color-primary-active: oklch(40% 0.068 205deg);
   --color-primary-content: oklch(100% 0 0deg);
 
   // Secondary (annotation orange — was a byte-identical duplicate of
-  // --color-error's red; now a distinct drafting-markup hue). White content
-  // 6.32:1.
-  --color-secondary: oklch(50% 0.13 45deg);        // rgb(157,70,22)
-  --color-secondary-hover: oklch(45% 0.1175 45deg); // rgb(136,59,17)
-  --color-secondary-active: oklch(40% 0.1053 45deg); // rgb(116,49,12)
+  // --color-error's red; now a distinct drafting-markup hue), at 98% of its
+  // L50 ceiling. White content 6.37:1.
+  --color-secondary: oklch(50% 0.141 45deg);        // rgb(161,66,4)
+  --color-secondary-hover: oklch(45% 0.128 45deg);
+  --color-secondary-active: oklch(40% 0.114 45deg);
   --color-secondary-content: oklch(100% 0 0deg);
 
-  // Accent (highlight yellow) — refit in-gamut (hover was past ceiling).
-  --color-accent: oklch(85% 0.157 95deg);
-  --color-accent-hover: oklch(80% 0.148 95deg);
-  --color-accent-active: oklch(75% 0.139 95deg);
+  // Accent (highlight yellow) — pushed to ~97% of ceiling at each step; the
+  // -bg wash nearly doubled (0.045 -> 0.085 of a 0.096 ceiling) so a
+  // highlighted region actually reads as marker ink rather than off-white.
+  --color-accent: oklch(85% 0.170 95deg);
+  --color-accent-hover: oklch(80% 0.161 95deg);
+  --color-accent-active: oklch(75% 0.151 95deg);
   --color-accent-content: oklch(20% 0.04 95deg);
-  --color-accent-bg: oklch(94% 0.045 95deg);
+  --color-accent-bg: oklch(94% 0.085 95deg);
 
   // Semantic colors (technical) — refit in-gamut, all four -active tokens
   // added (were missing entirely).
-  --color-success: oklch(50% 0.125 150deg);
-  --color-success-hover: oklch(45% 0.1125 150deg);
-  --color-success-active: oklch(40% 0.1 150deg);
-  --color-success-bg: oklch(95% 0.04 150deg);
+  --color-success: oklch(50% 0.136 150deg);
+  --color-success-hover: oklch(45% 0.123 150deg);
+  --color-success-active: oklch(40% 0.110 150deg);
+  --color-success-bg: oklch(95% 0.070 150deg);
   --color-success-content: oklch(100% 0 0deg);
   // Warning lightened a step (L78->L80) for more content-margin over the
   // Lc 60 UI floor (was Lc 62.8, now Lc 67.5) without pushing content past
@@ -164,27 +189,27 @@
   // only 10deg from --color-accent's 95deg highlight yellow, a near-collision
   // between a semantic and a brand color; 72deg keeps it a clear amber/gold
   // (still inside the 50-95deg warning convention) with real separation.
-  --color-warning: oklch(80% 0.148 72deg);
-  --color-warning-hover: oklch(75% 0.139 72deg);
-  --color-warning-active: oklch(70% 0.13 72deg);
-  --color-warning-bg: oklch(96% 0.028 72deg);
+  --color-warning: oklch(81% 0.156 72deg);
+  --color-warning-hover: oklch(75% 0.157 72deg);
+  --color-warning-active: oklch(70% 0.147 72deg);
+  --color-warning-bg: oklch(95% 0.037 72deg);
   --color-warning-content: oklch(18% 0.0465 72deg);
-  --color-error: oklch(55% 0.202 25deg);
-  --color-error-hover: oklch(50% 0.1836 25deg);
-  --color-error-active: oklch(45% 0.1656 25deg);
-  --color-error-bg: oklch(95% 0.022 25deg);
+  --color-error: oklch(55% 0.219 25deg);
+  --color-error-hover: oklch(50% 0.199 25deg);
+  --color-error-active: oklch(45% 0.179 25deg);
+  --color-error-bg: oklch(95% 0.024 25deg);
   --color-error-content: oklch(100% 0 0deg);
   // Info — distinct indigo (h225) off primary's cyan (h210) so the two
   // brand-critical blues no longer collide (was a byte-identical duplicate
   // of --color-primary).
-  --color-info: oklch(50% 0.086 225deg);
-  --color-info-hover: oklch(45% 0.077 225deg);
-  --color-info-active: oklch(40% 0.069 225deg);
-  --color-info-bg: oklch(95% 0.028 225deg);
+  --color-info: oklch(50% 0.093 225deg);
+  --color-info-hover: oklch(45% 0.084 225deg);
+  --color-info-active: oklch(40% 0.075 225deg);
+  --color-info-bg: oklch(95% 0.031 225deg);
   --color-info-content: oklch(100% 0 0deg);
 
   // Focus ring (technical) — matches the refit primary.
-  --focus-ring-color: oklch(50% 0.078 210deg / 0.4);
+  --focus-ring-color: oklch(50% 0.085 205deg / 0.4);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
@@ -199,8 +224,8 @@
   --shadow-lg: 0 6px 16px var(--shadow-color-strong);
   --shadow-xl: 0 10px 28px var(--shadow-color-strong);
   --shadow-2xl: 0 16px 40px var(--shadow-color-strong);
-  --shadow-primary: 0 8px 24px 0 oklch(50% 0.078 210deg / 0.32);
-  --shadow-accent: 0 8px 24px 0 oklch(65% 0.12 95deg / 0.3);
+  --shadow-primary: 0 8px 24px 0 oklch(50% 0.085 205deg / 0.32);
+  --shadow-accent: 0 8px 24px 0 oklch(65% 0.134 95deg / 0.3);
 
   // Chrome — a step off the paper canvas, like a title-block strip.
   --color-header-bg: var(--color-base-100);

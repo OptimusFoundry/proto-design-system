@@ -260,35 +260,40 @@
   // check, so this was checked with the same OKLCH->linear-sRGB port
   // standalone: L46/C0.10, L38/C0.11, and the L62/C0.09-0.11 bloom family
   // below all render in-gamut).
-  --shadow-color: oklch(46% 0.10 290deg / 0.14);
-  --shadow-color-strong: oklch(38% 0.11 290deg / 0.22);
+  --shadow-color: oklch(46% 0.170 290deg / 0.14);
+  --shadow-color-strong: oklch(38% 0.150 290deg / 0.22);
 
-  // Primary (bold violet) — CTA/focus/tabs/links, unchanged (already in-gamut,
-  // already clears the ladder: Lc 72.6 as link text on bg)
-  --color-primary: oklch(52% 0.22 290deg);
-  --color-primary-hover: oklch(47% 0.24 290deg);
-  --color-primary-active: oklch(42% 0.22 290deg);
+  // Primary (bold violet) — CTA/focus/tabs/links. 2026-08: the "bold" half of
+  // this theme's own "soft but bold" brief was being under-delivered — 0.22
+  // chroma is only 75% of the 0.2915 sRGB ceiling at 52% L / hue 290, so the
+  // one token carrying the whole assertive half of the premise was leaving a
+  // quarter of its available saturation on the table while everything around
+  // it was correctly pastel. Refit to 95% of ceiling at each state; contrast
+  // improved as a side effect (Lc -80.5 -> -80.9, 5.76:1 -> 6.08:1).
+  --color-primary: oklch(52% 0.278 290deg);
+  --color-primary-hover: oklch(47% 0.254 290deg);
+  --color-primary-active: oklch(42% 0.228 290deg);
   --color-primary-content: oklch(98% 0.006 290deg);  // lavender ivory, never pure #fff
 
   // Secondary (soft rose-pink) — dark-ink content stays fixed across states,
   // so hover/active LIGHTEN (not darken) to keep clearing the Lc60 UI-text
   // floor at press states — see header second-pass note.
-  --color-secondary: oklch(80% 0.11 350deg);          // Lc 65.1 / 9.33:1
-  --color-secondary-hover: oklch(83% 0.10 350deg);    // Lc 70.5 / 10.38:1
-  --color-secondary-active: oklch(87% 0.08 350deg);   // Lc 78.0 / 11.93:1
-  --color-secondary-content: oklch(20% 0.04 350deg);
+  --color-secondary: oklch(81% 0.128 350deg);         // Lc 66.3 / 9.70:1
+  --color-secondary-hover: oklch(84% 0.104 350deg);   // Lc 71.9 / 10.76:1
+  --color-secondary-active: oklch(87% 0.082 350deg);  // Lc 78.0 / 11.96:1
+  --color-secondary-content: oklch(20% 0.075 350deg);
 
   // Accent (mint) — editorial emphasis only, dark ink content unified onto
   // the theme's own violet ink instead of a separate out-of-gamut mint ink.
   // hover/active LIGHTEN for the same Lc60-floor reason as secondary above.
-  --color-accent: oklch(78% 0.12 170deg);             // Lc 67.3 / 9.93:1
-  --color-accent-hover: oklch(82% 0.12 170deg);       // Lc 74.1 / 11.34:1
-  --color-accent-active: oklch(86% 0.10 170deg);      // Lc 81.1 / 12.88:1
-  --color-accent-content: oklch(18% 0.02 290deg);
+  --color-accent: oklch(78% 0.147 170deg);            // Lc 68.0 / 10.12:1
+  --color-accent-hover: oklch(82% 0.155 170deg);      // Lc 74.7 / 11.51:1
+  --color-accent-active: oklch(86% 0.162 170deg);     // Lc 81.4 / 12.99:1
+  --color-accent-content: oklch(18% 0.070 290deg);
   // Soft-wash chip background — pairs with --color-base-content (dark ink),
   // never with --color-accent-content; matches every other semantic's -bg
   // role and the contrast script's own "accent-content on accent" pairing.
-  --color-accent-bg: oklch(95% 0.045 170deg);
+  --color-accent-bg: oklch(95% 0.071 170deg);
 
   // Semantic colors — rebuilt at the true in-gamut chroma ceiling per hue so
   // the BASE color itself also clears Lc75/AA with margin when used directly
@@ -296,29 +301,29 @@
   // -content-on-base). -content unified onto one lavender ivory.
   // success hue widened from 158 (only 12deg off --color-accent's hue170,
   // effectively near-identical) to 140 — 30deg clear of accent, still green.
-  --color-success: oklch(45% 0.098 140deg);           // Lc 77.5 / 6.43:1 on success-bg
-  --color-success-hover: oklch(40% 0.088 140deg);
-  --color-success-active: oklch(35% 0.077 140deg);
-  --color-success-bg: oklch(96% 0.045 140deg);
+  --color-success: oklch(44% 0.137 140deg);
+  --color-success-hover: oklch(39% 0.123 140deg);
+  --color-success-active: oklch(34% 0.109 140deg);
+  --color-success-bg: oklch(96% 0.073 140deg);
   --color-success-content: oklch(98% 0.006 290deg);
-  --color-warning: oklch(47% 0.09 84deg);             // Lc 75.3 / 6.07:1 on warning-bg — was 54% (4.513:1, AA-borderline)
-  --color-warning-hover: oklch(41% 0.08 84deg);
-  --color-warning-active: oklch(36% 0.07 84deg);
-  --color-warning-bg: oklch(96% 0.035 84deg);
+  --color-warning: oklch(47% 0.094 84deg);
+  --color-warning-hover: oklch(41% 0.082 84deg);
+  --color-warning-active: oklch(36% 0.073 84deg);
+  --color-warning-bg: oklch(96% 0.040 84deg);
   --color-warning-content: oklch(98% 0.006 290deg);
-  --color-error: oklch(47% 0.17 20deg);               // Lc 75.9 / 6.61:1 on error-bg — was 55% (4.766:1, AA-borderline)
-  --color-error-hover: oklch(41% 0.15 20deg);
-  --color-error-active: oklch(36% 0.13 20deg);
-  --color-error-bg: oklch(96% 0.018 20deg);
+  --color-error: oklch(46% 0.180 20deg);
+  --color-error-hover: oklch(41% 0.160 20deg);
+  --color-error-active: oklch(36% 0.141 20deg);
+  --color-error-bg: oklch(96% 0.019 20deg);
   --color-error-content: oklch(98% 0.006 290deg);
-  --color-info: oklch(46% 0.12 254deg);               // Lc 76.5 / 6.36:1 on info-bg — was 52% (4.980:1, AA-borderline)
-  --color-info-hover: oklch(40% 0.11 254deg);
-  --color-info-active: oklch(35% 0.10 254deg);
-  --color-info-bg: oklch(96% 0.017 254deg);
+  --color-info: oklch(46% 0.142 254deg);
+  --color-info-hover: oklch(40% 0.124 254deg);
+  --color-info-active: oklch(35% 0.110 254deg);
+  --color-info-bg: oklch(96% 0.019 254deg);
   --color-info-content: oklch(98% 0.006 290deg);
 
   // Focus ring
-  --focus-ring-color: oklch(52% 0.22 290deg / 0.4);
+  --focus-ring-color: oklch(52% 0.278 290deg / 0.4);
 
   // ==========================================================================
   // LAVENDER DESIGN TOKENS
@@ -338,27 +343,27 @@
   // billowing" half of the premise, and it's deliberately reserved for the
   // top two steps so it reads as a real state change on lift (J-10.5),
   // not a constant background hum at every elevation.
-  --shadow-xs: 0 1px 2px 0 oklch(46% 0.10 290deg / 0.16);
+  --shadow-xs: 0 1px 2px 0 oklch(46% 0.170 290deg / 0.16);
   --shadow-sm:
-    0 1px 1px 0 oklch(46% 0.10 290deg / 0.14),
+    0 1px 1px 0 oklch(46% 0.170 290deg / 0.14),
     0 2px 5px -2px var(--shadow-color);
   --shadow-md:
-    0 1px 2px -1px oklch(46% 0.10 290deg / 0.16),
+    0 1px 2px -1px oklch(46% 0.170 290deg / 0.16),
     0 6px 16px -6px var(--shadow-color);
   --shadow-lg:
-    0 2px 4px -2px oklch(46% 0.10 290deg / 0.18),
+    0 2px 4px -2px oklch(46% 0.170 290deg / 0.18),
     0 10px 24px -8px var(--shadow-color-strong),
-    0 28px 56px 6px oklch(62% 0.10 290deg / 0.12);
+    0 28px 56px 6px oklch(62% 0.180 290deg / 0.12);
   --shadow-xl:
-    0 2px 4px -2px oklch(46% 0.10 290deg / 0.20),
+    0 2px 4px -2px oklch(46% 0.170 290deg / 0.20),
     0 18px 36px -10px var(--shadow-color-strong),
-    0 44px 88px 10px oklch(62% 0.11 290deg / 0.16);
+    0 44px 88px 10px oklch(62% 0.190 290deg / 0.16);
   --shadow-primary:
-    0 4px 8px -2px oklch(52% 0.22 290deg / 0.35),
-    0 16px 32px 2px oklch(52% 0.20 290deg / 0.22);
+    0 4px 8px -2px oklch(52% 0.278 290deg / 0.35),
+    0 16px 32px 2px oklch(52% 0.250 290deg / 0.22);
   --shadow-accent:
-    0 4px 8px -2px oklch(78% 0.12 170deg / 0.30),
-    0 16px 32px 2px oklch(78% 0.10 170deg / 0.20);
+    0 4px 8px -2px oklch(78% 0.147 170deg / 0.30),
+    0 16px 32px 2px oklch(78% 0.130 170deg / 0.20);
 
   // Chrome sits a step above the canvas, on-hue
   --color-header-bg: var(--color-base-100);

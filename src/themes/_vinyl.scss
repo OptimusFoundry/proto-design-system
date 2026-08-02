@@ -68,6 +68,16 @@
 // lineage, which reads the same register as the hand-stamped matrix/runout
 // numbers etched into a record's lead-out groove and the catalog-number
 // stamps on record labels.
+//
+// 2026-08 chroma pass. The palette was fit to floors but not to the gamut:
+// most role tokens sat at 56-88% of the true sRGB chroma ceiling at their own
+// L/H, and hover steps in particular desaturated as they lightened, which is
+// what made a warm theme read chalky rather than warm. Every role step is now
+// at ~95% of its ceiling (brass, wine, kraft, and all five semantics), and
+// --color-info moved 225deg -> 255deg because at this theme's deep-fill
+// lightness a 225deg blue tops out at C0.077 — the old value was pinned at
+// 90% of a ceiling that was itself washed. Every checked pair holds or
+// improves; info gained contrast as well as chroma (Lc -84.4 -> -84.9).
 
 [data-theme="vinyl"] {
   color-scheme: dark;
@@ -121,20 +131,26 @@
   --color-border-hover: oklch(62% 0.090 35deg);
 
   // Primary — brass tonearm/cartridge hardware. Bright fill (this hue's
-  // gamut peaks high-L) + near-black content. Base Lc 65.0/10.20:1, hover
-  // 75.3/12.49:1, active 55.0/8.20:1 (accepted dip above the Lc45 floor for
-  // a transient press state, in-gamut).
-  --color-primary:         oklch(78% 0.135 85deg);
-  --color-primary-hover:   oklch(84% 0.110 85deg);
-  --color-primary-active:  oklch(72% 0.130 85deg);
+  // gamut peaks high-L) + near-black content. Base Lc 64.8/10.15:1, hover
+  // 75.4/12.48:1, active 55.0/8.19:1 (accepted dip above the Lc45 floor for
+  // a transient press state, in-gamut). Chroma now sits at ~95% of the true
+  // sRGB ceiling at each step: real polished brass glints, and the prior
+  // hover in particular (64% of ceiling) desaturated as it lightened, the
+  // exact "washed on hover" move that made the whole ramp read chalky.
+  --color-primary:         oklch(78% 0.152 85deg);
+  --color-primary-hover:   oklch(84% 0.164 85deg);
+  --color-primary-active:  oklch(72% 0.141 85deg);
   --color-primary-content: oklch(10% 0.030 85deg);
 
   // Secondary — kraft-paper label fill, same neutral hue family as base,
   // pale + near-black content. Lc 95.6/17.67:1 base, 82.2/14.20:1 hover,
   // 73.3/12.08:1 active.
+  // Hover/active carry real kraft chroma (~89% of ceiling) instead of the
+  // prior 0.030 flat — pressing a kraft label darkens the paper's own color,
+  // it does not turn it grey.
   --color-secondary:         oklch(95% 0.025 35deg);
-  --color-secondary-hover:   oklch(88% 0.030 35deg);
-  --color-secondary-active:  oklch(83% 0.030 35deg);
+  --color-secondary-hover:   oklch(88% 0.058 35deg);
+  --color-secondary-active:  oklch(83% 0.086 35deg);
   --color-secondary-content: oklch(10% 0.020 35deg);
 
   // Accent — vintage record-label wine-red, editorial only (<=2 uses/page
@@ -145,44 +161,49 @@
   // synthetic pairing (no real call site pairs them — same documented
   // exception as _dark.scss/_archive.scss); it happens to score well here
   // too (-97.3/15.59:1).
-  --color-accent:         oklch(46% 0.170 350deg);
-  --color-accent-hover:   oklch(52% 0.190 350deg);
-  --color-accent-active:  oklch(40% 0.150 350deg);
+  --color-accent:         oklch(46% 0.188 350deg);
+  --color-accent-hover:   oklch(52% 0.212 350deg);
+  --color-accent-active:  oklch(40% 0.165 350deg);
   --color-accent-content: oklch(96% 0.020 350deg);
-  --color-accent-bg:      oklch(22% 0.060 350deg);
+  --color-accent-bg:      oklch(22% 0.092 350deg);
 
   // Semantics — deliberately off both the neutral (35deg) and primary
   // (85deg) hues so state colors never get mistaken for brand color.
-  --color-success:         oklch(74% 0.160 145deg); // Lc 61.6/9.49:1
-  --color-success-hover:   oklch(80% 0.140 145deg); // Lc 71.1/11.53:1
-  --color-success-active:  oklch(66% 0.180 145deg); // Lc 49.0/7.06:1 (accepted dip)
-  --color-success-bg:      oklch(20% 0.050 145deg);
+  --color-success:         oklch(74% 0.210 145deg); // Lc 62.4/9.59:1
+  --color-success-hover:   oklch(80% 0.230 145deg); // Lc 72.0/11.63:1
+  --color-success-active:  oklch(66% 0.198 145deg); // Lc 48.8/7.03:1 (accepted dip)
+  --color-success-bg:      oklch(20% 0.066 145deg);
   --color-success-content: oklch(10% 0.030 145deg);
 
   // Warning — mustard-olive, 30deg clear of primary's brass so the two read
   // as distinct hues at a glance, not "gold and slightly-more-gold."
-  --color-warning:         oklch(80% 0.140 115deg); // Lc 69.8/11.20:1
-  --color-warning-hover:   oklch(86% 0.130 115deg); // Lc 80.4/13.64:1
-  --color-warning-active:  oklch(72% 0.150 115deg); // Lc 56.6/8.47:1 (accepted dip)
-  --color-warning-bg:      oklch(22% 0.050 115deg);
+  --color-warning:         oklch(80% 0.172 115deg); // Lc 70.3/11.29:1
+  --color-warning-hover:   oklch(86% 0.184 115deg); // Lc 80.8/13.71:1
+  --color-warning-active:  oklch(72% 0.158 115deg); // Lc 56.5/8.45:1 (accepted dip)
+  --color-warning-bg:      oklch(22% 0.055 115deg);
   --color-warning-content: oklch(11% 0.030 115deg);
 
   // Error — alarm red-orange, 35deg clear of accent's wine so a Badge
   // .error and .accent variant never read as the same color. Deep fill +
   // near-white content (see header: fixes the prior gamut clip and the
   // WCAG large/bold-text ambiguity in one move).
-  --color-error:         oklch(53% 0.190 25deg); // Lc -73.3/5.12:1
-  --color-error-hover:   oklch(59% 0.200 25deg); // Lc -66.3/4.02:1
-  --color-error-active:  oklch(46% 0.170 25deg); // Lc -80.8/6.88:1
-  --color-error-bg:      oklch(22% 0.080 25deg);
+  --color-error:         oklch(53% 0.207 25deg); // Lc -73.1/5.19:1
+  --color-error-hover:   oklch(59% 0.228 25deg); // Lc -65.9/4.07:1
+  --color-error-active:  oklch(46% 0.181 25deg); // Lc -80.5/6.91:1
+  --color-error-bg:      oklch(22% 0.092 25deg);
   --color-error-content: oklch(96% 0.014 25deg);
 
   // Info — steady turntable-indicator blue, deep fill + near-white content.
-  --color-info:         oklch(44% 0.076 225deg); // Lc -84.4/6.97:1
-  --color-info-hover:   oklch(50% 0.086 225deg); // Lc -77.7/5.38:1
-  --color-info-active:  oklch(38% 0.065 225deg); // Lc -90.3/9.07:1
-  --color-info-bg:      oklch(20% 0.035 225deg);
-  --color-info-content: oklch(97% 0.012 225deg);
+  // Re-hued 225deg -> 255deg: at this theme's deep-fill lightness the sRGB
+  // ceiling at 225deg is only C0.077, so the old value was pinned at 90% of
+  // a ceiling that was itself washed out. 255deg is the same "indicator
+  // blue" reading with roughly double the chroma available (C0.148 at L44),
+  // and it lands better contrast than the token it replaces, not worse.
+  --color-info:         oklch(44% 0.143 255deg); // Lc -84.9/7.20:1
+  --color-info-hover:   oklch(50% 0.163 255deg); // Lc -78.5/5.60:1
+  --color-info-active:  oklch(38% 0.122 255deg); // Lc -90.6/9.30:1
+  --color-info-bg:      oklch(20% 0.062 255deg);
+  --color-info-content: oklch(97% 0.012 255deg);
 
   // Shadows — ink-tinted at the neutral hue (35deg), one consistent implied
   // light source, never flat rgba(0,0,0,x)/oklch(0 0 0)-equivalent black.
@@ -190,15 +211,15 @@
   // light this theme's shape always intended.
   --shadow-color:        oklch(5% 0.018 35deg / 0.45);
   --shadow-color-strong: oklch(5% 0.018 35deg / 0.75);
-  --shadow-xs: inset 0 1px 0 0 oklch(78% 0.135 85deg / 0.05), 0 1px 2px 0 oklch(5% 0.018 35deg / 0.45);
-  --shadow-sm: inset 0 1px 0 0 oklch(78% 0.135 85deg / 0.08), 0 2px 6px 0 oklch(5% 0.018 35deg / 0.50);
-  --shadow-md: inset 0 1px 0 0 oklch(78% 0.135 85deg / 0.10), 0 8px 20px -4px oklch(5% 0.018 35deg / 0.55);
-  --shadow-lg: inset 0 1px 0 0 oklch(78% 0.135 85deg / 0.12), 0 20px 40px -8px oklch(5% 0.018 35deg / 0.65);
-  --shadow-xl: inset 0 1px 0 0 oklch(78% 0.135 85deg / 0.14), 0 32px 60px -12px oklch(5% 0.018 35deg / 0.75);
-  --shadow-primary: 0 4px 20px 0 oklch(78% 0.135 85deg / 0.35);
-  --shadow-accent:  0 4px 20px 0 oklch(46% 0.170 350deg / 0.35);
+  --shadow-xs: inset 0 1px 0 0 oklch(78% 0.152 85deg / 0.05), 0 1px 2px 0 oklch(5% 0.018 35deg / 0.45);
+  --shadow-sm: inset 0 1px 0 0 oklch(78% 0.152 85deg / 0.08), 0 2px 6px 0 oklch(5% 0.018 35deg / 0.50);
+  --shadow-md: inset 0 1px 0 0 oklch(78% 0.152 85deg / 0.10), 0 8px 20px -4px oklch(5% 0.018 35deg / 0.55);
+  --shadow-lg: inset 0 1px 0 0 oklch(78% 0.152 85deg / 0.12), 0 20px 40px -8px oklch(5% 0.018 35deg / 0.65);
+  --shadow-xl: inset 0 1px 0 0 oklch(78% 0.152 85deg / 0.14), 0 32px 60px -12px oklch(5% 0.018 35deg / 0.75);
+  --shadow-primary: 0 4px 20px 0 oklch(78% 0.152 85deg / 0.35);
+  --shadow-accent:  0 4px 20px 0 oklch(46% 0.188 350deg / 0.35);
 
-  --focus-ring-color: oklch(78% 0.135 85deg / 0.5);
+  --focus-ring-color: oklch(78% 0.152 85deg / 0.5);
   --color-header-bg: var(--color-base-100);
 
   // Motion — a turntable's tonearm mechanism, not a "warm crackly" cliche

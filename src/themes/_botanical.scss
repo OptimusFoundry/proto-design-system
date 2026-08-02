@@ -46,53 +46,76 @@
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);
   --color-border: oklch(80% 0.030 90deg);
   --color-border-hover: oklch(48% 0.080 140deg);
-  --color-primary: oklch(42% 0.10 145deg);
-  --color-primary-hover: oklch(36% 0.12 145deg);
-  --color-primary-active: oklch(30% 0.12 145deg);
+  // 2026-08 saturation refit — "organic" was being read as "muted," which is
+  // not the same thing: a real moss garden is deep saturated green, fired
+  // terracotta and poppy, not a beige wash. Every role below is refit to
+  // ~97-99% of its actual in-gamut sRGB chroma ceiling at its own L/H
+  // (bisection-computed, not eyeballed) while HOLDING the lightness that its
+  // -content contrast depends on, so vividness rises without touching the
+  // contrast ladder. Four bugs fixed on the way: primary-hover/-active and
+  // info/info-active were authored past the ceiling (104-135%) and were being
+  // silently gamut-mapped; accent-bg was 164% over.
+  --color-primary: oklch(41% 0.130 145deg);
+  --color-primary-hover: oklch(37% 0.117 145deg);
+  --color-primary-active: oklch(32% 0.102 145deg);
   --color-primary-content: oklch(96% 0.020 85deg);
-  --color-secondary: oklch(55% 0.08 60deg);
-  --color-secondary-hover: oklch(48% 0.10 60deg);
-  --color-secondary-active: oklch(44% 0.1 60deg);
+  // Secondary is the terracotta pot, so it moved off hue60 (a tan that also
+  // sat 5deg from --color-warning) to hue45 — fired-clay orange-red, and
+  // 20deg clear of warning.
+  --color-secondary: oklch(52% 0.148 45deg);
+  --color-secondary-hover: oklch(46% 0.131 45deg);
+  --color-secondary-active: oklch(41% 0.117 45deg);
   --color-secondary-content: oklch(96% 0.020 85deg);
-  --color-accent: oklch(62% 0.12 15deg);
-  --color-accent-hover: oklch(55% 0.14 15deg);
-  --color-accent-active: oklch(51% 0.14 15deg);
+  // Accent darkened 62% -> 54% L: at 62% the ivory content scored 3.45:1, a
+  // hard WCAG AA failure. The lightness it gives up is repaid with 78% more
+  // chroma, so the poppy reads hotter, not quieter (5.00:1 now).
+  --color-accent: oklch(54% 0.213 15deg);
+  --color-accent-hover: oklch(48% 0.190 15deg);
+  --color-accent-active: oklch(43% 0.170 15deg);
   --color-accent-content: oklch(96% 0.020 85deg);
-  --color-accent-bg: oklch(94% 0.05 15deg);
+  --color-accent-bg: oklch(90% 0.051 15deg);
   // success hue split off from --color-primary's exact hue145 (was an
   // identical match) to hue120 — still reads green, 25deg clear of primary.
-  --color-success: oklch(55% 0.118 120deg);
-  --color-success-hover: oklch(63% 0.14 120deg);
-  --color-success-active: oklch(47% 0.10 120deg);
-  --color-success-bg: oklch(90% 0.035 120deg);
+  // hover/active now DARKEN monotonically; the prior -hover lightened, which
+  // eroded contrast against the fixed ivory content at exactly the state
+  // that needs it most.
+  --color-success: oklch(50% 0.120 120deg);
+  --color-success-hover: oklch(45% 0.106 120deg);
+  --color-success-active: oklch(40% 0.095 120deg);
+  --color-success-bg: oklch(92% 0.150 120deg);
   --color-success-content: oklch(96% 0.020 85deg);
-  --color-warning: oklch(77% 0.15 65deg);
-  --color-warning-hover: oklch(68% 0.15 65deg);
-  --color-warning-active: oklch(60% 0.13 65deg);
-  --color-warning-bg: oklch(93% 0.040 65deg);
-  --color-warning-content: oklch(16% 0.04 65deg);
+  --color-warning: oklch(77% 0.168 65deg);
+  --color-warning-hover: oklch(68% 0.150 65deg);
+  --color-warning-active: oklch(60% 0.132 65deg);
+  --color-warning-bg: oklch(93% 0.046 65deg);
+  --color-warning-content: oklch(14% 0.045 65deg);
   // error hue moved from 25 (only 10deg off --color-accent's hue15) to
-  // 355 — 20deg clear of accent, still reads red.
-  --color-error: oklch(50% 0.18 355deg);
-  --color-error-hover: oklch(58% 0.18 355deg);
-  --color-error-active: oklch(42% 0.16 355deg);
-  --color-error-bg: oklch(91% 0.035 355deg);
+  // 355 — 20deg clear of accent, still reads red. Same monotonic-darkening
+  // fix as success above.
+  --color-error: oklch(49% 0.198 355deg);
+  --color-error-hover: oklch(44% 0.178 355deg);
+  --color-error-active: oklch(38% 0.155 355deg);
+  --color-error-bg: oklch(91% 0.050 355deg);
   --color-error-content: oklch(96% 0.020 85deg);
-  --color-info: oklch(48% 0.10 220deg);
-  --color-info-hover: oklch(56% 0.1 220deg);
-  --color-info-active: oklch(40% 0.1 220deg);
-  --color-info-bg: oklch(91% 0.030 220deg);
+  // info moved 220 -> 245deg: at hue 220 the ceiling is only ~0.088, so the
+  // authored 0.10 was clipping and the role could never read as more than a
+  // grey-teal. Hue 245 is real rain-through-canopy blue with ~0.117 to work
+  // with, and it also darkens monotonically now.
+  --color-info: oklch(46% 0.115 245deg);
+  --color-info-hover: oklch(41% 0.103 245deg);
+  --color-info-active: oklch(36% 0.091 245deg);
+  --color-info-bg: oklch(91% 0.046 245deg);
   --color-info-content: oklch(96% 0.020 85deg);
-  --shadow-color: oklch(42% 0.1 145deg / 0.25);
-  --shadow-color-strong: oklch(42% 0.1 145deg / 0.55);
+  --shadow-color: oklch(41% 0.130 145deg / 0.25);
+  --shadow-color-strong: oklch(41% 0.130 145deg / 0.55);
   --shadow-xs: 0 1px 2px 0 oklch(22% 0.05 145deg / 0.05);
   --shadow-sm: 0 2px 6px -1px oklch(22% 0.05 145deg / 0.07), 0 1px 2px 0 oklch(22% 0.05 145deg / 0.04);
   --shadow-md: 0 8px 18px -4px oklch(22% 0.05 145deg / 0.09), 0 2px 5px -2px oklch(22% 0.05 145deg / 0.05);
   --shadow-lg: 0 20px 36px -8px oklch(22% 0.05 145deg / 0.12), 0 4px 10px -4px oklch(22% 0.05 145deg / 0.06);
   --shadow-xl: 0 32px 56px -12px oklch(22% 0.05 145deg / 0.16), 0 8px 18px -8px oklch(22% 0.05 145deg / 0.07);
-  --shadow-primary: 0 8px 24px 0 oklch(42% 0.10 145deg / 0.28);
-  --shadow-accent: 0 8px 24px 0 oklch(62% 0.12 15deg / 0.30);
-  --focus-ring-color: oklch(42% 0.10 145deg / 0.3);
+  --shadow-primary: 0 8px 24px 0 oklch(41% 0.130 145deg / 0.28);
+  --shadow-accent: 0 8px 24px 0 oklch(54% 0.213 15deg / 0.30);
+  --focus-ring-color: oklch(41% 0.130 145deg / 0.3);
   --color-header-bg: var(--color-base-100);
 
   // Motion (see header rationale). --ease-out and --spring-slow are left at

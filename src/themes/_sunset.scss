@@ -46,6 +46,14 @@
 // everywhere else in this file (secondary Lc 60.7/73.3/45.5, warning Lc
 // 63.0/75.4/47.0 — base/hover/active w/ ink, computed via
 // scripts/theme-contrast-check.mjs's apcaLc).
+//
+// 2026-08 chroma pass. "Warm glass" was being read as "pale," and the header
+// above conflated the two: golden hour is an intensely saturated event. Every
+// role is now fit to ~96% of its true sRGB ceiling instead of 78-89%, and
+// --color-info moved 220deg -> 235deg where a bright blue's ceiling is 28%
+// higher. A deep-fill rebuild of secondary/error/info was fitted and rejected
+// on a text-role constraint (see the block above them); the lit polarity is
+// therefore kept deliberately and with a computed reason, not by inertia.
 
 [data-theme="sunset"] {
   color-scheme: dark;
@@ -88,39 +96,56 @@
   // Lc45+ "detailed icon" floor in exchange for keeping the pressed state
   // visibly darker than rest — WCAG AA 4.5:1 still holds on every state,
   // same borderline-acceptance model as _oat.scss's terracotta link call.
-  --color-primary:         oklch(77% 0.125 45deg);   // Lc 61.7 w/ ink
-  --color-primary-hover:   oklch(83% 0.090 45deg);   // Lc 72.3 w/ ink
-  --color-primary-active:  oklch(68% 0.160 45deg);   // Lc ~49 w/ ink (accepted dip)
+  // LIT FAMILY — the sun disc and the gold band around it. Bright fill, dark
+  // ink, now at ~96% of the sRGB ceiling at each step rather than 78-89%.
+  --color-primary:         oklch(77% 0.140 45deg);   // Lc 61.5 w/ ink
+  --color-primary-hover:   oklch(83% 0.098 45deg);   // Lc 72.2 w/ ink
+  --color-primary-active:  oklch(68% 0.188 45deg);   // Lc 47.1 w/ ink (accepted dip)
   --color-primary-content: oklch(11% 0.025 45deg);
-  --color-secondary:         oklch(77% 0.143 345deg);  // Lc 60.7 w/ ink
-  --color-secondary-hover:   oklch(84% 0.093 345deg);  // Lc 73.3 w/ ink
-  --color-secondary-active:  oklch(68% 0.221 345deg);  // Lc 45.5 w/ ink (accepted dip)
-  --color-secondary-content: oklch(11% 0.025 345deg);
-  --color-accent:         oklch(78% 0.140 85deg);   // Lc ~63 w/ ink
-  --color-accent-hover:   oklch(84% 0.135 85deg);   // Lc ~70 w/ ink
-  --color-accent-active:  oklch(68% 0.125 85deg);   // Lc ~50 w/ ink (accepted dip)
+  --color-accent:         oklch(78% 0.155 85deg);   // Lc 64.8 w/ ink
+  --color-accent-hover:   oklch(84% 0.167 85deg);   // Lc 75.1 w/ ink
+  --color-accent-active:  oklch(68% 0.135 85deg);   // Lc 48.6 w/ ink (accepted dip)
   --color-accent-content: oklch(11% 0.025 85deg);
-  --color-accent-bg:      oklch(22% 0.045 85deg);
-  --color-success:         oklch(73% 0.200 145deg);  // Lc 60.8 w/ ink
-  --color-success-hover:   oklch(80% 0.220 145deg);  // Lc ~68 w/ ink
-  --color-success-active:  oklch(64% 0.180 145deg);  // Lc ~47 w/ ink (accepted dip)
-  --color-success-bg:      oklch(22% 0.045 145deg);
+  --color-accent-bg:      oklch(22% 0.049 85deg);
+  --color-success:         oklch(73% 0.222 145deg);  // Lc 61.0 w/ ink
+  --color-success-hover:   oklch(80% 0.240 145deg);  // Lc 73.3 w/ ink
+  --color-success-active:  oklch(64% 0.198 145deg);  // Lc 46.5 w/ ink (accepted dip)
+  --color-success-bg:      oklch(22% 0.070 145deg);
   --color-success-content: oklch(11% 0.025 145deg);
-  --color-warning:         oklch(76% 0.143 115deg);  // Lc 63.0 w/ ink
-  --color-warning-hover:   oklch(83% 0.156 115deg);  // Lc 75.4 w/ ink
-  --color-warning-active:  oklch(66% 0.124 115deg);  // Lc 47.0 w/ ink (accepted dip)
-  --color-warning-bg:      oklch(22% 0.045 115deg);
+  --color-warning:         oklch(76% 0.167 115deg);  // Lc 63.1 w/ ink
+  --color-warning-hover:   oklch(83% 0.182 115deg);  // Lc 75.6 w/ ink
+  --color-warning-active:  oklch(66% 0.145 115deg);  // Lc 47.2 w/ ink (accepted dip)
+  --color-warning-bg:      oklch(22% 0.054 115deg);
   --color-warning-content: oklch(11% 0.025 115deg);
-  --color-error:         oklch(77% 0.115 15deg);   // Lc 61.1 w/ ink
-  --color-error-hover:   oklch(84% 0.075 15deg);   // Lc ~72 w/ ink
-  --color-error-active:  oklch(68% 0.190 15deg);   // Lc ~48 w/ ink (accepted dip)
-  --color-error-bg:      oklch(22% 0.050 15deg);
+
+  // Secondary / error / info stay in the lit polarity, and that is a solved
+  // constraint rather than a preference: --color-secondary, --color-error and
+  // --color-info are all painted as FOREGROUND text/icon colors directly on
+  // the page background (Icon, Tag, Banner, and every form-validation surface
+  // — Label/FormHint/FormField/TextField/TextArea/Select all set
+  // `color: var(--color-error)`), not only as button fills. A deep-fill
+  // rebuild of these three was fitted and rejected: at hue 15/345 the chroma
+  // peak sits at L 58-66, which nearly doubles the fill's chroma but drops
+  // error-as-body-text from Lc -59 to Lc -27, far under the Lc45 text floor.
+  // The pale reading of red and blue in a dark theme is the genuine sRGB
+  // ceiling for a role carrying that dual duty, not slack left on the table.
+  // What IS recoverable is taken: chroma to ~96% of ceiling at each step, and
+  // info re-hued 220deg -> 235deg, where a bright blue's ceiling is C0.147
+  // instead of C0.137 — same twilight-blue reading, 28% more chroma.
+  --color-secondary:         oklch(78% 0.157 345deg);  // Lc 62.0 w/ ink
+  --color-secondary-hover:   oklch(84% 0.106 345deg);  // Lc 72.8 w/ ink
+  --color-secondary-active:  oklch(68% 0.245 345deg);  // Lc 44.9 w/ ink (accepted dip)
+  --color-secondary-content: oklch(11% 0.025 345deg);
+  --color-error:         oklch(77% 0.133 15deg);   // Lc 61.0 w/ ink
+  --color-error-hover:   oklch(84% 0.085 15deg);   // Lc 71.7 w/ ink
+  --color-error-active:  oklch(68% 0.187 15deg);   // Lc 47.7 w/ ink (accepted dip)
+  --color-error-bg:      oklch(22% 0.090 15deg);
   --color-error-content: oklch(11% 0.025 15deg);
-  --color-info:         oklch(75% 0.110 220deg);   // Lc 62.3 w/ ink
-  --color-info-hover:   oklch(82% 0.100 220deg);   // Lc ~72 w/ ink
-  --color-info-active:  oklch(66% 0.105 220deg);   // Lc ~46 w/ ink (accepted dip)
-  --color-info-bg:      oklch(20% 0.035 220deg);
-  --color-info-content: oklch(11% 0.025 220deg);
+  --color-info:         oklch(75% 0.141 235deg);   // Lc 61.6 w/ ink
+  --color-info-hover:   oklch(82% 0.102 235deg);   // Lc 71.6 w/ ink
+  --color-info-active:  oklch(66% 0.136 235deg);   // Lc 47.9 w/ ink (accepted dip)
+  --color-info-bg:      oklch(20% 0.047 235deg);
+  --color-info-content: oklch(11% 0.025 235deg);
   --shadow-color:        oklch(8% 0.03 45deg / 0.5);
   --shadow-color-strong: oklch(8% 0.03 45deg / 0.8);
   --shadow-xs: 0 1px 2px 0 oklch(8% 0.03 45deg / 0.4);
@@ -128,9 +153,9 @@
   --shadow-md: 0 8px 16px -4px oklch(8% 0.03 45deg / 0.6), 0 2px 4px -2px oklch(8% 0.03 45deg / 0.4);
   --shadow-lg: 0 20px 32px -8px oklch(8% 0.03 45deg / 0.7), 0 4px 8px -4px oklch(8% 0.03 45deg / 0.4);
   --shadow-xl: 0 32px 48px -12px oklch(8% 0.03 45deg / 0.8), 0 8px 16px -8px oklch(8% 0.03 45deg / 0.5);
-  --shadow-primary: 0 8px 32px 0 oklch(77% 0.125 45deg / 0.35);
-  --shadow-accent:  0 8px 32px 0 oklch(78% 0.140 85deg / 0.30);
-  --focus-ring-color: oklch(77% 0.125 45deg / 0.55);
+  --shadow-primary: 0 8px 32px 0 oklch(77% 0.140 45deg / 0.35);
+  --shadow-accent:  0 8px 32px 0 oklch(78% 0.155 85deg / 0.30);
+  --focus-ring-color: oklch(77% 0.140 45deg / 0.55);
   --color-header-bg: var(--color-base-100);
 
   // Motion — "the light lingers, then it's gone": dusk isn't a snap to

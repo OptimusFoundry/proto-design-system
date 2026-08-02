@@ -11,10 +11,11 @@
 // and near-black ink are the deliberate stark exception this theme is named
 // for (see craft rules — brutal/mono are the named exceptions to "no pure
 // white/black").
-// Semantics kept at the house L/H but chroma pulled back to each colour's
-// actual sRGB gamut ceiling (the old 0.19–0.29 values were silently clipped
-// past it by the browser) — rendered colour is effectively unchanged, the
-// authored number now matches what was already on screen.
+// Semantics are authored at 97–99% of each colour's actual sRGB gamut ceiling
+// at its own L/h — a grayscale brand means no brand hue for a status colour to
+// collide with, so these run right at the edge on purpose. The soft -bg washes
+// moved L96 -> L94 for the same reason: at L96 a blue or red wash physically
+// cannot carry enough chroma to read as tinted.
 
 [data-theme="mono"] {
   color-scheme: light;
@@ -62,29 +63,36 @@
   --color-accent-active:  oklch(16% 0 0deg);
   --color-accent-content: oklch(100% 0 0deg);
   --color-accent-bg:      oklch(94% 0 0deg);
-  // Semantics — vibrant functional status colours (the one splash of hue in an
-  // otherwise monochrome theme); chroma fitted to the in-gamut ceiling at each
-  // L/h (was clipped), all AA on their content text.
-  --color-success:         oklch(50% 0.130 150deg);
-  --color-success-hover:   oklch(45% 0.117 150deg);
-  --color-success-active:  oklch(40% 0.104 150deg);
-  --color-success-bg:      oklch(95% 0.065 150deg);
+  // Semantics — the one splash of hue in an otherwise monochrome theme, so
+  // each is fitted to 97-99% of its sRGB chroma ceiling at its own L/h. In a
+  // theme whose brand is grayscale there is no brand hue for a semantic to
+  // collide with, which is exactly why these can run at the gamut edge where
+  // a chromatic theme's would have to be pulled back.
+  --color-success:         oklch(50% 0.137 150deg);
+  --color-success-hover:   oklch(45% 0.124 150deg);
+  --color-success-active:  oklch(40% 0.111 150deg);
+  --color-success-bg:      oklch(94% 0.082 150deg);
   --color-success-content: oklch(99% 0.015 150deg);
-  --color-warning:         oklch(79% 0.152 82deg);
-  --color-warning-hover:   oklch(73% 0.140 82deg);
-  --color-warning-active:  oklch(67% 0.128 82deg);
-  --color-warning-bg:      oklch(96% 0.036 82deg);
+  --color-warning:         oklch(79% 0.160 82deg);
+  --color-warning-hover:   oklch(73% 0.148 82deg);
+  --color-warning-active:  oklch(67% 0.137 82deg);
+  --color-warning-bg:      oklch(94% 0.048 82deg);
   --color-warning-content: oklch(28% 0.060 82deg);
-  --color-error:         oklch(54% 0.202 22deg);
-  --color-error-hover:   oklch(48% 0.180 22deg);
-  --color-error-active:  oklch(43% 0.162 22deg);
-  --color-error-bg:      oklch(96% 0.018 22deg);
+  --color-error:         oklch(54% 0.215 22deg);
+  --color-error-hover:   oklch(48% 0.194 22deg);
+  --color-error-active:  oklch(43% 0.173 22deg);
+  --color-error-bg:      oklch(94% 0.028 22deg);
   --color-error-content: oklch(99% 0.0045 22deg);
-  --color-info:         oklch(50% 0.082 215deg);
-  --color-info-hover:   oklch(44% 0.073 215deg);
-  --color-info-active:  oklch(39% 0.065 215deg);
-  --color-info-bg:      oklch(96% 0.028 215deg);
-  --color-info-content: oklch(99% 0.0073 215deg);
+  // Info hue moved 215->245deg: h215 sits in sRGB's chroma trough (ceiling
+  // 0.089 at L50) and rendered as steel gray-blue — the one status colour
+  // that wasn't a splash of anything. h245 is a true cobalt with a 0.127
+  // ceiling, still inside the 190-250deg info convention, and 63deg clear of
+  // warning's 82deg.
+  --color-info:         oklch(50% 0.124 245deg);
+  --color-info-hover:   oklch(44% 0.110 245deg);
+  --color-info-active:  oklch(39% 0.099 245deg);
+  --color-info-bg:      oklch(94% 0.028 245deg);
+  --color-info-content: oklch(99% 0.005 245deg);
   --shadow-color:        oklch(0% 0 0deg / 0.08);
   --shadow-color-strong: oklch(0% 0 0deg / 0.15);
   --shadow-xs: 0 1px 2px 0 oklch(0% 0 0deg / 0.05);

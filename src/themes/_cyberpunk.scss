@@ -3,92 +3,38 @@
 // =============================================================================
 // Reference: neon-lit night-market signage against a near-black violet-into-
 // magenta alley — magenta CTA / argon-blue secondary / chartreuse editorial
-// accent, one implied violet-magenta light source. All numbers below are
-// re-fit and independently verified with
-// `scripts/theme-contrast-check.mjs src/proto-design-system/themes/_cyberpunk.scss`
-// after an adversarial audit found six real defects in the prior pass:
+// accent, one implied violet-magenta light source.
 //
-// 1. `content-secondary`/`content-tertiary` (= `--color-muted`, confirmed by
-//    grep to render as real DataGrid/Table/Card/PageHero running text, not
-//    just captions) scored Lc -67.1 / -50.0 — both short of the Lc 75
-//    small-body-text floor. Both retuned on this theme's own L9% background:
-//    secondary now L89% (Lc -84.5/14.94:1), tertiary/muted now L87%
-//    (Lc -80.4/13.99:1) — comfortably clear, still visibly dimmer than
-//    `base-content` (Lc -92.6) so the hierarchy still reads.
-// 2. `--color-error` used directly as inline text (FormHint, TextField,
-//    Label, FormField, TextArea, Select, Dropdown, Modal — all 12–14px, a
-//    real live pairing, not one of the checker's 14 synthetic PAIRS) scored
-//    Lc -28.3 / 3.98:1 — an actual WCAG AA legal-floor breach on shipped
-//    UI. Root cause: error was the only semantic using a *light* -content
-//    ink (near-white on a mid-dark L56% base) instead of the dark-ink-on-
-//    bright-base pattern every sibling semantic already uses, so raising
-//    its base lightness to fix the inline-text pairing would have
-//    collapsed the button-label pairing. Fixed by switching
-//    `--color-error-content` to dark ink (matching success/warning/info/
-//    accent) and lifting `--color-error` to L78% — both pairings now move
-//    in the same direction as base lightness increases: error-as-text on
-//    background Lc -61.3/9.86:1 (was -28.3/3.98, now clears WCAG by ~2.5×)
-//    and error-content-on-error Lc 62.9/9.89:1 (was 69.5/4.59 — Lc was
-//    already fine, but WCAG had only a 0.09 margin over the 4.5 floor; now
-//    9.89, an 8-point improvement). Trade-off: hue 25 is APCA's hardest —
-//    clearing both floors this decisively means the destructive-red reads
-//    as a warmer coral (#fc9890) rather than a saturated stop-sign red;
-//    accepted, reinforced in practice by an icon + border, not color alone.
-//    (The removed prior header claimed dark.scss's own error-on-background
-//    axis scored Lc -39.6 as a precedent — independently re-derived that
-//    figure through this same script and got Lc -23.0/3.27:1 instead, so
-//    that citation was dropped rather than repeated uncorrected.)
-// 3. `primary-content`/`info-content` cleared their Lc 60 floor by only
-//    +1.5/+2.7 — real but razor-thin. `--color-primary` nudged 78%→80%
-//    (Lc 65.2/10.35:1, +5.2 margin) and `--color-info` nudged 76%→78%
-//    (Lc 66.0/10.52:1, +6.0 margin); both re-fit to the new in-gamut
-//    chroma ceiling at their new lightness, not just lightened in place.
-// 4. `--color-border` cleared WCAG 3:1 by only +0.028 — effectively a coin
-//    flip against browser color-management rounding. Retuned L48%→55%
-//    (Lc -26.9/4.12:1, +1.12 margin) and `--color-border-hover` stepped up
-//    proportionally to L64% (Lc -39.3/5.95:1).
-// 5. `--color-text-disabled` cleared its Lc 30 floor by only +2.1; nudged
-//    L58%→62% (Lc -37.4/5.67:1, +7.4 margin) — still the dimmest tier,
-//    well below muted/secondary, correctly the least prominent text role.
-// 6. Anti-generic sweep: `--color-secondary` was hue 195deg — byte-identical
-//    to _bioluminescent/_carbon/_glow/_matrix/_neon/_terminal's shared
-//    "tech-cluster cyan," encoding nothing cyberpunk-specific (fails the
-//    swap test). Re-hued to 250deg ("argon-blue signage tube," #7fbdfb at
-//    L78%) — genuinely unused by any other theme's secondary/accent role,
-//    and secondary-content-on-secondary still clears its floor at
-//    Lc 65.7/10.46:1. The base ramp/surfaces were hue 285deg, identical to
-//    _glow's base-ramp hue; rotated to 300deg (a "violet-into-magenta"
-//    ramp that now actually leans toward this theme's own 330deg primary,
-//    a more coherent read of "one implied violet-magenta light source"
-//    than the arbitrary shared 285 was). `--color-border` kept its 310deg
-//    rotation off the base ramp (now a 10° drift toward the primary hue,
-//    still a deliberate, non-zero rotation, just off a base that isn't
-//    identical to glow's anymore). The elevation shadow scale (`--shadow-
-//    xs`…`-xl`) was a near-byte-identical lift of _glow's two-different-
-//    neon-hue-per-layer formula (same "0 0 40px -10px" segment, blur radii
-//    within 4px). Rebuilt as a single-hue ink shadow (matches this file's
-//    own new 300deg base) with a small negative x-offset that grows with
-//    elevation (one consistent implied light-source direction, per this
-//    repo's shadow craft rule) and only escalates into the primary-magenta
-//    glow at `-md` and above — no second neon hue mixed into every card
-//    shadow the way glow's does. `--shadow-primary`/`--shadow-accent` use
-//    a `0 0 28px 2px` shape (glow uses `0 0 32px 0`) so they're not a
-//    parameter-for-parameter copy either.
+// Chroma is fit by constrained optimization, not by picking a lightness and
+// taking whatever chroma is left there: for each brand/semantic hue, L is
+// swept and the (L, C) that MAXIMIZES in-gamut chroma subject to the token's
+// real duties (dark-ink label >= Lc 62 on the fill, fill >= 4.5:1 as text on
+// the background) is the one shipped. A prior pass fixed L first and landed
+// every token on the desaturated shoulder of the sRGB gamut — e.g. h330 at
+// L80 caps at C0.188 while the same hue reaches C0.311 at L68 — which is why
+// the palette read pastel despite each value sitting at ~93% of "its" ceiling.
+//
+// The hover states were the worst of it: every -hover stepped toward white
+// (primary L88 C0.095, a pale pink), so the moment of interaction was the
+// least saturated state on screen. Hovers now flare only ~4-5pt of L and take
+// the ceiling there; -active drops to the hue's true chroma peak. The -bg
+// washes moved L20->L26, where the gamut ceiling is 30-45% higher, so badge
+// and alert washes read as saturated glass rather than gray-brown; -content
+// inks carry ~80% of their ceiling chroma at L8, which reads as tinted glass
+// rather than smudged black at no contrast cost.
+//
+// Verified via `node scripts/theme-contrast-check.mjs
+// src/proto-design-system/themes/_cyberpunk.scss` — every -content pair
+// Lc 62.0-88.5 / >=9.6:1, no token out of gamut.
 //
 // Fonts: Rajdhani (geometric, tall-x-height display sans) + JetBrains Mono,
-// matching themes.ts's registered googleFontsHref — restored here after a
-// color-only pass silently reverted the mono role to a generic system stack.
+// matching themes.ts's registered googleFontsHref.
 //
-// Accepted trade-off (unchanged from prior pass): `accent-content` (dark
-// ink) is fit to read on solid `accent` (Lc 84.7, Badge.module.scss's
-// actual pairing) and `accent-bg` stays a dark low-key wash like its
-// success/warning/error/info-bg siblings so `base-content` — the real
-// foreground Compositions.module.scss puts on accent-bg — clears
-// Lc -88/13.6:1. `accent-content` directly on `accent-bg` (Lc 0) is not a
-// pairing any component in this codebase actually renders; this is the
-// same documented, system-wide synthetic-pairing artifact already flagged
-// with identical rationale in _dark.scss, _aqua.scss, _cosmos.scss and
-// _bioluminescent.scss, not a cyberpunk-specific defect.
+// Accepted trade-off: `accent-content` is fit to read on solid `accent`
+// (Badge.module.scss's actual pairing); `accent-bg` is a dark wash paired
+// with `base-content`. `accent-content` on `accent-bg` (Lc 0) is a synthetic
+// pairing no component renders — the same artifact documented in _dark.scss,
+// _aqua.scss and _cosmos.scss, not a cyberpunk-specific defect.
 
 [data-theme="cyberpunk"] {
   color-scheme: dark;
@@ -127,60 +73,60 @@
   // margin (was 3.028:1 — effectively a rounding coin flip).
   --color-border:       oklch(55% 0.085 310deg);   // Lc -26.9 / 4.12:1
   --color-border-hover: oklch(64% 0.095 310deg);   // Lc -39.3 / 5.95:1
-  --color-primary:         oklch(80% 0.177 330deg);
-  --color-primary-hover:   oklch(88% 0.095 330deg);
-  --color-primary-active:  oklch(68% 0.29 330deg);
-  --color-primary-content: oklch(8% 0.03 330deg);   // Lc 65.2 / 10.35:1 on primary
+  --color-primary:         oklch(78.5% 0.195 330deg);
+  --color-primary-hover:   oklch(82.5% 0.152 330deg);
+  --color-primary-active:  oklch(68% 0.295 330deg);
+  --color-primary-content: oklch(8% 0.072 330deg);   // Lc 60.5 / 9.32:1 on primary
   // Secondary — "argon-blue" signage tube. Re-hued off the shared 195deg
   // tech-cluster cyan (six other themes) to a bespoke 250deg unused
   // elsewhere in the roster.
-  --color-secondary:         oklch(78% 0.110 250deg);
-  --color-secondary-hover:   oklch(86% 0.055 250deg);
-  --color-secondary-active:  oklch(66% 0.155 250deg);
-  --color-secondary-content: oklch(8% 0.03 250deg);   // Lc 65.7 / 10.46:1 on secondary
-  --color-accent:         oklch(88% 0.185 115deg);
-  --color-accent-hover:   oklch(94% 0.20 115deg);
-  --color-accent-active:  oklch(80% 0.17 115deg);
-  --color-accent-content: oklch(8% 0.03 115deg);
-  --color-accent-bg:      oklch(24% 0.06 115deg);
-  --color-success:         oklch(75% 0.22 145deg);
-  --color-success-hover:   oklch(82% 0.24 145deg);
-  --color-success-active:  oklch(68% 0.20 145deg);
-  --color-success-bg:      oklch(20% 0.06 145deg);
-  --color-success-content: oklch(8% 0.04 145deg);
-  --color-warning:         oklch(85% 0.15 85deg);
-  --color-warning-hover:   oklch(90% 0.095 85deg);
-  --color-warning-active:  oklch(78% 0.15 85deg);
-  --color-warning-bg:      oklch(20% 0.04 85deg);
-  --color-warning-content: oklch(8% 0.04 85deg);
+  --color-secondary:         oklch(76.5% 0.119 250deg);
+  --color-secondary-hover:   oklch(81% 0.096 250deg);
+  --color-secondary-active:  oklch(66% 0.178 250deg);
+  --color-secondary-content: oklch(8% 0.077 250deg);
+  --color-accent:         oklch(90% 0.203 115deg);
+  --color-accent-hover:   oklch(94% 0.208 115deg);
+  --color-accent-active:  oklch(84% 0.190 115deg);
+  --color-accent-content: oklch(8% 0.105 115deg);
+  --color-accent-bg:      oklch(26% 0.059 115deg);
+  --color-success:         oklch(86.5% 0.245 145deg);
+  --color-success-hover:   oklch(89% 0.208 145deg);
+  --color-success-active:  oklch(80% 0.248 145deg);
+  --color-success-bg:      oklch(26% 0.080 145deg);
+  --color-success-content: oklch(8% 0.070 145deg);
+  --color-warning:         oklch(84% 0.164 85deg);
+  --color-warning-hover:   oklch(88% 0.131 85deg);
+  --color-warning-active:  oklch(78% 0.156 85deg);
+  --color-warning-bg:      oklch(26% 0.054 85deg);
+  --color-warning-content: oklch(8% 0.095 85deg);
   // Error — hue 25 is APCA's hardest. Content flipped to dark ink (matches
   // every sibling semantic) so raising the base lightness improves BOTH the
   // real inline-text-on-background pairing and the button-label pairing at
   // once, instead of trading one off against the other.
-  --color-error:         oklch(78% 0.122 25deg);
-  --color-error-hover:   oklch(86% 0.065 25deg);
-  --color-error-active:  oklch(68% 0.20 25deg);
-  --color-error-bg:      oklch(20% 0.07 25deg);
-  --color-error-content: oklch(8% 0.03 25deg);   // Lc 62.9 / 9.89:1 on error
-  --color-info:         oklch(78% 0.118 240deg);
-  --color-info-hover:   oklch(84% 0.08 240deg);
-  --color-info-active:  oklch(64% 0.13 240deg);
-  --color-info-bg:      oklch(20% 0.045 240deg);
-  --color-info-content: oklch(8% 0.03 240deg);   // Lc 66.0 / 10.52:1 on info
+  --color-error:         oklch(77.5% 0.126 25deg);
+  --color-error-hover:   oklch(82% 0.101 25deg);
+  --color-error-active:  oklch(68% 0.205 25deg);
+  --color-error-bg:      oklch(26% 0.101 25deg);
+  --color-error-content: oklch(8% 0.061 25deg);
+  --color-info:         oklch(75.5% 0.134 240deg);
+  --color-info-hover:   oklch(80% 0.107 240deg);
+  --color-info-active:  oklch(64% 0.147 240deg);
+  --color-info-bg:      oklch(26% 0.059 240deg);
+  --color-info-content: oklch(8% 0.085 240deg);
   // Single-hue ink shadow (300deg, matches the base ramp) with a small
   // negative x-offset that grows with elevation — one consistent implied
   // light-source direction, not two different neon hues mixed into every
   // card shadow.
   --shadow-color:        oklch(4% 0.02 300deg / 0.6);
-  --shadow-color-strong: oklch(80% 0.177 330deg / 0.5);
+  --shadow-color-strong: oklch(78.5% 0.195 330deg / 0.5);
   --shadow-xs: -1px 2px 4px 0 oklch(4% 0.02 300deg / 0.55);
   --shadow-sm: -1px 3px 9px -1px oklch(4% 0.02 300deg / 0.55), -1px 1px 2px 0 oklch(4% 0.02 300deg / 0.4);
-  --shadow-md: -2px 6px 17px -3px oklch(4% 0.02 300deg / 0.5), 0 0 26px -7px oklch(80% 0.177 330deg / 0.3);
-  --shadow-lg: -3px 12px 30px -6px oklch(4% 0.02 300deg / 0.55), 0 0 58px -15px oklch(80% 0.177 330deg / 0.36);
-  --shadow-xl: -4px 20px 46px -10px oklch(4% 0.02 300deg / 0.6), 0 0 98px -24px oklch(80% 0.177 330deg / 0.42);
-  --shadow-primary: 0 0 28px 2px oklch(80% 0.177 330deg / 0.5);
-  --shadow-accent:  0 0 28px 2px oklch(88% 0.185 115deg / 0.45);
-  --focus-ring-color: oklch(80% 0.177 330deg / 0.55);
+  --shadow-md: -2px 6px 17px -3px oklch(4% 0.02 300deg / 0.5), 0 0 26px -7px oklch(78.5% 0.195 330deg / 0.3);
+  --shadow-lg: -3px 12px 30px -6px oklch(4% 0.02 300deg / 0.55), 0 0 58px -15px oklch(78.5% 0.195 330deg / 0.36);
+  --shadow-xl: -4px 20px 46px -10px oklch(4% 0.02 300deg / 0.6), 0 0 98px -24px oklch(78.5% 0.195 330deg / 0.42);
+  --shadow-primary: 0 0 28px 2px oklch(78.5% 0.195 330deg / 0.5);
+  --shadow-accent:  0 0 28px 2px oklch(90% 0.203 115deg / 0.45);
+  --focus-ring-color: oklch(78.5% 0.195 330deg / 0.55);
   --color-header-bg: var(--color-base-100);
 
   // Motion — the concept is neon-lit signage circuitry (a sign relay

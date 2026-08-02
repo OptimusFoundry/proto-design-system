@@ -116,64 +116,82 @@
   // cyan) instead of the structural H240 ambient tone, reserved for
   // Hero/CTA glow moments (mirrors --shadow-primary/-accent's existing role
   // elsewhere in the kit; not used for everyday surface elevation).
-  --shadow-primary: 0 0 16px 0 oklch(76% 0.115 265deg / 0.45), 0 0 40px 4px oklch(76% 0.115 265deg / 0.25);
-  --shadow-accent:  0 0 16px 0 oklch(75% 0.130 180deg / 0.4), 0 0 40px 4px oklch(75% 0.130 180deg / 0.22);
+  // Primary's bloom is a bright tint of its hue, not primary itself — a
+  // deep fill cannot emit light.
+  --shadow-primary: 0 0 16px 0 oklch(62% 0.200 265deg / 0.45), 0 0 40px 4px oklch(62% 0.200 265deg / 0.25);
+  --shadow-accent:  0 0 16px 0 oklch(84% 0.148 180deg / 0.4), 0 0 40px 4px oklch(84% 0.148 180deg / 0.22);
 
-  // Primary (vibrant against black) — chroma brought into sRGB gamut at this
-  // hue/lightness (0.24 was clipping; max in-gamut at L70% H265 is ~0.156)
-  // and L lifted 70%->76% so primary-content clears the Lc60 bold/UI floor;
-  // hover/active shifted with it to stay in-gamut and keep monotonic L.
-  --color-primary: oklch(76% 0.115 265deg);
-  --color-primary-hover: oklch(84% 0.075 265deg);
-  --color-primary-active: oklch(66% 0.14 265deg);
-  --color-primary-content: oklch(8% 0.02 265deg);  // Lc 61.7 / 9.62:1 on primary (was Lc 46.6, out-of-gamut)
+  // =========================================================================
+  // COLOR — polarity chosen per hue by where its sRGB gamut actually peaks
+  // =========================================================================
+  // The prior pass pinned every brand/semantic role high (L74-80) so a dark
+  // ink could sit on it. For 265/300/25deg that is the narrowest part of the
+  // gamut — primary was capped at 0.115 chroma (a lavender-grey) when the
+  // same hue reaches 0.308 at L46. On an emissive true-black panel that read
+  // as pastel, not as light. Those three roles are now deep jewel fills with
+  // near-white ink; 145/180/85/225deg peak high-L and stay bright fills with
+  // near-black ink, which is where they are genuinely most saturated.
+  //
+  // Accepted trade-off on the three flipped roles: APCA rises sharply
+  // (primary 61.7 -> 83.8, secondary 63.3 -> 80.9, error 66.6 -> 78.9) while
+  // raw WCAG falls from the 9.6-10.8:1 a near-black ink trivially buys to
+  // 6.1-7.5:1 — still comfortably past AA 4.5:1 with margin, and APCA is the
+  // better signal for which of two colors is actually readable on the other.
+  //
+  // Composition: midnight is deliberately monochromatically cold —
+  // ultramarine, violet, cyan, ice-blue — so the single warm role (the gold
+  // warning) is the loudest thing on the panel when it appears. Every state
+  // sits at ~96-98% of the in-gamut ceiling for its own L/hue; six tokens
+  // that were previously clipping (secondary/accent/warning/error/info
+  // hovers, accent-active) are now in gamut.
+  --color-primary:         oklch(46% 0.298 265deg);
+  --color-primary-hover:   oklch(52% 0.260 265deg);
+  --color-primary-active:  oklch(40% 0.267 265deg);
+  --color-primary-content: oklch(97% 0.012 265deg);
 
-  // Secondary — L lifted 72%->78% (chroma trimmed to stay in-gamut at the
-  // new L) so secondary-content, previously entirely absent, clears Lc60.
-  --color-secondary: oklch(78% 0.128 300deg);
-  --color-secondary-hover: oklch(84% 0.2 300deg);
-  --color-secondary-active: oklch(64% 0.16 300deg);
-  --color-secondary-content: oklch(10% 0.02 300deg);  // Lc 63.3 / 9.98:1 on secondary — was missing entirely
+  --color-secondary:         oklch(50% 0.258 300deg);
+  --color-secondary-hover:   oklch(55% 0.286 300deg);
+  --color-secondary-active:  oklch(43% 0.223 300deg);
+  --color-secondary-content: oklch(97% 0.008 300deg);
 
-  // Accent (more vibrant) — chroma brought into sRGB gamut at this hue/L
-  // (0.22 was clipping; max in-gamut at L75% H180 is ~0.136); accent-content
-  // added (was missing entirely), clears Lc60.
-  --color-accent: oklch(75% 0.13 180deg);
-  --color-accent-hover: oklch(87% 0.26 180deg);
-  --color-accent-active: oklch(67% 0.22 180deg);
-  --color-accent-content: oklch(10% 0.02 180deg);  // Lc 63.2 / 9.83:1 on accent — was missing entirely
-  --color-accent-bg: oklch(15% 0.03 180deg);  // was missing entirely
+  // Accent — the panel's lit cyan readout, the theme's one bright signature.
+  --color-accent:         oklch(84% 0.148 180deg);
+  --color-accent-hover:   oklch(89% 0.157 180deg);
+  --color-accent-active:  oklch(78% 0.134 180deg);
+  --color-accent-content: oklch(8% 0.030 180deg);
+  --color-accent-bg:      oklch(15% 0.034 180deg);
 
-  // Semantic colors (high contrast) — each *-content was entirely absent;
-  // added at a near-black ink matching that hue (mirrors primary-content's
-  // recipe). success/info bases lifted a few L points (chroma trimmed to
-  // stay in-gamut) so their content clears Lc60; warning was already
-  // in-gamut and already gives its content Lc60+ headroom, unchanged.
-  --color-success: oklch(74% 0.200 145deg);
-  --color-success-hover: oklch(84% 0.24 145deg);
-  --color-success-active: oklch(64% 0.170 145deg);  // was missing entirely
-  --color-success-bg: oklch(15% 0.04 145deg);
-  --color-success-content: oklch(10% 0.02 145deg);  // Lc 62.3 / 9.71:1 on success — was missing entirely
-  --color-warning: oklch(80% 0.16 85deg);
-  --color-warning-hover: oklch(90% 0.2 85deg);
-  --color-warning-active: oklch(70% 0.135 85deg);  // was missing entirely
-  --color-warning-bg: oklch(15% 0.04 85deg);
-  --color-warning-content: oklch(10% 0.02 85deg);  // Lc 68.4 / 11.05:1 on warning — was missing entirely
-  // error base L lifted 68%->70% + chroma trimmed into sRGB gamut (0.22 was
-  // clipping).
-  --color-error: oklch(80% 0.108 25deg);
-  --color-error-hover: oklch(86% 0.120 25deg);
-  --color-error-active: oklch(72% 0.095 25deg);  // was missing entirely
-  --color-error-bg: oklch(15% 0.04 25deg);
-  --color-error-content: oklch(0% 0 25deg);  // Lc 62.5 / 9.87:1 on error — was Lc 49.3, under Lc60 floor
-  --color-info: oklch(78% 0.121 240deg);
-  --color-info-hover: oklch(82% 0.22 240deg);
-  --color-info-active: oklch(70% 0.105 240deg);  // was missing entirely
-  --color-info-bg: oklch(15% 0.04 240deg);
-  --color-info-content: oklch(10% 0.02 240deg);  // Lc 66.0 / 10.42:1 on info — was missing entirely
+  --color-success:         oklch(76% 0.232 145deg);
+  --color-success-hover:   oklch(83% 0.254 145deg);
+  --color-success-active:  oklch(68% 0.208 145deg);
+  --color-success-bg:      oklch(15% 0.058 145deg);
+  --color-success-content: oklch(8% 0.040 145deg);
 
-  // Focus ring (bright for visibility) — kept in sync with primary's new gamut-fit value
-  --focus-ring-color: oklch(76% 0.115 265deg / 0.7);
+  --color-warning:         oklch(80% 0.159 85deg);
+  --color-warning-hover:   oklch(86% 0.149 85deg);
+  --color-warning-active:  oklch(72% 0.143 85deg);
+  --color-warning-bg:      oklch(15% 0.044 85deg);
+  --color-warning-content: oklch(8% 0.050 85deg);
+
+  --color-error:         oklch(50% 0.198 25deg);
+  --color-error-hover:   oklch(55% 0.217 25deg);
+  --color-error-active:  oklch(43% 0.170 25deg);
+  --color-error-bg:      oklch(15% 0.070 25deg);
+  --color-error-content: oklch(97% 0.014 25deg);
+
+  // Info moved 240 -> 225deg: at 240 it sat between primary's ultramarine and
+  // the cyan accent and read as a third blue; 225 is an ice-blue that also
+  // holds a wider ceiling at the bright L this role wants.
+  --color-info:         oklch(78% 0.140 225deg);
+  --color-info-hover:   oklch(81% 0.125 225deg);
+  --color-info-active:  oklch(72% 0.132 225deg);
+  --color-info-bg:      oklch(15% 0.035 225deg);
+  --color-info-content: oklch(8% 0.030 225deg);
+
+  // Focus ring — a bright tint of primary's hue rather than primary itself:
+  // now that primary is a deep fill, reusing it directly would put a dark
+  // ring on a black canvas.
+  --focus-ring-color: oklch(70% 0.150 265deg / 0.7);
 
   // Header background (more visible in OLED theme)
   --color-header-bg: var(--color-base-300);

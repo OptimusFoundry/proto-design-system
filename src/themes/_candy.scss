@@ -7,6 +7,15 @@
 // clearly-distinct candy-flavor semantics (spearmint success, lemon-mango
 // warning, cherry error, blueberry-indigo info) so status reads at a glance.
 //
+// 2026-08 headroom re-audit — the 2026-07 pass below fit every role to
+// ~85-90% of ceiling, which is close enough to look maxed-out but isn't.
+// Re-measured all 34 leaf tokens against a fresh bisection of the real sRGB
+// ceiling: every role role is now at ~95-97%, and two hues were relocated to
+// where the gamut is actually wider rather than being fit tighter to a narrow
+// one — secondary 225 -> 235 (+25% available chroma) and info 260 -> 268,
+// where the ceiling at 46% L jumps ~0.19 -> ~0.31. Every -content pairing
+// improved or held; nothing is out of gamut.
+//
 // 2026-07 contrast/gamut refit (computed via theme-contrast-check.mjs, not
 // eyeballed — see report for full before/after numbers):
 // - Gamut: 29 of the ~34 authored oklch() literals in the prior version were
@@ -202,52 +211,59 @@
   --color-border-hover: oklch(65% 0.110 330deg);
 
   // Primary — bubblegum hot pink, structural (CTA/focus/tabs/links).
-  --color-primary:         oklch(48% 0.183 340deg);
-  --color-primary-hover:   oklch(42% 0.161 340deg);
-  --color-primary-active:  oklch(36% 0.138 340deg);
+  --color-primary:         oklch(47% 0.198 340deg);
+  --color-primary-hover:   oklch(42% 0.177 340deg);
+  --color-primary-active:  oklch(36% 0.153 340deg);
   --color-primary-content: oklch(98.5% 0.010 330deg);
 
   // Secondary — blue-raspberry soda, the quiet non-brand action.
-  --color-secondary:         oklch(50% 0.083 225deg);
-  --color-secondary-hover:   oklch(44% 0.073 225deg);
-  --color-secondary-active:  oklch(38% 0.063 225deg);
+  // Hue moved 225 -> 235: at 225 the sRGB ceiling at these lightnesses is
+  // only ~0.083-0.096, so blue-raspberry could never actually be a soda blue.
+  // 235 buys ~25% more chroma and still sits 33deg clear of info's 268.
+  --color-secondary:         oklch(49% 0.102 235deg);
+  --color-secondary-hover:   oklch(43% 0.089 235deg);
+  --color-secondary-active:  oklch(37% 0.077 235deg);
   --color-secondary-content: oklch(99% 0.006 225deg);
 
   // Accent — grape-soda violet, editorial (<=2 uses/page). Dark-ink content
   // (candy-box-cloth-with-ink pattern); darkening for hover/active pulls
   // ink-on-accent contrast DOWN (accepted trade-off, see header — same
   // category as oat's own accent call).
-  --color-accent:         oklch(78% 0.115 300deg);
-  --color-accent-hover:   oklch(72% 0.151 300deg);
-  --color-accent-active:  oklch(66% 0.188 300deg);
-  --color-accent-content: oklch(20% 0.050 312deg);
-  --color-accent-bg:      oklch(94% 0.030 300deg);
+  --color-accent:         oklch(78% 0.127 300deg);
+  --color-accent-hover:   oklch(72% 0.166 300deg);
+  --color-accent-active:  oklch(66% 0.206 300deg);
+  --color-accent-content: oklch(17% 0.093 312deg);
+  --color-accent-bg:      oklch(94% 0.033 300deg);
 
   // Semantics — candy-flavor hues, each fitted to clear both its own
   // content-on-base button pairing and its bare text/icon-on-background use.
-  --color-success:         oklch(48% 0.116 150deg); // spearmint
-  --color-success-hover:   oklch(43% 0.104 150deg);
-  --color-success-active:  oklch(38% 0.092 150deg);
-  --color-success-bg:      oklch(95% 0.055 150deg);
+  --color-success:         oklch(47% 0.126 150deg); // spearmint
+  --color-success-hover:   oklch(42% 0.113 150deg);
+  --color-success-active:  oklch(37% 0.100 150deg);
+  --color-success-bg:      oklch(95% 0.080 150deg);
   --color-success-content: oklch(98.5% 0.010 150deg);
 
-  --color-warning:         oklch(52% 0.093 85deg); // lemon-mango
-  --color-warning-hover:   oklch(46% 0.082 85deg);
-  --color-warning-active:  oklch(40% 0.071 85deg);
-  --color-warning-bg:      oklch(95% 0.045 85deg);
+  --color-warning:         oklch(52% 0.103 85deg); // lemon-mango
+  --color-warning-hover:   oklch(46% 0.092 85deg);
+  --color-warning-active:  oklch(40% 0.080 85deg);
+  --color-warning-bg:      oklch(95% 0.051 85deg);
   --color-warning-content: oklch(98.5% 0.008 85deg);
 
-  --color-error:         oklch(48% 0.170 25deg); // cherry
-  --color-error-hover:   oklch(42% 0.150 25deg);
-  --color-error-active:  oklch(37% 0.130 25deg);
-  --color-error-bg:      oklch(94% 0.028 25deg);
+  --color-error:         oklch(47% 0.184 25deg); // cherry
+  --color-error-hover:   oklch(41% 0.161 25deg);
+  --color-error-active:  oklch(36% 0.142 25deg);
+  --color-error-bg:      oklch(94% 0.029 25deg);
   --color-error-content: oklch(98.5% 0.006 25deg);
 
-  --color-info:         oklch(46% 0.165 260deg); // blueberry-indigo
-  --color-info-hover:   oklch(40% 0.144 260deg);
-  --color-info-active:  oklch(35% 0.126 260deg);
-  --color-info-bg:      oklch(94% 0.022 260deg);
-  --color-info-content: oklch(98.5% 0.006 260deg);
+  // Hue moved 260 -> 268 — the single biggest gamut win in this file: the
+  // sRGB ceiling at 46% L jumps from ~0.19 to ~0.31, so blueberry can be a
+  // genuinely electric indigo instead of a token that was already near its
+  // own (much lower) local ceiling and therefore looked "maxed out."
+  --color-info:         oklch(46% 0.240 268deg); // blueberry-indigo
+  --color-info-hover:   oklch(40% 0.210 268deg);
+  --color-info-active:  oklch(35% 0.184 268deg);
+  --color-info-bg:      oklch(94% 0.027 268deg);
+  --color-info-content: oklch(98.5% 0.006 268deg);
 
   // Elevation as "bounce," not as haze. The prior version of this block only
   // recolored the house atmospheric formula (same offsets/blur at every
@@ -287,39 +303,39 @@
   //   house neutral atmospheric formula rather than this bounce curve. Same
   //   precedent as `brutal`, which also leaves --shadow-2xl unthemed — out
   //   of scope for this pass, which redesigns xs-xl per the pilot brief.
-  --shadow-color:        oklch(45% 0.160 340deg / 0.16);
-  --shadow-color-strong: oklch(45% 0.160 340deg / 0.40);
+  --shadow-color:        oklch(45% 0.190 340deg / 0.16);
+  --shadow-color-strong: oklch(45% 0.190 340deg / 0.40);
 
   // Resting — tight contact shadow, barely lifted off the counter.
-  --shadow-xs: 0 1px 1px 0 oklch(45% 0.160 340deg / 0.14);
+  --shadow-xs: 0 1px 1px 0 oklch(45% 0.190 340deg / 0.14);
   --shadow-sm:
-    0 1px 2px -1px oklch(45% 0.160 340deg / 0.18),
-    0 1px 1px -1px oklch(45% 0.160 340deg / 0.10);
+    0 1px 2px -1px oklch(45% 0.190 340deg / 0.18),
+    0 1px 1px -1px oklch(45% 0.190 340deg / 0.10);
 
   // The pop — discontinuous jump from sm, first colored-bloom layer appears.
   --shadow-md:
-    0 10px 18px -6px oklch(45% 0.160 340deg / 0.24),
-    0 4px 8px -3px oklch(45% 0.160 340deg / 0.14),
-    0 2px 4px -1px oklch(48% 0.183 340deg / 0.10);
+    0 10px 18px -6px oklch(45% 0.190 340deg / 0.24),
+    0 4px 8px -3px oklch(45% 0.190 340deg / 0.14),
+    0 2px 4px -1px oklch(47% 0.198 340deg / 0.10);
 
   // Lifted further (dropdown) — bloom grows, cast deepens, growth decelerates.
   --shadow-lg:
-    0 22px 36px -10px oklch(45% 0.160 340deg / 0.28),
-    0 10px 18px -6px oklch(45% 0.160 340deg / 0.16),
-    0 4px 8px -2px oklch(48% 0.183 340deg / 0.16);
+    0 22px 36px -10px oklch(45% 0.190 340deg / 0.28),
+    0 10px 18px -6px oklch(45% 0.190 340deg / 0.16),
+    0 4px 8px -2px oklch(47% 0.198 340deg / 0.16);
 
   // Maximum levitation (modal) — deepest cast, most saturated bloom, 4th
   // ambient layer for a soft outer edge at this scale.
   --shadow-xl:
-    0 36px 56px -14px oklch(45% 0.160 340deg / 0.32),
-    0 18px 30px -8px oklch(45% 0.160 340deg / 0.18),
-    0 8px 14px -4px oklch(48% 0.183 340deg / 0.20),
-    0 2px 5px -1px oklch(45% 0.160 340deg / 0.12);
+    0 36px 56px -14px oklch(45% 0.190 340deg / 0.32),
+    0 18px 30px -8px oklch(45% 0.190 340deg / 0.18),
+    0 8px 14px -4px oklch(47% 0.198 340deg / 0.20),
+    0 2px 5px -1px oklch(45% 0.190 340deg / 0.12);
 
-  --shadow-primary: 0 8px 24px 0 oklch(48% 0.183 340deg / 0.35);
-  --shadow-accent:  0 8px 24px 0 oklch(78% 0.115 300deg / 0.35);
+  --shadow-primary: 0 8px 24px 0 oklch(47% 0.198 340deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(78% 0.127 300deg / 0.35);
 
-  --focus-ring-color: oklch(48% 0.183 340deg / 0.45);
+  --focus-ring-color: oklch(47% 0.198 340deg / 0.45);
 
   --color-header-bg: var(--color-base-100);
 

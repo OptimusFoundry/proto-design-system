@@ -116,6 +116,17 @@
 // cosmos, plasma, midnight). The rebuild above (indigo/teal/gold, sourced
 // from a different physical phenomenon, no magenta or cyan anywhere) is the
 // fix, not a restated header claim.
+//
+// 2026-08 chroma pass. Verified numerically: flux was already fit at 89-90%
+// of the sRGB ceiling throughout, so this is a top-up to ~96-97%, not a
+// rebuild. One structural change was fitted and rejected: primary as a deep
+// indigo (L54, C0.270 — 2.5x the chroma, which is what the thin-film indigo
+// band actually looks like) fails because primary is a link/text colour on
+// the background per J-2, and at L54 it scores Lc -23.9 there against Lc -70
+// today. Indigo's chroma peak sits at L52 and is simply unreachable for a
+// role that must also be legible text on a near-black page — which is why
+// this theme puts its vividness in secondary (teal) and accent (gold), the
+// two bands whose peaks sit high enough to be usable.
 
 [data-theme="flux"] {
   color-scheme: dark;
@@ -155,49 +166,49 @@
   --color-border-hover: oklch(66% 0.182 300deg);
 
   // Primary — indigo, structural (CTA/focus/tabs/links per J-2).
-  --color-primary:         oklch(78% 0.108 290deg);
-  --color-primary-hover:   oklch(84% 0.084 300deg);
-  --color-primary-active:  oklch(70% 0.143 278deg);
+  --color-primary:         oklch(78% 0.118 290deg);
+  --color-primary-hover:   oklch(84% 0.092 300deg);
+  --color-primary-active:  oklch(70% 0.156 278deg);
   --color-primary-content: oklch(13% 0.030 290deg);   // Lc 63.9, was Lc 44.8
 
   // Secondary — teal-green, the swappable structural action. No longer
   // byte-identical to info.
-  --color-secondary:         oklch(78% 0.132 175deg);
-  --color-secondary-hover:   oklch(84% 0.158 165deg);
-  --color-secondary-active:  oklch(70% 0.110 188deg);
+  --color-secondary:         oklch(78% 0.143 175deg);
+  --color-secondary-hover:   oklch(84% 0.172 165deg);
+  --color-secondary-active:  oklch(70% 0.119 188deg);
   --color-secondary-content: oklch(13% 0.025 175deg);   // Lc 68.0
 
   // Accent — gold-copper, editorial emphasis only (<=2 uses/page per J-2).
-  --color-accent:         oklch(78% 0.133 55deg);
-  --color-accent-hover:   oklch(84% 0.085 45deg);
-  --color-accent-active:  oklch(70% 0.139 68deg);
+  --color-accent:         oklch(78% 0.145 55deg);
+  --color-accent-hover:   oklch(84% 0.092 45deg);
+  --color-accent-active:  oklch(70% 0.150 68deg);
   --color-accent-content: oklch(13% 0.030 55deg);      // Lc 63.5 on accent (real Button/Badge fill), was Lc 51.3
-  --color-accent-bg:      oklch(26% 0.062 55deg);      // base-content on this: Lc -96.0 (real Compositions banner usage)
+  --color-accent-bg:      oklch(26% 0.068 55deg);      // base-content on this: Lc -96.0 (real Compositions banner usage)
 
-  --color-success:         oklch(78% 0.194 150deg);
-  --color-success-hover:   oklch(84% 0.208 150deg);
-  --color-success-active:  oklch(68% 0.168 150deg);
-  --color-success-bg:      oklch(23% 0.061 150deg);
+  --color-success:         oklch(78% 0.209 150deg);
+  --color-success-hover:   oklch(84% 0.226 150deg);
+  --color-success-active:  oklch(68% 0.183 150deg);
+  --color-success-bg:      oklch(23% 0.067 150deg);
   --color-success-content: oklch(13% 0.030 150deg);   // Lc 68.9
 
-  --color-warning:         oklch(78% 0.144 85deg);
-  --color-warning-hover:   oklch(84% 0.155 85deg);
-  --color-warning-active:  oklch(68% 0.125 85deg);
-  --color-warning-bg:      oklch(23% 0.047 85deg);
+  --color-warning:         oklch(78% 0.155 85deg);
+  --color-warning-hover:   oklch(84% 0.168 85deg);
+  --color-warning-active:  oklch(68% 0.136 85deg);
+  --color-warning-bg:      oklch(23% 0.051 85deg);
   --color-warning-content: oklch(14% 0.025 85deg);    // Lc 64.7
 
   // Error — deep-fill + light-ink polarity (see header): proper alarm red,
   // not a diluted salmon, and clears WCAG AA outright.
-  --color-error:         oklch(46% 0.169 25deg);
-  --color-error-hover:   oklch(52% 0.191 25deg);
-  --color-error-active:  oklch(38% 0.140 25deg);
-  --color-error-bg:      oklch(23% 0.089 25deg);
+  --color-error:         oklch(46% 0.183 25deg);
+  --color-error-hover:   oklch(52% 0.206 25deg);
+  --color-error-active:  oklch(38% 0.152 25deg);
+  --color-error-bg:      oklch(23% 0.097 25deg);
   --color-error-content: oklch(96% 0.015 25deg);      // Lc -81.1 / 6.92:1, was Lc -61.1 / 3.33:1
 
-  --color-info:         oklch(75% 0.136 235deg);
-  --color-info-hover:   oklch(82% 0.095 235deg);
-  --color-info-active:  oklch(66% 0.126 235deg);
-  --color-info-bg:      oklch(23% 0.048 235deg);
+  --color-info:         oklch(75% 0.147 235deg);
+  --color-info-hover:   oklch(82% 0.103 235deg);
+  --color-info-active:  oklch(66% 0.137 235deg);
+  --color-info-bg:      oklch(23% 0.052 235deg);
   --color-info-content: oklch(13% 0.020 235deg);      // Lc 61.6
 
   // Shadows — ink-tinted at the theme's own 285deg background hue, one
@@ -210,10 +221,10 @@
   --shadow-md: 0 8px 16px -4px oklch(5% 0.020 285deg / 0.52), 0 2px 4px -2px oklch(5% 0.020 285deg / 0.32);
   --shadow-lg: 0 20px 32px -8px oklch(4% 0.020 285deg / 0.60), 0 4px 8px -4px oklch(4% 0.020 285deg / 0.38);
   --shadow-xl: 0 32px 48px -12px oklch(4% 0.020 285deg / 0.68), 0 8px 16px -8px oklch(4% 0.020 285deg / 0.42);
-  --shadow-primary: 0 8px 24px 0 oklch(78% 0.108 290deg / 0.35);
-  --shadow-accent:  0 8px 24px 0 oklch(78% 0.133 55deg / 0.30);
+  --shadow-primary: 0 8px 24px 0 oklch(78% 0.118 290deg / 0.35);
+  --shadow-accent:  0 8px 24px 0 oklch(78% 0.145 55deg / 0.30);
 
-  --focus-ring-color: oklch(78% 0.108 290deg / 0.55);
+  --focus-ring-color: oklch(78% 0.118 290deg / 0.55);
   --color-header-bg: var(--color-base-100);
 
   // Motion — thin-film interference is a continuous phenomenon (color shifts

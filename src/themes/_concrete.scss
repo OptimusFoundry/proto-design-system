@@ -31,47 +31,54 @@
   --color-surface-elevated: oklch(92% 0.002 250deg);
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);
   --color-border: oklch(18% 0.005 250deg);
-  --color-border-hover: oklch(56% 0.18 45deg);
-  --color-primary: oklch(78% 0.130 45deg);
-  --color-primary-hover: oklch(62% 0.24 45deg);
-  --color-primary-active: oklch(56% 0.24 45deg);
-  --color-primary-content: oklch(14% 0.02 45deg);
+  --color-border-hover: oklch(56% 0.155 45deg);
+  // Every interactive ramp below moves in the one direction that GROWS
+  // contrast for the ink it carries: dark-ink fills (primary/warning) get
+  // lighter on hover/active, light-ink fills (accent/success/error/info) get
+  // darker. The previous file did the opposite on six of them, which is why
+  // primary-hover sat at Lc 38 and success/error/info-hover failed AA
+  // outright while the resting states passed.
+  --color-primary: oklch(78% 0.133 45deg);          // Lc 62.9 / 9.55:1
+  --color-primary-hover: oklch(80% 0.119 45deg);    // Lc 66.7 / 10.34:1
+  --color-primary-active: oklch(83% 0.098 45deg);   // Lc 71.9 / 11.47:1
+  --color-primary-content: oklch(14% 0.045 45deg);
   --color-secondary: oklch(18% 0.005 250deg);
   --color-secondary-hover: oklch(10% 0.003 250deg);
   --color-secondary-active: oklch(6% 0.003 250deg);
   --color-secondary-content: oklch(96% 0.002 250deg);
-  --color-accent: oklch(48% 0.10 230deg);
-  --color-accent-hover: oklch(42% 0.12 230deg);
-  --color-accent-active: oklch(38% 0.12 230deg);
-  --color-accent-content: oklch(96% 0.005 230deg);
-  --color-accent-bg: oklch(94% 0.05 230deg);
-  --color-success: oklch(52% 0.18 140deg);
-  --color-success-hover: oklch(60% 0.18 140deg);
-  --color-success-active: oklch(44% 0.18 140deg);
-  --color-success-bg: oklch(86% 0.03 140deg);
+  // Hue 230->262. 230deg is one of sRGB's narrowest slices — its ceiling at
+  // this lightness is 0.105, so the authored 0.10-0.12 was both clipping and
+  // capped at a washed-out cyan-blue. 262deg is the blue primary's own hue,
+  // where the ceiling is 0.244: a site-signage blue with real voltage next to
+  // the safety-orange primary, and still 17deg clear of info's 245deg.
+  --color-accent: oklch(52% 0.230 262deg);          // Lc -74.8 / 5.21:1
+  --color-accent-hover: oklch(47% 0.210 262deg);    // Lc -80.1 / 6.38:1
+  --color-accent-active: oklch(42% 0.190 262deg);   // Lc -85.2 / 7.94:1
+  --color-accent-content: oklch(96% 0.005 262deg);
+  --color-accent-bg: oklch(90% 0.046 262deg);
+  --color-success: oklch(52% 0.164 140deg);         // Lc -72.0 / 4.61:1
+  --color-success-hover: oklch(47% 0.148 140deg);   // Lc -78.2 / 5.77:1
+  --color-success-active: oklch(42% 0.133 140deg);  // Lc -83.6 / 7.19:1
+  --color-success-bg: oklch(86% 0.090 140deg);
   --color-success-content: oklch(96% 0.005 140deg);
-  // Hue moved 45->70 (was an exact match to --color-primary's 45deg — a
-  // brand/status collision). 70deg also reconciles a latent inconsistency:
-  // --color-warning-bg was already hand-tuned to 70deg while base/hover/
-  // active sat at 45, so the ramp didn't share one hue with itself.
-  --color-warning: oklch(78% 0.130 70deg);
-  --color-warning-hover: oklch(76% 0.22 70deg);
-  --color-warning-active: oklch(60% 0.22 70deg);
-  --color-warning-bg: oklch(92% 0.05 70deg);
-  --color-warning-content: oklch(14% 0.02 70deg);
-  --color-error: oklch(52% 0.25 25deg);
-  --color-error-hover: oklch(60% 0.25 25deg);
-  --color-error-active: oklch(44% 0.25 25deg);
-  --color-error-bg: oklch(90% 0.04 25deg);
-  --color-error-content: oklch(98% 0.01 25deg);
-  // Hue moved 230->245 (was a literal duplicate of --color-accent's
-  // 48% 0.10 230deg — same brand/status collision as warning/primary above).
-  // 245deg also happens to clear gamut cleanly at this L/C where 230deg
-  // didn't (base and active were previously flagged out-of-gamut).
-  --color-info: oklch(48% 0.10 245deg);
-  --color-info-hover: oklch(56% 0.1 245deg);
-  --color-info-active: oklch(40% 0.1 245deg);
-  --color-info-bg: oklch(88% 0.02 245deg);
+  // Hue 45->70 (2026-07, breaking an exact collision with primary) ->85
+  // (2026-08): 70deg still read as a second orange beside the 45deg primary.
+  // 85deg is a yellow-amber, 40deg clear, and its gamut ceiling rises with
+  // lightness here — so the ramp gains chroma as it gains contrast.
+  --color-warning: oklch(78% 0.155 85deg);          // Lc 64.6 / 9.83:1
+  --color-warning-hover: oklch(81% 0.161 85deg);    // Lc 69.7 / 10.90:1
+  --color-warning-active: oklch(84% 0.167 85deg);   // Lc 75.0 / 12.04:1
+  --color-warning-bg: oklch(92% 0.080 85deg);
+  --color-warning-content: oklch(14% 0.045 85deg);
+  --color-error: oklch(54% 0.213 25deg);            // Lc -76.5 / 5.30:1
+  --color-error-hover: oklch(48% 0.190 25deg);      // Lc -83.1 / 6.79:1
+  --color-error-active: oklch(43% 0.170 25deg);     // Lc -88.1 / 8.36:1
+  --color-error-bg: oklch(90% 0.050 25deg);
+  --color-error-content: oklch(98% 0.006 25deg);
+  --color-info: oklch(48% 0.118 245deg);            // Lc -78.0 / 5.79:1
+  --color-info-hover: oklch(43% 0.106 245deg);      // Lc -83.2 / 7.15:1
+  --color-info-active: oklch(38% 0.094 245deg);     // Lc -87.9 / 8.84:1
+  --color-info-bg: oklch(88% 0.058 245deg);
   --color-info-content: oklch(96% 0.005 245deg);
   // Elevation: raking-sun cast + ground contact -----------------------------
   // A poured slab reads depth the way a work-site does at low sun: a hard,
@@ -102,8 +109,10 @@
   // unchanged at every size); concrete's is warm-tinted, grows physically
   // with elevation, and adds a second contact-shadow color the higher it
   // sits — a cast material, not a printed page.
-  --shadow-color: oklch(68% 0.22 45deg / 0.28);
-  --shadow-color-strong: oklch(68% 0.22 45deg / 0.60);
+  // 0.22 chroma at 68%/45deg is past the sRGB edge (ceiling 0.195) — the
+  // browser was clipping every rust cast to a duller, hue-shifted orange.
+  --shadow-color: oklch(68% 0.190 45deg / 0.28);
+  --shadow-color-strong: oklch(68% 0.190 45deg / 0.60);
   --shadow-xs: 1px 1px 0 0 var(--shadow-color);
   --shadow-sm: 2px 2px 0 0 var(--shadow-color);
   --shadow-md:
@@ -114,11 +123,11 @@
     0 2px 0 1px oklch(18% 0.005 250deg / 0.5);
   --shadow-xl:
     10px 10px 0 2px var(--shadow-color-strong),
-    4px 4px 0 1px oklch(68% 0.22 45deg / 0.35),
+    4px 4px 0 1px oklch(68% 0.190 45deg / 0.35),
     0 3px 0 1px oklch(18% 0.005 250deg / 0.55);
-  --shadow-primary: 4px 4px 0 0 oklch(68% 0.22 45deg);
-  --shadow-accent: 4px 4px 0 0 oklch(48% 0.10 230deg);
-  --focus-ring-color: oklch(68% 0.22 45deg / 0.5);
+  --shadow-primary: 4px 4px 0 0 oklch(68% 0.190 45deg);
+  --shadow-accent: 4px 4px 0 0 oklch(52% 0.230 262deg);
+  --focus-ring-color: oklch(68% 0.190 45deg / 0.5);
   --color-header-bg: var(--color-base-100);
 
   // Chamfered-arris corners — poured/cast concrete edges are broken with a
