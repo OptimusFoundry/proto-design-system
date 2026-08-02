@@ -136,11 +136,15 @@
   --color-base-900: oklch(18%   0.014 145deg);
   --color-base-950: oklch(12%   0.009 145deg);
 
-  // Content colors — dark sage ink, real (not zeroed-out) chroma at every
-  // step. Lc 102.5 / 88.3 / 70.5 on background respectively.
-  --color-base-content:           oklch(18% 0.014 145deg);
-  --color-base-content-secondary: oklch(40% 0.018 145deg);
-  --color-base-content-tertiary:  oklch(55% 0.020 145deg);
+  // Content colors — dark sage ink. 2026-08 ink refit: the prior values were
+  // 9-21% of their in-gamut chroma ceiling, which is "real chroma" only on
+  // paper — at H145/L55, 0.020 is below the threshold where the hue is
+  // visible at all, so the ramp read as the generic gray this file's header
+  // explicitly disclaims. Refit to 60/45/37% of ceiling; tertiary also pulled
+  // 55%->54% L so the added chroma doesn't cost its WCAG margin.
+  --color-base-content:           oklch(18% 0.040 145deg);  // Lc 102.3 / 17.95:1
+  --color-base-content-secondary: oklch(40% 0.058 145deg);  // Lc 87.7 / 8.63:1
+  --color-base-content-tertiary:  oklch(54% 0.064 145deg);  // Lc 71.1 / 4.71:1
 
   // Surface colors — cards keep a hair of the background's chroma (oat's
   // "surfaces keep bg chroma" rule) so they read as tinted material, not
@@ -236,11 +240,11 @@
   --focus-ring-color: oklch(47% 0.147 145deg / 0.4);
 
   // Muted color — aliases content-tertiary (muted copy is still content).
-  --color-muted: oklch(55% 0.020 145deg);
+  --color-muted: oklch(54% 0.064 145deg);
 
-  // Non-content only — Lc 45.7 (clear of the Lc 30 disabled floor); WCAG
-  // 2.37:1 is expected here (WCAG 1.4.3 exempts inactive UI text).
-  --color-text-disabled: oklch(72% 0.020 145deg);
+  // Non-content only — Lc 45.2 (clear of the Lc 30 disabled floor); WCAG
+  // 2.34:1 is expected here (WCAG 1.4.3 exempts inactive UI text).
+  --color-text-disabled: oklch(72% 0.048 145deg);
 
   --color-header-bg: var(--color-base-100);
 

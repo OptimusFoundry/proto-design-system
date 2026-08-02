@@ -77,12 +77,17 @@
   --color-base-900: oklch(90% 0.008 204deg);
   --color-base-950: oklch(97% 0.004 202deg);
 
-  // Content colors — bright cyan-white ramp, APCA-fit against the abyss bg.
-  --color-base-content:           oklch(95% 0.020 197deg);   // Lc -97.5 / 18.10:1
-  --color-base-content-secondary: oklch(87% 0.026 199deg);   // Lc -81.2 / 14.17:1 (+6.2 over the Lc75 floor, was +2.0)
-  --color-base-content-tertiary:  oklch(73% 0.022 202deg);   // Lc -55.2 / 8.76:1
-  --color-muted:                  oklch(73% 0.022 202deg);   // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.018 206deg);   // Lc -35.2 / 5.33:1, non-content only
+  // Content colors — the base ramp's own cyan-shallows hue drift (197 -> 206deg)
+  // carried into the ink at real chroma. A prior pass held the ramp at 17-28%
+  // of the gamut available at each tier, which read as gray text floating over
+  // a lit abyss instead of the creatures' own glow; each tier now takes ~55-67%
+  // of its ceiling. Contrast rises at every tier — cyan chroma adds luminance
+  // against this background — so no floor moved in the wrong direction.
+  --color-base-content:           oklch(95% 0.048 197deg);   // Lc -98.1 / 18.25:1
+  --color-base-content-secondary: oklch(87% 0.080 199deg);   // Lc -82.5 / 14.46:1
+  --color-base-content-tertiary:  oklch(73% 0.075 202deg);   // Lc -56.4 / 8.95:1
+  --color-muted:                  oklch(73% 0.075 202deg);   // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.062 206deg);   // Lc -35.8 / 5.40:1, non-content only
 
   // Surfaces — keep the background's hue family, step up by 7pt then 5pt L.
   --color-surface:          oklch(15% 0.025 222deg);

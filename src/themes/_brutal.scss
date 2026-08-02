@@ -36,8 +36,13 @@
 [data-theme="brutal"] {
   color-scheme: light;
 
-  --font-family-sans:    "Public Sans", "Geist", system-ui, sans-serif;
-  --font-family-mono:    "Martian Mono", "Geist Mono", monospace;
+  // Unbounded (a heavy geometric grotesque built for maximum block impact)
+  // + Courier Prime (a bold, unapologetically mechanical typewriter mono) —
+  // was sharing Public Sans with forest and Martian Mono with terminal,
+  // undercutting the "one theme, one voice" premise. Swapped for a pairing
+  // nothing else in the catalog uses.
+  --font-family-sans:    "Unbounded", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Courier Prime", "Geist Mono", monospace;
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
   --color-background: oklch(100% 0 0deg);
@@ -52,10 +57,17 @@
   --color-base-800: oklch(18% 0 0deg);
   --color-base-900: oklch(10% 0 0deg);
   --color-base-950: oklch(0%  0 0deg);
+  // Content ramp — the three body tiers were L10/18/25, i.e. rgb(3)/rgb(25)/
+  // rgb(40) scoring Lc 106.0/105.3/102.9: three "levels" a reader cannot tell
+  // apart, so this theme had no text hierarchy at all. Restepped to real
+  // intervals (Lc 106.0/100.1/85.9), with muted aliased to tertiary per the
+  // house convention its grayscale siblings use. Chroma stays 0 on purpose:
+  // the color-blocking premise is a neutral field with saturated blocks doing
+  // every bit of the color work — tinting body copy would soften that.
   --color-base-content:           oklch(10% 0 0deg);
-  --color-base-content-secondary: oklch(18% 0 0deg);
-  --color-base-content-tertiary:  oklch(25% 0 0deg);
-  --color-muted:                  oklch(40% 0 0deg);
+  --color-base-content-secondary: oklch(30% 0 0deg);
+  --color-base-content-tertiary:  oklch(45% 0 0deg);
+  --color-muted:                  oklch(45% 0 0deg);
   --color-text-disabled:          oklch(68% 0 0deg);
   --color-surface:          oklch(100% 0 0deg);
   --color-surface-elevated: oklch(100% 0 0deg);

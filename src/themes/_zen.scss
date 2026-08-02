@@ -80,7 +80,10 @@
   color-scheme: light;
 
   --font-family-sans:    "Noto Sans JP", "Geist", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "Geist Mono", monospace;
+  // Cutive Mono, not JetBrains Mono — see _concrete.scss for the six-way
+  // collision this de-duplicates; Cutive Mono's quieter, slightly literary
+  // character also fits zen's ink-wash register better than a coder-mono.
+  --font-family-mono:    "Cutive Mono", "Geist Mono", monospace;
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
@@ -100,13 +103,21 @@
   --color-base-950: oklch(10% 0.009 200deg);
 
   // Content — warm sumi ink, hue55, deliberately opposite the base ramp's
-  // cool hue (the "cool stone, warm ink" device). Lc 97.6/89.3/77.2 —
-  // content clears Lc90, secondary clears Lc75, tertiary clears Lc75.
-  --color-base-content:           oklch(18% 0.020 55deg);   // Lc 97.6 / 16.86:1
-  --color-base-content-secondary: oklch(34% 0.018 55deg);   // Lc 89.3 / 10.51:1
-  --color-base-content-tertiary:  oklch(46% 0.016 55deg);   // Lc 77.2 / 6.40:1
-  --color-muted:                  oklch(46% 0.016 55deg);   // aliases tertiary — Lc 77.2 / 6.40:1
-  --color-text-disabled:          oklch(66% 0.014 55deg);   // non-content only — Lc 50.7 / 2.80:1
+  // cool hue (the "cool stone, warm ink" device).
+  //
+  // 2026-08: the header above has claimed this warm-ink device since the
+  // rebuild, but the numbers didn't carry it — 0.020/0.018/0.016/0.014 is
+  // 35/21/14/9% of the in-gamut chroma ceiling at each L/H, and below ~0.03
+  // the warm cast is not visible against an H200 cool-stone canvas. The
+  // split was real in the source and absent on screen. Refit to 67/55/45/33%
+  // of ceiling — still restrained (sumi is brown-black, not sepia), now
+  // actually warm. Lightness untouched, so the whole contrast ladder above
+  // holds; every tier's numbers improved by a hair.
+  --color-base-content:           oklch(18% 0.038 55deg);   // Lc 97.6 / 16.94:1
+  --color-base-content-secondary: oklch(34% 0.048 55deg);   // Lc 89.6 / 10.68:1
+  --color-base-content-tertiary:  oklch(46% 0.052 55deg);   // Lc 77.5 / 6.50:1
+  --color-muted:                  oklch(46% 0.052 55deg);   // aliases tertiary — Lc 77.5 / 6.50:1
+  --color-text-disabled:          oklch(66% 0.055 55deg);   // non-content only — Lc 51.0 / 2.82:1
 
   // Surfaces keep the background's chroma (oat's rule) — panels read as
   // stone, not white paper.

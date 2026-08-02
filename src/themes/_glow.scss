@@ -23,7 +23,7 @@
 // were literal oklch(0% 0) — pure black, against this system's craft rule —
 // and are now tinted dark inks at their own hue.
 //
-// content-tertiary/muted sits at Lc -53.5, matching _dark.scss's own
+// content-tertiary/muted sits at Lc -54.8, matching _dark.scss's own
 // tertiary-text baseline (Lc -52.9) — accepted as-is rather than pushed past
 // what this theme's own family already ships.
 // Fonts: Space Grotesk / JetBrains Mono kept — Space Grotesk's grid-drawn
@@ -38,7 +38,9 @@
   color-scheme: dark;
 
   --font-family-sans:    "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "SF Mono", monospace;
+  // Red Hat Mono, not JetBrains Mono — see _concrete.scss for the six-way
+  // collision this de-duplicates.
+  --font-family-mono:    "Red Hat Mono", "SF Mono", monospace;
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
@@ -59,13 +61,18 @@
   --color-base-900: oklch(94% 0.027 250deg);
   --color-base-950: oklch(98% 0.009 250deg);
 
-  // Content — cool cyan-white "glow ink," fixed hue (no drift within the
-  // ramp), kept clearly apart from the base/primary hue (250deg).
-  --color-base-content:           oklch(90% 0.018 205deg);  // Lc -87.0 on background
-  --color-base-content-secondary: oklch(87% 0.026 205deg);  // Lc -81.1
-  --color-base-content-tertiary:  oklch(72% 0.024 205deg);  // Lc -53.5
-  --color-muted:                  oklch(72% 0.024 205deg);  // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.020 205deg);  // Lc -35.0, clears Lc30 floor
+  // Content — cool cyan "glow ink," fixed hue (no drift within the ramp),
+  // kept clearly apart from the base/primary hue (250deg). A prior pass sat
+  // the whole ramp at 17-19% of the chroma in gamut at each tier's lightness,
+  // which rendered as ordinary gray text on a lit grid; each tier now takes
+  // ~55-60% of its ceiling, so the ink reads as lit by the same source as the
+  // grid rather than laid on top of it. Contrast rises at every tier — this
+  // hue's chroma adds luminance against a blue-black background.
+  --color-base-content:           oklch(90% 0.060 205deg);  // Lc -87.7 / 15.18:1
+  --color-base-content-secondary: oklch(87% 0.075 205deg);  // Lc -82.1 / 13.89:1
+  --color-base-content-tertiary:  oklch(72% 0.075 205deg);  // Lc -54.8 / 8.37:1
+  --color-muted:                  oklch(72% 0.075 205deg);  // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.060 205deg);  // Lc -35.8, clears Lc30 floor
 
   // Surfaces keep the background's chroma — only lightness separates them.
   --color-surface:          oklch(17% 0.043 250deg);

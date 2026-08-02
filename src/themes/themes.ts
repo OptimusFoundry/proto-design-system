@@ -81,7 +81,7 @@ export const themes: Record<ThemeName, Theme> = {
 		label: "Brutal",
 		colorScheme: "light",
 		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600;700&display=swap",
+			"https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap",
 	},
 	cosmos: {
 		name: "cosmos",
@@ -109,7 +109,7 @@ export const themes: Record<ThemeName, Theme> = {
 		label: "Glow",
 		colorScheme: "dark",
 		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
+			"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500;600;700&display=swap",
 	},
 	archive: {
 		name: "archive",
@@ -137,7 +137,7 @@ export const themes: Record<ThemeName, Theme> = {
 		label: "Concrete",
 		colorScheme: "light",
 		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
+			"https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap",
 	},
 	flux: {
 		name: "flux",
@@ -172,7 +172,7 @@ export const themes: Record<ThemeName, Theme> = {
 		label: "Plasma",
 		colorScheme: "dark",
 		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
+			"https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap",
 	},
 	radio: {
 		name: "radio",
@@ -200,7 +200,7 @@ export const themes: Record<ThemeName, Theme> = {
 		label: "Zen",
 		colorScheme: "light",
 		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
+			"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Cutive+Mono&display=swap",
 	},
 	bioluminescent: {
 		name: "bioluminescent",
@@ -272,7 +272,13 @@ export const themes: Record<ThemeName, Theme> = {
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
 	},
-	pixel: { name: "pixel", label: "Pixel", colorScheme: "light" },
+	pixel: {
+		name: "pixel",
+		label: "Pixel",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap",
+	},
 	terminal: {
 		name: "terminal",
 		label: "Terminal",

@@ -113,14 +113,19 @@
   --color-base-900: oklch(91% 0.008 235deg);
   --color-base-950: oklch(96% 0.004 235deg);
 
-  // Content ramp — Lc 97.0 / 82.8 / 76.7 on background (content/secondary/
+  // Content ramp — Lc 97.0 / 82.7 / 77.2 on background (content/secondary/
   // tertiary), all clearing the Lc75 small-body floor with margin; disabled
-  // sits in its own dimmer tier (Lc 34.9, clears the Lc30 floor).
-  --color-base-content:           oklch(95% 0.006 235deg);
-  --color-base-content-secondary: oklch(88% 0.009 235deg);
-  --color-base-content-tertiary:  oklch(85% 0.012 235deg);
-  --color-muted:                  oklch(85% 0.012 235deg);   // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.017 235deg);   // non-content only — was missing entirely
+  // sits in its own dimmer tier (Lc 35.3, clears the Lc30 floor).
+  // Primary's near-achromatic quicksilver constraint is a BRAND-chip decision
+  // and does not extend here: text is a different role, and 13-21% of ceiling
+  // read as flat gray sitting on brushed steel rather than as ink belonging
+  // to it. Raised to 43-50%, still cool/metallic, not a blue text color —
+  // and the contrast went up, not down (tertiary 76.7 -> 77.2).
+  --color-base-content:           oklch(95% 0.014 235deg);
+  --color-base-content-secondary: oklch(88% 0.030 235deg);
+  --color-base-content-tertiary:  oklch(85% 0.040 235deg);
+  --color-muted:                  oklch(85% 0.040 235deg);   // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.055 235deg);   // non-content only
 
   --color-surface:          oklch(15% 0.018 235deg);
   --color-surface-elevated: oklch(20% 0.021 235deg);

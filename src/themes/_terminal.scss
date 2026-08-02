@@ -193,13 +193,18 @@
   --color-base-900: oklch(90% 0.146 128deg);
   --color-base-950: oklch(96% 0.054 128deg);
 
-  // Content colors (phosphor green) — each step re-fit to clear its own
-  // APCA floor rather than inherited from L alone (see header).
-  --color-base-content:           oklch(90% 0.200 128deg);  // Lc -89.8 / 16.07:1 on bg
-  --color-base-content-secondary: oklch(84% 0.187 128deg);  // Lc -77.3 / 13.20:1 on bg (Lc75 floor +2.3)
-  --color-base-content-tertiary:  oklch(74% 0.165 128deg);  // Lc -59.0 / 9.40:1 on bg (Lc45 floor +14.0)
-  --color-muted:                  oklch(74% 0.165 128deg);  // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.133 128deg);  // Lc -36.5 / 5.48:1 on bg (Lc30 floor +6.5)
+  // Content colors (phosphor green) — moved off the base ramp's 85%-of-ceiling
+  // rule onto the signal layer's ~97%, with no lightness change: emitted type
+  // is the phosphor line itself, so it belongs with primary/accent, not with
+  // the structural chrome that deliberately reads a shade under them. Chroma
+  // is contrast-positive here (a greener green is darker in luminance against
+  // a near-black ground), so every tier gains a fraction of a point rather
+  // than spending any — the dim register is untouched.
+  --color-base-content:           oklch(90% 0.229 128deg);  // Lc -90.4 / 16.19:1 on bg
+  --color-base-content-secondary: oklch(84% 0.213 128deg);  // Lc -78.0 / 13.33:1 on bg (Lc75 floor +3.0)
+  --color-base-content-tertiary:  oklch(74% 0.188 128deg);  // Lc -59.4 / 9.45:1 on bg (Lc45 floor +14.4)
+  --color-muted:                  oklch(74% 0.188 128deg);  // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.153 128deg);  // Lc -36.5 / 5.46:1 on bg (Lc30 floor +6.5)
 
   // Surface colors
   --color-surface:          oklch(12% 0.027 128deg);

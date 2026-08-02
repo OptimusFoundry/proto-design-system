@@ -22,11 +22,16 @@
   --color-base-800: oklch(32% 0.18 275deg);
   --color-base-900: oklch(26% 0.18 270deg);
   --color-base-950: oklch(18% 0.15 265deg);
-  --color-base-content: oklch(28% 0.18 265deg);
-  --color-base-content-secondary: oklch(38% 0.15 265deg);
-  --color-base-content-tertiary: oklch(55% 0.10 265deg);
-  --color-muted: oklch(55% 0.10 265deg); // aliases tertiary — was a lighter, uncorrelated value that failed WCAG 3:1 on background
-  --color-text-disabled: oklch(68% 0.045 265deg); // non-content only
+  // Navy spot-ink plate. 2026-08 ink refit: content was already near ceiling
+  // (92%) but the ramp fell off to 40/27% below it, so a theme built on
+  // saturated riso inks faded to gray exactly where most of its body copy
+  // lives. Tertiary/muted also pulled 55%->52% L — at the old value they were
+  // Lc 64.0 / 4.23:1, i.e. already under WCAG AA before this pass.
+  --color-base-content: oklch(28% 0.185 265deg);            // 94% of ceiling — Lc 91.0 / 13.45:1
+  --color-base-content-secondary: oklch(38% 0.200 265deg);  // 76% — Lc 83.9 / 9.30:1
+  --color-base-content-tertiary: oklch(52% 0.150 265deg);   // 56% — Lc 68.1 / 4.88:1
+  --color-muted: oklch(52% 0.150 265deg); // aliases tertiary — was a lighter, uncorrelated value that failed WCAG 3:1 on background
+  --color-text-disabled: oklch(68% 0.090 265deg); // non-content only — Lc 45.7 / 2.52:1
   --color-surface: oklch(97% 0.015 85deg);
   --color-surface-elevated: oklch(98% 0.012 85deg);
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);

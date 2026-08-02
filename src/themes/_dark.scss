@@ -65,14 +65,18 @@
   --color-base-800: oklch(88% 0.012 275deg);
   --color-base-900: oklch(94% 0.010 275deg);
   --color-base-950: oklch(98% 0.008 275deg);
-  // Text ramp — APCA-scored quiet neutral, matching light's achromatic system
-  // (the old warm 80deg tint fought the 275deg surfaces). Body drops 96→90 to
-  // kill glare; muted rises 52→72 (it was Lc -24, below APCA's any-text floor).
-  --color-base-content:           oklch(90% 0 0deg);   // body/headings — Lc -87
-  --color-base-content-secondary: oklch(85% 0 0deg);   // supporting copy — Lc -77
-  --color-base-content-tertiary:  oklch(72% 0 0deg);   // captions/eyebrows — Lc -53
-  --color-muted:                  oklch(72% 0 0deg);   // aliases tertiary
-  --color-text-disabled:          oklch(60% 0 0deg);   // non-content only — Lc -35
+  // Text ramp — the void's own 275deg indigo, carried through the ink rather
+  // than laid over it as generic gray. The prior pass zeroed chroma outright
+  // (0% of the achievable ceiling at every tier) after an earlier warm 80deg
+  // tint fought the 275deg surfaces; the fix for a clashing hue was the right
+  // hue, not no hue. Now ~33-49% of the in-gamut ceiling per tier, rising as
+  // the tier dims — the ceiling collapses toward white, so equal absolute
+  // chroma would read as progressively less hue up the ramp.
+  --color-base-content:           oklch(90% 0.024 275deg);  // body/headings — Lc -86.2 / 14.72:1
+  --color-base-content-secondary: oklch(85% 0.036 275deg);  // supporting copy — Lc -76.0 / 12.49:1
+  --color-base-content-tertiary:  oklch(72% 0.058 275deg);  // captions/eyebrows — Lc -52.7 / 7.96:1
+  --color-muted:                  oklch(72% 0.058 275deg);  // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.072 275deg);  // non-content only — Lc -34.3 / 4.98:1
 
   --color-surface:          oklch(17% 0.015 275deg);
   --color-surface-elevated: oklch(22% 0.020 275deg);

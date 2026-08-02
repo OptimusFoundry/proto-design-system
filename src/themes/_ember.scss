@@ -130,13 +130,17 @@
   --color-base-800: oklch(22%   0.013 50deg);
   --color-base-900: oklch(15%   0.012 50deg);
   --color-base-950: oklch(8%    0.011 50deg);
-  // Text ramp — same warm hue, APCA-verified against the new tinted
-  // background (see header: previously flat, now earns its chroma).
-  --color-base-content:           oklch(30%   0.014 50deg);   // body/headings — Lc 97.2, 13.08:1
-  --color-base-content-secondary: oklch(41%   0.013 50deg);   // supporting copy — Lc 87.4, 8.52:1
-  --color-base-content-tertiary:  oklch(50.5% 0.012 50deg);   // captions/eyebrows — Lc 76.4, 5.62:1
-  --color-muted:                  oklch(50.5% 0.012 50deg);   // aliases tertiary — muted copy is still content
-  --color-text-disabled:          oklch(68%   0.010 50deg);   // non-content only — Lc 52.0, 2.75:1
+  // Text ramp — hue 50, chroma raised from 6-17% of the sRGB ceiling to
+  // 32-41%. The prior "whisper-low" tint was numerically warm but visually
+  // neutral: body copy read as house grey sitting next to a Fanta-orange
+  // primary. Chroma grows as the ramp lightens (a real ink washes warmer as
+  // it thins), which also keeps the tint visible in the quiet tiers where the
+  // lightness gap alone would otherwise flatten it.
+  --color-base-content:           oklch(30%   0.034 50deg);   // body/headings — Lc 97.2, 13.16:1
+  --color-base-content-secondary: oklch(41%   0.044 50deg);   // supporting copy — Lc 87.6, 8.63:1
+  --color-base-content-tertiary:  oklch(50.5% 0.052 50deg);   // captions/eyebrows — Lc 76.9, 5.74:1
+  --color-muted:                  oklch(50.5% 0.052 50deg);   // aliases tertiary — muted copy is still content
+  --color-text-disabled:          oklch(68%   0.058 50deg);   // non-content only — Lc 52.9, 2.82:1
   // Surfaces sit lighter than the canvas, same pattern oat/light use — never
   // literal #fff.
   --color-surface:          oklch(99.3% 0.003  50deg);

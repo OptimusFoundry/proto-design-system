@@ -221,12 +221,16 @@
   --color-base-900: oklch(15% 0.02 290deg);
   --color-base-950: oklch(10% 0.015 290deg);
 
-  // Content colors (deep purple-gray ink)
-  --color-base-content:           oklch(18% 0.02 290deg);   // Lc 98.3 on bg
-  --color-base-content-secondary: oklch(40% 0.025 290deg);  // Lc 84.2 on bg
-  --color-base-content-tertiary:  oklch(46% 0.022 290deg);  // Lc 77.8 on bg — was 55% (Lc 67.3, AA fail)
-  --color-muted:                  oklch(46% 0.022 290deg);  // aliases tertiary
-  --color-text-disabled:          oklch(52% 0.02 290deg);   // non-content only — Lc 70.7 / 5.01:1, was 70% L (Lc 44.9/2.41:1, under AA)
+  // Content colors (deep violet ink). 2026-08 ink refit: hue 290 has an
+  // enormous sRGB chroma ceiling (0.11 at L18, 0.26 at L46), and the prior
+  // 0.020-0.025 values sat at 7-18% of it — a pastel-violet theme whose text
+  // was, measurably, neutral gray. Refit to 49/37/35/30% of ceiling; every
+  // tier's contrast improved or held, so nothing was traded for the color.
+  --color-base-content:           oklch(18% 0.055 290deg);  // Lc 98.2 / 17.08:1
+  --color-base-content-secondary: oklch(40% 0.085 290deg);  // Lc 84.6 / 8.50:1
+  --color-base-content-tertiary:  oklch(46% 0.092 290deg);  // Lc 78.3 / 6.62:1
+  --color-muted:                  oklch(46% 0.092 290deg);  // aliases tertiary
+  --color-text-disabled:          oklch(52% 0.088 290deg);  // non-content only — Lc 71.1 / 5.10:1
 
   // Surface colors — keep background's violet chroma, only lightness steps up
   --color-surface:          oklch(98% 0.010 290deg);

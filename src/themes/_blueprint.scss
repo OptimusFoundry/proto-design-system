@@ -117,13 +117,19 @@
   --color-base-900: oklch(15% 0.01 230deg);
   --color-base-950: oklch(10% 0.008 230deg);
 
-  // Content colors (technical blue-black). Secondary/tertiary nudged up
-  // half a step for Lc margin (87.0->90.9, 71.6->77.8); text-disabled added.
-  --color-base-content: oklch(18% 0.015 230deg);
-  --color-base-content-secondary: oklch(38% 0.02 230deg);
-  --color-base-content-tertiary: oklch(50% 0.015 230deg);
-  --color-muted: oklch(50% 0.015 230deg);
-  --color-text-disabled: oklch(66% 0.012 230deg);
+  // Content colors (technical blue-black) — chroma was 9-35% of the sRGB
+  // ceiling at each tier, so the ink rendered as neutral gray (rgb(91,101,106)
+  // at tertiary) on a theme whose whole premise is drafting ink on blueprint
+  // stock. Refit to 34-61% of ceiling; hue stays 230deg (the base ramp's) so
+  // ink reads as a distinct family from the 205deg cyan grid lines rather
+  // than a faded version of them, and chroma stays below primary's 0.085.
+  // text-disabled also moved L66->L65 so the added chroma doesn't cost it the
+  // 3:1 large-text ratio (Lc 55.8/3.00:1 -> 57.0/3.10:1).
+  --color-base-content: oklch(18% 0.026 230deg);            // Lc 103.1, 18.16:1 — 61% of ceiling
+  --color-base-content-secondary: oklch(38% 0.045 230deg);  // Lc 90.7, 9.59:1 — 58%
+  --color-base-content-tertiary: oklch(50% 0.050 230deg);   // Lc 77.4, 5.73:1 — 50%
+  --color-muted: oklch(50% 0.050 230deg);
+  --color-text-disabled: oklch(65% 0.045 230deg);           // Lc 57.0, 3.10:1 — 35%
 
   // Surface colors — tinted off pure white to keep the background's hue
   // (was literal oklch(100% 0 0deg), the "no pure white" rule violation).

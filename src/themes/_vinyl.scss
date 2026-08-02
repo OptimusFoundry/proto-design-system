@@ -78,6 +78,13 @@
 // lightness a 225deg blue tops out at C0.077 — the old value was pinned at
 // 90% of a ceiling that was itself washed. Every checked pair holds or
 // improves; info gained contrast as well as chroma (Lc -84.4 -> -84.9).
+//
+// 2026-08 text-ramp pass. The chroma pass above fit the role colors but left
+// the ink ramp at 27-58% of its own ceiling, so body copy read as generic
+// gray on a kraft-brown page. Every content tier is refit (secondary 58% ->
+// 74%, tertiary/muted 46% -> 59%, disabled 27% -> 43% of ceiling); disabled
+// also lifted L58 -> L59 so the added chroma doesn't cost it Lc headroom
+// (Lc -31.4 -> -32.3). Borders untouched — already carrying the kraft hue.
 
 [data-theme="vinyl"] {
   color-scheme: dark;
@@ -103,20 +110,21 @@
   --color-base-900: oklch(91% 0.040 35deg);
   --color-base-950: oklch(96% 0.016 35deg);
 
-  // Content — Lc magnitudes vs background: content -91.8/16.66:1, secondary
-  // -81.6/14.24:1 (clears the Lc75 small-text floor), tertiary/muted
-  // -57.3/9.11:1 (clears the Lc45 headline floor with real margin; short of
-  // the Lc75 small-text ceiling, same accepted system-wide shape as
-  // _dark.scss -53/_archive.scss -49.6/_sunset.scss -49.5 at this
-  // near-black L, where APCA's low-luminance compression caps how far a
-  // tertiary step can separate from a mid-lightness cap without colliding
-  // with secondary), text-disabled -31.4/4.73:1 (clears the Lc30 disabled
-  // floor; was entirely missing before).
-  --color-base-content:           oklch(93% 0.035 35deg);
-  --color-base-content-secondary: oklch(88% 0.038 35deg);
-  --color-base-content-tertiary:  oklch(75% 0.070 35deg);
-  --color-muted:                  oklch(75% 0.070 35deg); // aliases tertiary
-  --color-text-disabled:          oklch(58% 0.055 35deg); // non-content only
+  // Content — kraft-brown ink, not a neutral gray borrowed from another
+  // theme. Chroma rises down the ramp because the sRGB ceiling does: near-
+  // white body text can only hold C0.036 at 35deg, while the quiet tiers sit
+  // where the hue is actually available, so the warmth reads strongest
+  // exactly where a record sleeve's small print does.
+  // Lc/WCAG vs background: content -92.0/16.70:1, secondary -81.5/14.22:1
+  // (clears Lc75), tertiary/muted -57.1/9.06:1 (clears Lc45; short of Lc75,
+  // the same accepted shape as _dark.scss -53 at this near-black L, where
+  // APCA's low-luminance compression caps tertiary separation),
+  // text-disabled -32.3/4.85:1 (clears Lc30).
+  --color-base-content:           oklch(93% 0.036 35deg);
+  --color-base-content-secondary: oklch(88% 0.048 35deg);
+  --color-base-content-tertiary:  oklch(75% 0.090 35deg);
+  --color-muted:                  oklch(75% 0.090 35deg); // aliases tertiary
+  --color-text-disabled:          oklch(59% 0.090 35deg); // non-content only
 
   // Surfaces — kraft sleeve reads as material, not paint: surfaces keep the
   // background's own hue, only lightness separates them (matches _oat.scss's

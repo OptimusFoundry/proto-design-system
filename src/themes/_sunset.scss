@@ -54,6 +54,14 @@
 // higher. A deep-fill rebuild of secondary/error/info was fitted and rejected
 // on a text-role constraint (see the block above them); the lit polarity is
 // therefore kept deliberately and with a computed reason, not by inertia.
+//
+// 2026-08 text-ramp pass. That pass took every swatch to ~96% of ceiling but
+// skipped the ink, leaving the widest gap in the catalog: the text ramp sat
+// at 11-27% of ceiling, i.e. a flat neutral gray, on a page whose entire
+// premise is that everything is lit by the same warm low sun. Both blocks
+// below carry the fix — the content ramp, and (rare, and only because the
+// text fix exposed it) --color-border/-hover, which would otherwise have
+// been the one remaining cold element on the page.
 
 [data-theme="sunset"] {
   color-scheme: dark;
@@ -74,22 +82,32 @@
   --color-base-800: oklch(86% 0.020 50deg);
   --color-base-900: oklch(92% 0.020 50deg);
   --color-base-950: oklch(96% 0.020 50deg);
-  // Text ramp — APCA-scored (Lc against the L14% bg), quiet-neutral warm
-  // hue. Body drops from the prior 96% to 90% to cut glare (same call
-  // _dark.scss makes for the same reason); muted now genuinely aliases
-  // tertiary instead of sitting below the placeholder floor.
-  --color-base-content:           oklch(90% 0.016 50deg);  // Lc -86.0
-  --color-base-content-secondary: oklch(85% 0.018 50deg);  // Lc -76.3
-  --color-base-content-tertiary:  oklch(70% 0.020 50deg);  // Lc -49.5
-  --color-muted:                  oklch(70% 0.020 50deg);  // aliases tertiary
-  --color-text-disabled:          oklch(58% 0.018 50deg);  // Lc -31.6, non-content only
+  // Text ramp — dusk-lit ink. Body stays at L90 (down from a glare-y 96%,
+  // the same call _dark.scss makes), but the chroma is no longer a token
+  // gesture: this ramp was the palest thing in the file at 11-27% of the
+  // sRGB ceiling, an achromatic gray sitting on an amber page while every
+  // swatch around it ran at 96%. Now 46-55% at each tier — a caption here
+  // carries the same warmth as the light source it's lit by.
+  // Lc/WCAG on background: -85.8/14.66:1, -76.0/12.50:1 (clears Lc75),
+  // -48.7/7.25:1 (clears Lc45), -32.6/4.74:1 (clears Lc30 — disabled also
+  // lifted L58 -> L59 so the added chroma buys headroom rather than
+  // spending it; was Lc -31.6/4.61:1).
+  --color-base-content:           oklch(90% 0.032 50deg);
+  --color-base-content-secondary: oklch(85% 0.046 50deg);
+  --color-base-content-tertiary:  oklch(70% 0.095 50deg);
+  --color-muted:                  oklch(70% 0.095 50deg);  // aliases tertiary
+  --color-text-disabled:          oklch(59% 0.072 50deg);  // non-content only
   --color-surface:          oklch(16% 0.028 45deg);
   --color-surface-elevated: oklch(22% 0.030 45deg);
   --color-surface-overlay:  oklch(0% 0 0deg / 0.70);
   // Relit from the prior L30/L42 (both APCA Lc 0 — invisible against the
   // L14% bg) up to where they clear the Lc15 hairline floor with margin.
-  --color-border:       oklch(49% 0.040 45deg);  // Lc -20.2, WCAG 3.15:1
-  --color-border-hover: oklch(60% 0.040 45deg);  // Lc -34.1
+  // Chroma lifted alongside the text ramp above (28%/23% -> 52%/51% of
+  // ceiling, +1pt L each): at the old C0.040 the hairline was the last cold
+  // element left on the page, reading gray against warm ink directly
+  // adjacent to it. Both pairs gained contrast rather than trading it.
+  --color-border:       oklch(50% 0.075 45deg);  // Lc -21.0, WCAG 3.23:1
+  --color-border-hover: oklch(61% 0.090 45deg);  // Lc -35.0, WCAG 5.07:1
   // Every base/hover swatch below is fit so its dark-ink content clears the
   // Lc60 "larger/bold UI text" floor (button/badge labels). Active (press-
   // feedback, sub-200ms visible) is a deliberate, documented dip to the

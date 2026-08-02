@@ -7,7 +7,10 @@
   color-scheme: light;
 
   --font-family-sans:    "Archivo", "Geist", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "Geist Mono", monospace;
+  // Sometype Mono, not JetBrains Mono — JetBrains Mono was doing duty in six
+  // themes at once (concrete/cyberpunk/glow/plasma/radio/zen), the worst
+  // collision in the catalog.
+  --font-family-mono:    "Sometype Mono", "Geist Mono", monospace;
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
   --color-background: oklch(85% 0.004 250deg);
@@ -22,15 +25,26 @@
   --color-base-800: oklch(16% 0.004 250deg);
   --color-base-900: oklch(10% 0.003 250deg);
   --color-base-950: oklch(6% 0.002 250deg);
-  --color-base-content: oklch(18% 0.005 250deg);
-  --color-base-content-secondary: oklch(20% 0.006 250deg);
-  --color-base-content-tertiary: oklch(48% 0.006 250deg);
-  --color-muted: oklch(52% 0.005 250deg);
-  --color-text-disabled: oklch(64% 0.005 250deg);
+  // Ink ramp re-hued 250deg (cool blue-grey) -> 78deg and lifted from 3-9% of
+  // its sRGB chroma ceiling to 18-52%. Cured Portland cement photographs warm-
+  // olive, not blue: sampled slab greys land at oklch ~0.012-0.014 chroma
+  // around hue 75-90, and the theme's own accent family (45deg safety orange,
+  // 85deg warning, rust cast shadows) is already on that side. Chroma sits
+  // above the photographic sample because a screen has no surrounding scene to
+  // read the cast against. The base/surface ramp stays at 250deg — at 0.002-
+  // 0.006 chroma it is perceptually neutral, so this reads as warm ink on grey
+  // slab, not two competing materials.
+  --color-base-content: oklch(18% 0.024 78deg);
+  --color-base-content-secondary: oklch(20% 0.026 78deg);
+  --color-base-content-tertiary: oklch(48% 0.032 78deg);
+  --color-muted: oklch(52% 0.030 78deg);
+  --color-text-disabled: oklch(64% 0.024 78deg);
   --color-surface: oklch(87% 0.003 250deg);
   --color-surface-elevated: oklch(92% 0.002 250deg);
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);
-  --color-border: oklch(18% 0.005 250deg);
+  // Tracks --color-base-content exactly, as it always has here — a formwork
+  // reveal is the same ink as the type, so it moves with the ink re-hue above.
+  --color-border: oklch(18% 0.024 78deg);
   --color-border-hover: oklch(56% 0.155 45deg);
   // Every interactive ramp below moves in the one direction that GROWS
   // contrast for the ink it carries: dark-ink fills (primary/warning) get

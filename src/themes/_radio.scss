@@ -172,6 +172,14 @@
 // C0.030 while dropping L, i.e. the dial plate turned grey under the hand)
 // and success (C0.180 against a C0.236 ceiling). A deep ruby-glass error was
 // fitted and rejected on a text-role constraint — see the error block.
+//
+// 2026-08 text-ramp pass. That pass fixed the lamps but not the type: the
+// content ramp sat at 24-41% of ceiling, i.e. an essentially neutral gray
+// wearing an amber hue number, which is what made the console read modern-
+// dashboard-generic rather than tube-era. Refit to 47-65% — see the content
+// block. Borders are deliberately NOT touched: they're at the navy chassis
+// hue (245deg), a different material from the illuminated type, and already
+// sit at 45-57% of ceiling.
 
 @import "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=B612+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap";
 
@@ -199,17 +207,19 @@
   --color-base-900: oklch(94% 0.02 75deg);
   --color-base-950: oklch(98% 0.01 75deg);
 
-  // Content — relightened tertiary/muted (were Lc 36.5 / 18.3, both under
-  // the Lc45 floor); muted now aliases tertiary per house convention.
-  // Secondary relightened 84%->87% L (refit #2): was Lc73.4 on background,
-  // under the Lc75 small-body-text floor — now Lc79.3/77.5 (bg/surface).
-  --color-base-content:           oklch(94% 0.02 75deg);
-  --color-base-content-secondary: oklch(87% 0.03 75deg);
-  --color-base-content-tertiary:  oklch(72% 0.045 78deg);
-  --color-muted:                  oklch(72% 0.045 78deg);
-  // Relightened 58%->61% L (refit #2): was Lc31.0, only 1pt above the Lc30
-  // disabled floor. Now Lc35.2, still clearly dimmer than muted (Lc52.1).
-  --color-text-disabled:          oklch(61% 0.03 80deg);
+  // Content — text is dial-glow-lit, not white-on-navy: this ramp sits at the
+  // warm 75-80deg end of the base scale (the "illuminated" half of the 200/300
+  // hue seam above), and this pass takes it to 47-65% of the sRGB ceiling at
+  // each L instead of the prior 24-41%, so readouts read as amber-lit glass
+  // rather than a gray overlay dropped on a navy chassis. Amber gains
+  // luminance with chroma, so every tier held or improved: content Lc -93.7,
+  // secondary -79.3 (clears Lc75), tertiary/muted -51.9 (clears Lc45),
+  // disabled -35.1/4.74:1 (clears Lc30).
+  --color-base-content:           oklch(94% 0.032 75deg);
+  --color-base-content-secondary: oklch(87% 0.055 75deg);
+  --color-base-content-tertiary:  oklch(72% 0.080 78deg);
+  --color-muted:                  oklch(72% 0.080 78deg);
+  --color-text-disabled:          oklch(61% 0.060 80deg);
 
   --color-surface:          oklch(26% 0.05 245deg);
   --color-surface-elevated: oklch(32% 0.06 245deg);

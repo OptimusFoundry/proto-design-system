@@ -54,7 +54,9 @@
   color-scheme: dark;
 
   --font-family-sans:    "Chakra Petch", "Inter", system-ui, sans-serif;
-  --font-family-mono:    "JetBrains Mono", "SF Mono", monospace;
+  // Cousine, not JetBrains Mono — see _concrete.scss for the six-way
+  // collision this de-duplicates.
+  --font-family-mono:    "Cousine", "SF Mono", monospace;
   --font-family-serif:   "Chakra Petch", "Inter", system-ui, sans-serif;
   --font-family-display: "Orbitron", "Chakra Petch", system-ui, sans-serif;
 
@@ -73,14 +75,19 @@
   --color-base-900: oklch(96% 0.04 95deg);
   --color-base-950: oklch(98% 0.022 95deg);
 
-  // Content — warm off-white body copy, tertiary/muted drop to the violet
-  // hue. tertiary/muted relit 66%/52% -> 72% to clear the Lc45 floor (this
-  // hue's near-black compresses luminance harder than it looks in L%).
-  --color-base-content:           oklch(96% 0.05 95deg);   // Lc -99.0 / 17.91:1
-  --color-base-content-secondary: oklch(87% 0.06 95deg);   // Lc -80.7 / 13.64:1
-  --color-base-content-tertiary:  oklch(72% 0.08 320deg);  // Lc -51.7 / 7.85:1
-  --color-muted:                  oklch(72% 0.08 320deg);  // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.08 320deg);  // non-content only — Lc -33.5
+  // Content — the readout's two channels: the hot-core gold (95deg, shared
+  // with base-900/950) for the two body tiers, dropping to the violet void
+  // hue (320deg) for the quiet tiers. Chroma was the weak link — secondary
+  // through disabled sat at 28-34% of the gamut available at their lightness,
+  // so everything below a headline read as generic gray inside an otherwise
+  // fully-committed violet instrument. Each now takes ~51-61% of its ceiling
+  // (base-content 78% -> 85%), with L nudged a fraction on three tiers so
+  // every Lc/ratio lands at or above the prior pass's.
+  --color-base-content:           oklch(96% 0.055 95deg);    // Lc -99.0 / 17.91:1
+  --color-base-content-secondary: oklch(87.5% 0.110 95deg);  // Lc -81.3 / 13.77:1
+  --color-base-content-tertiary:  oklch(73.5% 0.140 320deg); // Lc -53.1 / 8.09:1
+  --color-muted:                  oklch(73.5% 0.140 320deg); // aliases tertiary
+  --color-text-disabled:          oklch(61% 0.150 320deg);   // non-content only — Lc -33.9
 
   --color-surface:          oklch(18% 0.08 320deg);
   --color-surface-elevated: oklch(24% 0.10 320deg);

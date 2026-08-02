@@ -98,12 +98,16 @@
 
   // Content colors (ink family) — blue-black, hue held at 258° instead of
   // following the paper hue, so ink reads as its own material against the
-  // kraft base rather than a darker shade of the same paper.
-  --color-base-content: oklch(18% 0.030 258deg);            // Lc 99.4, 17.25:1
-  --color-base-content-secondary: oklch(38% 0.024 258deg);  // Lc 87.3, 9.17:1
-  --color-base-content-tertiary: oklch(44% 0.020 258deg);   // Lc 81.1, 7.13:1
-  --color-muted: oklch(44% 0.020 258deg);                   // aliases tertiary
-  --color-text-disabled: oklch(60% 0.018 258deg);           // non-content only — Lc 60.8, 3.61:1
+  // kraft base rather than a darker shade of the same paper. Chroma was
+  // 8-35% of the sRGB ceiling at each tier, which rendered as slate gray
+  // (rgb(76,83,94) at tertiary) — the ink/paper duality lived in prose only.
+  // Refit to 18-63% of ceiling: unmistakably iron-gall blue-black, still well
+  // under --color-primary's 0.135 so body copy never reads as a link.
+  --color-base-content: oklch(18% 0.055 258deg);            // Lc 99.3, 17.30:1 — 63% of ceiling
+  --color-base-content-secondary: oklch(38% 0.058 258deg);  // Lc 87.3, 9.20:1 — 40%
+  --color-base-content-tertiary: oklch(44% 0.052 258deg);   // Lc 81.2, 7.16:1 — 31%
+  --color-muted: oklch(44% 0.052 258deg);                   // aliases tertiary
+  --color-text-disabled: oklch(60% 0.040 258deg);           // non-content only — Lc 61.0, 3.63:1
 
   // Surface colors (paper layers) — surfaces keep the background's chroma
   // (oat's rule: never fade to pure white). surface-elevated is a whisper

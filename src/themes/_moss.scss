@@ -160,6 +160,12 @@
 // 240deg: at this theme's deep-fill lightness 210deg tops out at C0.084, so
 // "misty rain-blue" there could only ever be grey; 240deg gives 34% more
 // chroma and slightly better contrast (Lc -75.3 -> -76.1).
+//
+// 2026-08 text-ramp pass. Same finding applied to the ink: the content ramp
+// already carried the right hue *walk* (88 -> 126deg) but at 18-33% of
+// ceiling, which is not enough chroma for a hue walk to be perceptible — the
+// ramp measured as one flat gray with three different hue numbers on it.
+// Refit to 37-56%; borders were already at 40%/77% and are untouched.
 
 [data-theme="moss"] {
   color-scheme: dark;
@@ -184,14 +190,17 @@
   --color-base-900: oklch(91% 0.026 88deg);
   --color-base-950: oklch(96% 0.016 85deg);
 
-  // Content ramp — Lc -92.5 / -76.8 / -47.1 (content/secondary/tertiary) on
-  // background; muted aliases tertiary; disabled sits in its own dimmer
-  // tier (Lc -32.3, clears the Lc30 floor) — was missing entirely.
-  --color-base-content:           oklch(93% 0.025 88deg);
-  --color-base-content-secondary: oklch(85% 0.032 100deg);
-  --color-base-content-tertiary:  oklch(68% 0.05 112deg);
-  --color-muted:                  oklch(68% 0.05 112deg);   // aliases tertiary
-  --color-text-disabled:          oklch(58% 0.045 126deg);  // non-content only — was missing entirely
+  // Content ramp — hue walks 88deg -> 126deg, the base ramp's canopy-break
+  // drift run backwards, so type reads as lit by the same weak warm light the
+  // surfaces are. Chroma refit to 37-56% of the sRGB ceiling (was 18-33%):
+  // the mist belongs in the base ramp, not in the ink sitting on top of it.
+  // Lc/WCAG on background: -92.7/16.32:1, -76.6/12.69:1 (clears Lc75),
+  // -47.3/7.07:1, disabled -32.6/4.78:1 (clears Lc30) — all held or improved.
+  --color-base-content:           oklch(93% 0.042 88deg);
+  --color-base-content-secondary: oklch(85% 0.065 100deg);
+  --color-base-content-tertiary:  oklch(68% 0.085 112deg);
+  --color-muted:                  oklch(68% 0.085 112deg);  // aliases tertiary
+  --color-text-disabled:          oklch(58% 0.070 126deg);  // non-content only
 
   --color-surface:          oklch(16% 0.038 149deg);
   --color-surface-elevated: oklch(20% 0.042 146deg);

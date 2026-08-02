@@ -108,13 +108,15 @@
   --color-base-900: oklch(92% 0.010 268deg);
   --color-base-950: oklch(98% 0.005 268deg);
 
-  // Text ramp — APCA-scored against the L8% void; near-white/near-black both
-  // carry a faint blue-violet tint, never pure #fff/#000.
-  --color-base-content:           oklch(96% 0.006 268deg);  // Lc -99.2
-  --color-base-content-secondary: oklch(92% 0.013 268deg);  // Lc -90.4
-  --color-base-content-tertiary:  oklch(80% 0.030 268deg);  // Lc -67.2 — see header trade-off
-  --color-muted:                  oklch(80% 0.030 268deg);  // aliases tertiary
-  --color-text-disabled:          oklch(64% 0.030 268deg);  // Lc -40.5
+  // Text ramp — APCA-scored against the L8% void, and carrying the void's own
+  // 268deg blue-violet rather than a faint gesture at it: the base ramp runs
+  // 0.058-0.068 chroma while the ink sat at 30-34% of its achievable ceiling,
+  // so the text read cooler-neutral than the dome it sits in. Now 39-58%.
+  --color-base-content:           oklch(96% 0.011 268deg);  // Lc -99.1 / 18.54:1
+  --color-base-content-secondary: oklch(92% 0.021 268deg);  // Lc -90.3 / 16.35:1
+  --color-base-content-tertiary:  oklch(80% 0.052 268deg);  // Lc -66.9 — see header trade-off
+  --color-muted:                  oklch(80% 0.052 268deg);  // aliases tertiary
+  --color-text-disabled:          oklch(64% 0.075 268deg);  // Lc -40.3 / 6.15:1
 
   --color-surface:          oklch(11% 0.055 268deg);
   --color-surface-elevated: oklch(16% 0.060 268deg);

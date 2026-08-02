@@ -27,16 +27,20 @@
   --color-base-900: oklch(94% 0.003 240deg);
   --color-base-950: oklch(98% 0.002 240deg);
 
-  // Content colors — Softened for 2026
+  // Content colors
   // True-black canvas: APCA's soft-black clamp makes low-L grays read as
   // near-indistinguishable from oklch(0% 0 0), so these needed real L lifts
   // (not the modest deltas that would clear the floor on a normal dark
   // surface) to clear the ladder — verified via scripts/theme-contrast-check.mjs.
-  --color-base-content: oklch(90% 0.006 250deg);
-  --color-base-content-secondary: oklch(86% 0.008 250deg);  // Lc -78.4 / 13.69:1 (was Lc -42.3)
-  --color-base-content-tertiary: oklch(59% 0.008 250deg);   // Lc -33.6 / 5.13:1 (was Lc -19.5)
-  --color-muted: oklch(61% 0.008 250deg);                   // Lc -36.4 / 5.57:1 (was Lc -28.1)
-  --color-text-disabled: oklch(57.5% 0.008 250deg);         // Lc -31.2 / 4.79:1 — non-content only, was missing
+  // Chroma carries the same cool 250deg backlight as the base ramp/border/glow
+  // rather than sitting as neutral gray on top of them: 5-12% of the in-gamut
+  // ceiling before, ~33-47% now. On a literally black panel the ink is the
+  // only place the theme's hue can live at all, so a colorless ramp erased it.
+  --color-base-content: oklch(90% 0.024 250deg);            // Lc -86.9 / 15.67:1
+  --color-base-content-secondary: oklch(86% 0.032 250deg);  // Lc -78.7 / 13.75:1
+  --color-base-content-tertiary: oklch(59% 0.058 250deg);   // Lc -33.5 / 5.12:1
+  --color-muted: oklch(61% 0.058 250deg);                   // Lc -36.3 / 5.55:1
+  --color-text-disabled: oklch(57.5% 0.062 250deg);         // Lc -31.6 / 4.84:1 — non-content only
 
   // Surface colors (true black)
   --color-surface: oklch(0% 0 0deg);

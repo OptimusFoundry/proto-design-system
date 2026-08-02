@@ -36,11 +36,10 @@
 // blue/red on the deep-fill + cream-ink branch. Every family gained real
 // chroma: success +102%, accent +94%, warning +34%, error/secondary +11%,
 // info +30%, primary +10%. All ink pairings verified above both floors.
-// Fonts intentionally NOT redeclared — inherits house Geist + Geist Mono
-// (pixel is one of the 4 house-default themes; a bespoke bitmap pairing was
-// added here in a color-only pass but never registered as a googleFontsHref
-// in themes.ts, so it was silently falling through to Geist anyway — reverted
-// to match its actual, functional state).
+// Fonts: Pixelify Sans + VT323, registered in themes.ts's googleFontsHref —
+// this theme previously had no font pairing of its own (silently inheriting
+// house Geist/Geist Mono despite the PICO-8 brief every other token here
+// commits to numerically).
 // Shadows stay hard-offset, zero-blur, ink-tinted (never the house indigo
 // glow default) — --shadow-primary/--shadow-accent now defined explicitly
 // so no component silently inherits the :root's soft indigo glow.
@@ -74,6 +73,15 @@
 [data-theme="pixel"] {
   color-scheme: light;
 
+  // Pixelify Sans (a legible pixel-grid UI face, not a display-only novelty
+  // font) + VT323 (the canonical 8-bit terminal monospace) — was silently on
+  // house Geist/Geist Mono with no pairing of its own, the only real gap
+  // against the PICO-8 brief this file otherwise commits to numerically.
+  --font-family-sans:    "Pixelify Sans", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "VT323", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
   // Background — PICO-8 cream-white (#FFF1E8), fitted to hue 58deg.
   --color-background: oklch(94% 0.020 58deg);
 
@@ -90,12 +98,16 @@
   --color-base-900: oklch(15% 0.015 66deg);
   --color-base-950: oklch(9%  0.012 66deg);
 
-  // Content colors (dark pixel ink)
-  --color-base-content:           oklch(13% 0.020 66deg);   // Lc 93.7 / 16.78:1
-  --color-base-content-secondary: oklch(26% 0.020 65deg);   // Lc 90.3 / 13.01:1
-  --color-base-content-tertiary:  oklch(48% 0.018 64deg);   // Lc 70.2 / 5.46:1
-  --color-muted:                  oklch(48% 0.018 64deg);   // aliases tertiary
-  --color-text-disabled:          oklch(72% 0.015 63deg);   // Lc 36.5 / 2.07:1
+  // Content colors — a cartridge-manual sepia ink ramp, interpolated between
+  // PICO-8's cream-white #FFF1E8 (55deg) and its brown #AB5236 (38deg), so
+  // hue drifts warmer as the ink darkens. Prior values sat at hue 63-66 with
+  // 9-35% of the sRGB chroma ceiling — *less* chroma than the base ramp they
+  // print on (base-500 carries 0.026 at L51), i.e. gray text on cream paper.
+  --color-base-content:           oklch(13% 0.040 48deg);   // Lc 93.6 / 16.83:1
+  --color-base-content-secondary: oklch(26% 0.046 50deg);   // Lc 90.3 / 13.08:1
+  --color-base-content-tertiary:  oklch(48% 0.050 53deg);   // Lc 70.6 / 5.55:1
+  --color-muted:                  oklch(48% 0.050 53deg);   // aliases tertiary
+  --color-text-disabled:          oklch(72% 0.048 55deg);   // Lc 37.2 / 2.10:1
 
   // Surface colors — tiny chroma kept even at near-white (no unrequested
   // pure #fff; both in-gamut per the check script).

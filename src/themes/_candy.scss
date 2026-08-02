@@ -182,11 +182,14 @@
 
   // Content — deeper grape-ink hue (312deg), distinct from the pink paper so
   // text reads as "ink on candy box," not just a darker paper step.
-  --color-base-content:           oklch(20% 0.050 312deg);
-  --color-base-content-secondary: oklch(35% 0.070 312deg);
-  --color-base-content-tertiary:  oklch(47% 0.075 312deg);
-  --color-muted:                  oklch(47% 0.075 312deg); // aliases tertiary — muted copy is still content
-  --color-text-disabled:          oklch(68% 0.050 312deg); // non-content only
+  // 2026-08 ink refit: the ramp was at 21-46% of its in-gamut chroma ceiling
+  // while every brand/semantic role around it had been pushed to ~95%, so the
+  // grape ink read grayer than the theme it sits in. Refit to 68/59/49/36%.
+  --color-base-content:           oklch(20% 0.075 312deg); // Lc 98.5 / 16.83:1
+  --color-base-content-secondary: oklch(35% 0.105 312deg); // Lc 90.6 / 10.83:1
+  --color-base-content-tertiary:  oklch(47% 0.115 312deg); // Lc 78.6 / 6.61:1
+  --color-muted:                  oklch(47% 0.115 312deg); // aliases tertiary — muted copy is still content
+  --color-text-disabled:          oklch(68% 0.086 312deg); // non-content only — Lc 50.1 / 2.72:1
 
   // Surfaces keep the background's pink chroma (only lightness separates
   // them) so cards read as candy-box card stock, never plain white paper.

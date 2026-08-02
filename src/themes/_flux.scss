@@ -127,6 +127,11 @@
 // role that must also be legible text on a near-black page — which is why
 // this theme puts its vividness in secondary (teal) and accent (gold), the
 // two bands whose peaks sit high enough to be usable.
+//
+// 2026-08 text-ramp pass. The exception the pass above missed: the content
+// ramp measured 13-65% of ceiling, so the type was effectively achromatic on
+// a page built entirely out of the claim that nothing here is achromatic.
+// Refit to 30-84%; borders were already at 85% and are untouched.
 
 [data-theme="flux"] {
   color-scheme: dark;
@@ -152,11 +157,16 @@
   --color-base-900: oklch(92% 0.035 55deg);
   --color-base-950: oklch(98% 0.012 70deg);
 
-  --color-base-content:           oklch(96% 0.020 320deg);   // Lc -98.7 on background
-  --color-base-content-secondary: oklch(87% 0.040 320deg);   // Lc -79.5, was -70.0
-  --color-base-content-tertiary:  oklch(72% 0.050 310deg);   // Lc -52.2, was -39.7
-  --color-muted:                  oklch(72% 0.050 310deg);   // aliases tertiary, was Lc -19.0
-  --color-text-disabled:          oklch(59% 0.040 310deg);   // Lc -32.9, was missing entirely
+  // Content ramp — the film's own hue, at 30-84% of the sRGB ceiling instead
+  // of the prior 13-65%. A thin film has no achromatic state at any
+  // thickness, so a neutral-gray caption tier was the one place this theme
+  // contradicted its own premise. Lc on background: -98.7 / -79.4 (clears
+  // Lc75) / -51.7 (clears Lc45) / -32.2 & 4.77:1 (clears Lc30) — all held.
+  --color-base-content:           oklch(96% 0.026 320deg);
+  --color-base-content-secondary: oklch(87% 0.058 320deg);
+  --color-base-content-tertiary:  oklch(72% 0.090 310deg);
+  --color-muted:                  oklch(72% 0.090 310deg);   // aliases tertiary
+  --color-text-disabled:          oklch(59% 0.090 310deg);
 
   --color-surface:          oklch(16% 0.038 283deg);
   --color-surface-elevated: oklch(20% 0.046 278deg);

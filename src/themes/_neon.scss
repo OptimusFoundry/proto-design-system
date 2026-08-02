@@ -79,13 +79,21 @@
   --color-base-900: oklch(12% 0 0deg);
   --color-base-950: oklch(5% 0 0deg);
 
-  // Content colors (pure black)
-  --color-base-content: oklch(5% 0 0deg);
-  --color-base-content-secondary: oklch(30% 0 0deg);
-  --color-base-content-tertiary: oklch(50% 0 0deg);
-  // was missing entirely (contract violation) — achromatic, matches the rest
-  // of this content ramp; Lc38.9/2.01:1 on background, clears the Lc30 floor
-  --color-text-disabled: oklch(78% 0 0deg);
+  // Content colors — the magenta tube's own hue (330deg, shared with primary
+  // and border-hover) cast into the ink. The base/surface ramp stays literally
+  // zero-tint, which is the theme's minimalist premise; the *ink* was the one
+  // place where "zero tint" read as a generic neutral gray ramp rather than a
+  // choice, since it's the largest coloured area on any screen. Tint climbs as
+  // the tier quiets (34% -> 50% -> 39% -> 33% of the in-gamut chroma at each
+  // lightness — the top tier is deliberately restrained so near-black ink
+  // doesn't turn plum). Contrast rises at every tier below the first: magenta
+  // chroma costs luminance, which helps dark-on-white.
+  --color-base-content: oklch(4.5% 0.045 330deg);            // Lc 106.0 / 20.93:1
+  --color-base-content-secondary: oklch(30% 0.070 330deg);   // Lc 100.6 / 14.09:1
+  --color-base-content-tertiary: oklch(50% 0.090 330deg);    // Lc 81.2 / 6.31:1
+  // was missing entirely (contract violation); Lc 40.0 / 2.05:1 on background,
+  // clears the Lc30 floor
+  --color-text-disabled: oklch(78% 0.070 330deg);
 
   // Surface colors
   --color-surface: oklch(100% 0 0deg);
@@ -155,8 +163,8 @@
   --focus-ring-color: oklch(60% 0.261 330deg / 0.5);
   --focus-ring-width: 3px;
 
-  // Muted
-  --color-muted: oklch(50% 0 0deg);
+  // Muted — aliases content-tertiary
+  --color-muted: oklch(50% 0.090 330deg);
 
   // ==========================================================================
   // NEON DESIGN TOKENS

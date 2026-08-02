@@ -135,6 +135,14 @@
 // and which are what the eye reads as ambient theme colour in Alert/Banner —
 // are lifted to ~90%. error's documented joint constraint was re-verified,
 // not disturbed: icon-on-background moved Lc -30.3 -> -30.6.
+//
+// 2026-08 text-ramp pass. The one place that pass didn't reach: content sat
+// at 10-22% of ceiling, so the 2026-07 note above ("bumped to 0.045 for real
+// tint") turned out to have under-shot — at those values the ramp still
+// measured as the "medium gray for softness" pattern the checklist names.
+// Content and border chroma roughly doubled; see both blocks for the
+// green-specific reason the target ratio is deliberately lower here than in
+// this pass's warm siblings.
 
 @import "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap";
 
@@ -166,14 +174,21 @@
   --color-base-950: oklch(97% 0.005 178.0deg);
 
   // Content colors — fixed at the structural pine hue (145deg) for
-  // legibility consistency across the hierarchy. Lc90.8-91.0 (content) /
-  // Lc79.0 (secondary, clears the Lc75 floor) / Lc41.4 (tertiary/muted,
-  // clears the Lc30 floor) / Lc35.4 (disabled, clears the Lc30 floor).
-  --color-base-content:           oklch(92% 0.020 145deg);
-  --color-base-content-secondary: oklch(86% 0.028 145deg);
-  --color-base-content-tertiary:  oklch(64% 0.045 145deg);
-  --color-muted:                  oklch(64% 0.045 145deg); // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.032 145deg);
+  // legibility consistency across the hierarchy, chroma roughly doubled at
+  // every tier so the ink is actually pine-cast rather than gray wearing a
+  // hue number. Utilization stays low here (20-42% of ceiling, vs 46-59% in
+  // the warm siblings) on purpose and not by omission: 145deg's sRGB ceiling
+  // is C0.15-0.27 across this L range, the widest of any hue, and green is
+  // also where chroma is loudest per unit — matching the warm themes' *ratio*
+  // would produce mint text, whereas matching their *absolute* chroma
+  // (C0.040-0.085) produces the intended understory cast. Every tier gained
+  // contrast: content Lc -91.5/16.40:1, secondary -79.6/13.64:1 (clears
+  // Lc75), tertiary/muted -42.0/6.32:1, disabled -36.0/5.38:1 (clears Lc30).
+  --color-base-content:           oklch(92% 0.040 145deg);
+  --color-base-content-secondary: oklch(86% 0.055 145deg);
+  --color-base-content-tertiary:  oklch(64% 0.085 145deg);
+  --color-muted:                  oklch(64% 0.085 145deg); // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.070 145deg);
 
   // Surface colors — pinned to the structural pine hue, not the ramp's
   // drift (see header). Widened elevation steps: bg(10%) -> surface(14%,
@@ -182,10 +197,14 @@
   --color-surface-elevated: oklch(20% 0.040 145deg);
   --color-surface-overlay:  oklch(5% 0.014 145deg / 0.72);
 
-  // Border colors — Lc -20.0/3.20:1 on background, -19.9/3.09:1 on
-  // surface, both clear the Lc15 hairline floor with real margin.
-  --color-border:       oklch(48% 0.050 145deg);
-  --color-border-hover: oklch(58% 0.045 145deg);
+  // Border colors — chroma lifted with the content ramp above (33%/25% ->
+  // 49%/46% of ceiling) so the hairline doesn't read cooler than the type it
+  // encloses; hover also no longer carries LESS chroma than resting, which
+  // made "more visible" read as "more washed out." Both gained contrast:
+  // Lc -20.5/3.25:1 and -33.4/4.98:1 on background (were -20.0 and -32.8),
+  // clearing the Lc15 hairline floor and WCAG 1.4.11's 3:1.
+  --color-border:       oklch(48% 0.075 145deg);
+  --color-border-hover: oklch(58% 0.085 145deg);
 
   // Shadow colors — forest-ink tint, one implied light source, never flat black.
   --shadow-color:        oklch(5% 0.012 145deg / 0.35);

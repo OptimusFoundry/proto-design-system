@@ -55,16 +55,24 @@
   --color-base-800: oklch(85% 0.030 300deg);
   --color-base-900: oklch(90% 0.016 300deg);
   --color-base-950: oklch(96% 0.008 300deg);
-  // Content ramp — near-achromatic, lightness fit for the APCA small-body-
-  // text floor (Lc 75) against this theme's own L9% background. Muted is
-  // judged at the same tier as secondary: grep confirms it renders as real
-  // running/metadata text (DataGrid, Table, DataTable, Card, SectionHeader,
-  // PageHero, StepIndicator, DropdownMenu), not just disabled/placeholder.
-  --color-base-content:           oklch(93% 0.006 300deg);  // Lc -92.6
-  --color-base-content-secondary: oklch(89% 0.007 300deg);  // Lc -84.5
-  --color-base-content-tertiary:  oklch(87% 0.008 300deg);  // Lc -80.4
-  --color-muted:                  oklch(87% 0.008 300deg);  // aliases tertiary
-  --color-text-disabled:          oklch(62% 0.006 300deg);  // Lc -37.4
+  // Content ramp — the base ramp's own 300deg violet carried through the ink,
+  // not a neutral gray dropped on top of it. A prior pass left every tier at
+  // 11-15% of the in-gamut chroma available at its lightness (disabled at 2%),
+  // so body copy read as flat gray beside an otherwise electric palette. Each
+  // tier now takes ~75% of its ceiling; the tint deepens as the tier quiets,
+  // since a near-white top tier has almost no chroma headroom (Cmax 0.037 at
+  // L93.5) while disabled at L63 has 0.252 to spend. L is nudged up a fraction
+  // per tier so every Lc/ratio lands at or above the prior pass's.
+  //
+  // Muted is judged at the same tier as secondary: grep confirms it renders as
+  // real running/metadata text (DataGrid, Table, DataTable, Card,
+  // SectionHeader, PageHero, StepIndicator, DropdownMenu), not just
+  // disabled/placeholder.
+  --color-base-content:           oklch(93.5% 0.031 300deg);  // Lc -93.1 / 16.99:1
+  --color-base-content-secondary: oklch(89.5% 0.045 300deg);  // Lc -84.8 / 14.99:1
+  --color-base-content-tertiary:  oklch(87.5% 0.055 300deg);  // Lc -80.5 / 14.00:1
+  --color-muted:                  oklch(87.5% 0.055 300deg);  // aliases tertiary
+  --color-text-disabled:          oklch(63% 0.090 300deg);    // Lc -38.1 / 5.76:1
   --color-surface:          oklch(13% 0.030 300deg);
   --color-surface-elevated: oklch(17% 0.034 300deg);
   --color-surface-overlay:  oklch(0% 0 0deg / 0.82);

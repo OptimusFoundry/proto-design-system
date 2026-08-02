@@ -36,11 +36,18 @@
   --color-base-800: oklch(24% 0.060 145deg);
   --color-base-900: oklch(18% 0.050 145deg);
   --color-base-950: oklch(12% 0.040 145deg);
-  --color-base-content: oklch(22% 0.05 145deg);
-  --color-base-content-secondary: oklch(32% 0.05 145deg);
-  --color-base-content-tertiary: oklch(48% 0.04 140deg);
-  --color-muted: oklch(55% 0.03 135deg);
-  --color-text-disabled: oklch(70% 0.025 130deg);
+  // 2026-08 ink refit — the content ramp was carrying 13-26% of its in-gamut
+  // chroma ceiling below content/secondary, so tertiary/muted/disabled read as
+  // flat neutral gray on a theme whose whole premise is moss. Refit to 84/71/
+  // 49/32% of ceiling at each L/H (bisection-computed), lightness held (or
+  // tightened one step) so contrast improved rather than paid for the chroma.
+  // --color-muted now aliases tertiary (house convention, and its own separate
+  // lighter value was Lc 59.4 / 3.89:1 — a WCAG AA failure for reading copy).
+  --color-base-content: oklch(21% 0.062 145deg);            // Lc 90.3 / 14.23:1
+  --color-base-content-secondary: oklch(32% 0.074 145deg);  // Lc 84.2 / 10.08:1
+  --color-base-content-tertiary: oklch(48% 0.076 140deg);   // Lc 67.7 / 5.16:1
+  --color-muted: oklch(48% 0.076 140deg);
+  --color-text-disabled: oklch(68% 0.058 130deg);           // non-content only — Lc 40.5 / 2.30:1
   --color-surface: oklch(96% 0.020 85deg);
   --color-surface-elevated: oklch(98% 0.015 85deg);
   --color-surface-overlay: oklch(0% 0 0deg / 0.5);

@@ -61,19 +61,24 @@
 
   // Content ramp — lifted off the prior file's failing values (tertiary was
   // Lc 41.7, below even the Lc45 headline floor; muted was Lc 19.4, below
-  // the Lc30 disabled floor). tertiary/muted now clears Lc63 — well past
+  // the Lc30 disabled floor). tertiary/muted still clears Lc63 — well past
   // the Lc45 headline floor and above this repo's own _dark.scss precedent
-  // for the identical role (Lc 52.9) — but not the full Lc75 small-body
+  // for the identical role — but not the full Lc75 small-body
   // floor: at this background's 13% L, hitting Lc75 on the DIMMEST content
   // step would require L86+, which would invert the ramp (tertiary lighter
   // than secondary). Held below secondary/base-content instead to keep the
   // three-step hierarchy real; flag tertiary-as-small-body call sites for a
   // closer look rather than force this trade-off further.
-  --color-base-content:           oklch(95% 0.006 50deg);   // body/headings — Lc 96.6
-  --color-base-content-secondary: oklch(86% 0.007 50deg);   // supporting copy — Lc 78.5
-  --color-base-content-tertiary:  oklch(78% 0.008 49deg);   // captions — Lc 63.4
-  --color-muted:                  oklch(78% 0.008 49deg);   // aliases tertiary
-  --color-text-disabled:          oklch(60% 0.009 49deg);   // non-content only — Lc 34.7, was missing entirely
+  // The ink is warm graphite, not neutral: a matte-carbon body carries a
+  // warm-black text tone the way a warm paper stock does, and at 6-21% of
+  // ceiling this ramp was reading as the same cool-neutral gray every other
+  // dark theme uses, undoing the hue split the base ramp exists to make.
+  // Now 41-50%. tertiary took +0.5 L to keep its Lc63 as chroma rose.
+  --color-base-content:           oklch(95% 0.014 50deg);   // body/headings — Lc 96.7
+  --color-base-content-secondary: oklch(86% 0.038 50deg);   // supporting copy — Lc 77.8
+  --color-base-content-tertiary:  oklch(78.5% 0.058 49deg); // captions — Lc 63.8
+  --color-muted:                  oklch(78.5% 0.058 49deg); // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.068 49deg);   // non-content only — Lc 34.0
 
   --color-surface:          oklch(17% 0.007 54deg);
   --color-surface-elevated: oklch(22% 0.008 53deg);
