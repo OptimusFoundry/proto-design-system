@@ -122,8 +122,8 @@ export const White: Story = {
 export const WithText: Story = {
 	render: () => (
 		<div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-			<Spinner size="sm" />
-			<span>Loading...</span>
+			<Spinner size="sm" label="Syncing invoices" />
+			<span>Syncing invoices...</span>
 		</div>
 	),
 };
@@ -131,8 +131,8 @@ export const WithText: Story = {
 export const InButton: Story = {
 	render: () => (
 		<Button variant="primary" disabled>
-			<Spinner size="xs" variant="white" />
-			<span>Submitting...</span>
+			<Spinner size="xs" variant="white" label="Submitting payment" />
+			<span>Submitting payment...</span>
 		</Button>
 	),
 };
@@ -150,7 +150,7 @@ export const CenteredInContainer: Story = {
 				borderRadius: "var(--radius-md)",
 			}}
 		>
-			<Spinner size="lg" variant="primary" />
+			<Spinner size="lg" variant="primary" label="Loading dashboard" />
 		</div>
 	),
 };
@@ -241,11 +241,11 @@ export const Showcase: Story = {
 				</p>
 				<div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
 					<div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-						<Spinner size="sm" />
-						<span>Loading...</span>
+						<Spinner size="sm" label="Loading team members" />
+						<span>Loading team members...</span>
 					</div>
 					<Button variant="primary" disabled>
-						<Spinner size="xs" variant="white" />
+						<Spinner size="xs" variant="white" label="Saving changes" />
 						Saving
 					</Button>
 				</div>
