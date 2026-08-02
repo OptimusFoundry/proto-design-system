@@ -20,7 +20,7 @@ type Story = StoryObj<typeof ThemeSwitcherGrid>;
 
 export const Default: Story = {
 	render: () => {
-		const [value, setValue] = useState<ThemeName>("light");
+		const [value, setValue] = useState<ThemeName>("paper");
 		return (
 			<div style={{ width: "24rem" }}>
 				<ThemeSwitcherGrid value={value} onChange={setValue} />
@@ -46,7 +46,7 @@ export const DarkSelected: Story = {
 
 export const Showcase: Story = {
 	render: () => {
-		const [value, setValue] = useState<ThemeName>("light");
+		const [value, setValue] = useState<ThemeName>("paper");
 		return (
 			<div
 				style={{

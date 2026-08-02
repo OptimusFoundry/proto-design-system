@@ -11,9 +11,6 @@
 //   4. ThemeProvider + useTheme pick it up automatically.
 
 export type ThemeName =
-	| "editorial"
-	| "light"
-	| "oat"
 	| "ember"
 	| "mono"
 	| "dark"
@@ -21,24 +18,16 @@ export type ThemeName =
 	| "cosmos"
 	| "cyberpunk"
 	| "sunset"
-	| "claude"
-	| "ocean"
 	| "glow"
-	| "fog"
-	| "porcelain"
-	| "aqua"
 	| "archive"
 	| "botanical"
 	| "carbon"
-	| "clinic"
 	| "concrete"
 	| "flux"
-	| "marble"
 	| "matrix"
 	| "mercury"
 	| "moss"
 	| "plasma"
-	| "punk"
 	| "radio"
 	| "riso"
 	| "vinyl"
@@ -46,7 +35,6 @@ export type ThemeName =
 	| "bioluminescent"
 	| "blueprint"
 	| "candy"
-	| "citrus"
 	| "forest"
 	| "forest-light"
 	| "lavender"
@@ -56,8 +44,7 @@ export type ThemeName =
 	| "paper"
 	| "pixel"
 	| "terminal"
-	| "whisper"
-	| "chalk";
+	| "whisper";
 
 export interface Theme {
 	name: ThemeName;
@@ -74,15 +61,6 @@ export interface Theme {
 }
 
 export const themes: Record<ThemeName, Theme> = {
-	editorial: {
-		name: "editorial",
-		label: "Editorial",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap",
-	},
-	light: { name: "light", label: "Light", colorScheme: "light" },
-	oat: { name: "oat", label: "Oat", colorScheme: "light" },
 	ember: {
 		name: "ember",
 		label: "Ember",
@@ -92,7 +70,7 @@ export const themes: Record<ThemeName, Theme> = {
 	},
 	mono: {
 		name: "mono",
-		label: "Mono",
+		label: "Teletype",
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap",
@@ -126,47 +104,12 @@ export const themes: Record<ThemeName, Theme> = {
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Reddit+Mono:wght@200..900&display=swap",
 	},
-	claude: {
-		name: "claude",
-		label: "Claude",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700;800&family=Spline+Sans+Mono:wght@400;500;600;700&display=swap",
-	},
-	ocean: {
-		name: "ocean",
-		label: "Ocean",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,100..900;1,100..900&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap",
-	},
 	glow: {
 		name: "glow",
 		label: "Glow",
 		colorScheme: "dark",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
-	},
-	fog: {
-		name: "fog",
-		label: "Fog",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
-	},
-	porcelain: {
-		name: "porcelain",
-		label: "Porcelain",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Cutive+Mono&display=swap",
-	},
-	aqua: {
-		name: "aqua",
-		label: "Aqua",
-		colorScheme: "dark",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap",
 	},
 	archive: {
 		name: "archive",
@@ -189,13 +132,6 @@ export const themes: Record<ThemeName, Theme> = {
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
 	},
-	clinic: {
-		name: "clinic",
-		label: "Clinic",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
-	},
 	concrete: {
 		name: "concrete",
 		label: "Concrete",
@@ -209,13 +145,6 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "dark",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap",
-	},
-	marble: {
-		name: "marble",
-		label: "Marble",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap",
 	},
 	matrix: {
 		name: "matrix",
@@ -244,13 +173,6 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "dark",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
-	},
-	punk: {
-		name: "punk",
-		label: "Punk",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap",
 	},
 	radio: {
 		name: "radio",
@@ -300,13 +222,6 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap",
-	},
-	citrus: {
-		name: "citrus",
-		label: "Citrus",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500;600;700&display=swap",
 	},
 	forest: {
 		name: "forest",
@@ -372,13 +287,6 @@ export const themes: Record<ThemeName, Theme> = {
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
 	},
-	chalk: {
-		name: "chalk",
-		label: "Chalk",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
-	},
 };
 
 export const themeNames = Object.keys(themes) as ThemeName[];
@@ -431,7 +339,7 @@ export function getCurrentTheme(): ThemeName {
 	const theme = document.documentElement.getAttribute(
 		"data-theme",
 	) as ThemeName | null;
-	return theme && theme in themes ? theme : "editorial";
+	return theme && theme in themes ? theme : "paper";
 }
 
 /**

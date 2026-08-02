@@ -31,18 +31,15 @@ export interface ThemeProviderProps {
 
 export function ThemeProvider({
 	children,
-	defaultTheme = "light",
+	defaultTheme = "paper",
 	storageKey = "proto-theme",
 }: ThemeProviderProps) {
 	const [theme, setThemeState] = useState<ThemeName>(() => {
 		if (typeof window !== "undefined") {
 			const stored = localStorage.getItem(storageKey);
-			// Migration: editorial was briefly the canonical light theme.
-			// Land anyone with that value back on the standard light theme;
-			// the persistence effect below rewrites localStorage next render.
-			if (stored === "editorial") {
-				return "light";
-			}
+			// stored-but-no-longer-valid (a cut theme from an older session)
+			// falls through to defaultTheme; the persistence effect below
+			// rewrites localStorage to the new value next render.
 			if (stored && stored in themes) {
 				return stored as ThemeName;
 			}
@@ -71,12 +68,12 @@ export function ThemeProvider({
 
 	const toggleTheme = useCallback(() => {
 		setThemeState((current) =>
-			themes[current].colorScheme === "dark" ? "light" : "carbon",
+			themes[current].colorScheme === "dark" ? "paper" : "carbon",
 		);
 	}, []);
 
 	const useSystemTheme = useCallback(() => {
-		setThemeState(systemTheme === "dark" ? "carbon" : "light");
+		setThemeState(systemTheme === "dark" ? "carbon" : "paper");
 	}, [systemTheme]);
 
 	return (
