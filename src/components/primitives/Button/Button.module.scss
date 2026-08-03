@@ -132,20 +132,21 @@
   --_btn-fg: var(--color-base-content);
   --_btn-border: transparent;
 
-  // Flush with the sheet, never raised — a molded key needs a filled body to
-  // read as extruded; a transparent one would just float a shadow in air.
+  // Flush at rest — fully transparent, nothing to cast a shadow. Hover/active
+  // already fill it with a real background below, so it can legitimately
+  // raise/sink at that point, same as every other variant.
   box-shadow: none;
 
   &:hover:not(:disabled) {
     --_btn-bg: var(--color-base-200);
 
-    box-shadow: none;
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &:active:not(:disabled) {
     --_btn-bg: var(--color-base-300);
 
-    box-shadow: none;
+    box-shadow: var(--button-shadow-active, none);
   }
 }
 
