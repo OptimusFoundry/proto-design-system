@@ -47,7 +47,8 @@ export type ThemeName =
 	| "whisper"
 	| "halftone"
 	| "konbini"
-	| "transit";
+	| "transit"
+	| "clay";
 
 export interface Theme {
 	name: ThemeName;
@@ -316,6 +317,13 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap",
+	},
+	clay: {
+		name: "clay",
+		label: "Clay",
+		colorScheme: "light",
+		googleFontsHref:
+			"https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Sono:wght@400;500;600&display=swap",
 	},
 };
 

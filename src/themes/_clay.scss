@@ -1,0 +1,235 @@
+// =============================================================================
+// CLAY THEME (SOFT UI / NEUMORPHISM)
+// =============================================================================
+// Reference: neumorphism ("soft UI", Alexander Plyuto's 2019 skeuomorph-revival
+// concepts) — controls molded out of one continuous sheet of soft silicone.
+// Shape comes from light, not from color contrast: background and surfaces sit
+// within ~2% lightness of each other, and an element reads as raised or sunken
+// purely by how the light falls on it. Light source is fixed upper-left, the
+// movement's own convention — every raised element carries a lighter-than-base
+// highlight at negative offset and a darker-than-base contact shadow at
+// positive offset; every recessed element inverts both *inside* the box.
+//
+// Non-obvious decisions:
+//
+// - Inset is literal, not implied. --shadow-xs and --shadow-inner are genuine
+//   `inset` well shadows (dark upper-left, light lower-right — the exact
+//   inverse of the raised recipe). --shadow-xs is the house
+//   `button-elevation` mixin's `:active` value and the showcase Spec panel's
+//   resting value, so "pressed = sunken" is carried by the token the system
+//   already assigns to the pressed/lowest state, not by a token invented here.
+//
+// - Every raised token (sm…2xl) is three layers: highlight, contact shadow,
+//   and a hairline `inset` rim light along the top edge. The rim is what makes
+//   an extruded silicone key read as molded rather than as a flat card with a
+//   drop shadow, and it puts real `inset` on Card, Modal, Popover, Toast,
+//   Tooltip, the Tabs active pill, and the Switch/Slider thumbs.
+//
+// - Highlight and contact colors are tints and shades of the surface hue
+//   (65deg putty), never white-alpha and black-alpha. Silicone scatters its own
+//   pigment into both its lit and shaded faces.
+//
+// - Investigated the real consumers before placing any of this: form controls
+//   (Input, TextArea, Select, Checkbox, Radio, the Switch track) use box-shadow
+//   for the focus ring ONLY — their resting boundary is `border` + background,
+//   and Button uses no shadow token at all. A theme therefore cannot reach a
+//   TextField's resting box-shadow. That is why --color-border is NOT the
+//   near-invisible hairline this theme's premise would otherwise want: it is
+//   the only thing bounding every input, so it is held at Lc 58.6 / 3.78:1,
+//   over WCAG 1.4.11's 3:1 non-text floor. Shape-from-shadow is the theme's
+//   device everywhere it can actually reach; legibility wins where it cannot.
+//
+// - Brand and semantic chroma sits at 94–97% of the computed sRGB ceiling for
+//   each hue at its own lightness — pigmented silicone is a saturated material,
+//   and the softness here comes from the shadow geometry, not from washing the
+//   color out. The neutral ramp is the opposite: deliberately compressed at the
+//   light end (50→300 span just 6% lightness) because the whole premise
+//   collapses if surfaces separate by value.
+//
+// - Fonts: Quicksand (geometric sans with soft rounded terminals — the closest
+//   type analogue to an injection-molded corner radius) + Sono (a rounded,
+//   low-contrast mono from the same material family, quiet enough for eyebrows
+//   and meta without competing). Neither family appears in any other theme.
+
+[data-theme="clay"] {
+  color-scheme: light;
+
+  --font-family-sans:    "Quicksand", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Sono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Background — warm putty, mid-light so highlights have room to go lighter
+  // and contact shadows have room to go darker. A near-white canvas would
+  // leave nowhere for the highlight to live.
+  --color-background: oklch(93% 0.010 65deg);
+
+  // Base ramp — 50 through 300 span 6% lightness on purpose: adjacent surface
+  // steps must read as the same material, not as tonal layers. The ramp only
+  // opens up from 400 down, where it stops being surface and starts being ink.
+  --color-base-50: oklch(95.5% 0.008 65deg);
+  --color-base-100: oklch(94.2% 0.009 65deg);
+  --color-base-200: oklch(92% 0.011 65deg);
+  --color-base-300: oklch(89.5% 0.013 64deg);
+  --color-base-400: oklch(76% 0.018 63deg);
+  --color-base-500: oklch(62% 0.022 62deg);
+  --color-base-600: oklch(50% 0.022 61deg);
+  --color-base-700: oklch(39% 0.020 60deg);
+  --color-base-800: oklch(29% 0.017 60deg);
+  --color-base-900: oklch(20% 0.014 60deg);
+  --color-base-950: oklch(13% 0.011 60deg);
+
+  // Content ink — carries the putty hue at 50–61% of its ceiling, so text reads
+  // as pigment settled into the clay rather than as gray dropped on top.
+  --color-base-content: oklch(22% 0.032 65deg);            // Lc 90.5, 14.20:1
+  --color-base-content-secondary: oklch(34% 0.042 65deg);  // Lc 83.6, 9.71:1
+  --color-base-content-tertiary: oklch(42% 0.048 65deg);   // Lc 75.7, 6.96:1
+  --color-muted: oklch(42% 0.048 65deg);
+  --color-text-disabled: oklch(62% 0.026 65deg);           // Lc 50.6 — non-content only
+
+  // Surfaces — within 2% of the background by design. Elevation is carried
+  // entirely by --shadow-*, which is the whole point of the theme.
+  --color-surface: oklch(93.8% 0.010 65deg);
+  --color-surface-elevated: oklch(95% 0.009 65deg);
+  --color-surface-overlay: oklch(32% 0.020 62deg / 0.45);
+
+  // Borders — see the header note: kept legible for WCAG 1.4.11 because inputs
+  // have no other boundary in this design system, not because the theme wants
+  // a visible edge.
+  --color-border: oklch(56% 0.020 68deg);
+  --color-border-hover: oklch(47% 0.022 66deg);
+
+  // Primary — pressed silicone rose. Deep enough to hold light ink and 94% of
+  // its L44 ceiling; 50deg off error, 98deg off info.
+  --color-primary: oklch(44% 0.190 330deg);
+  --color-primary-hover: oklch(39% 0.172 330deg);
+  --color-primary-active: oklch(34% 0.150 330deg);
+  --color-primary-content: oklch(96% 0.008 65deg);
+
+  // Secondary — molded teal. 0.081 is 95% of the L48 ceiling; sRGB is genuinely
+  // chroma-poor at this hue, so this is as pigmented as the tone gets.
+  --color-secondary: oklch(48% 0.081 190deg);
+  --color-secondary-hover: oklch(43% 0.072 190deg);
+  --color-secondary-active: oklch(38% 0.063 190deg);
+  --color-secondary-content: oklch(96% 0.008 65deg);
+
+  // Accent — fired terracotta: the base ramp's own 65deg putty family pushed to
+  // full pigment at 45deg. Fired clay against unfired, distinguished by chroma
+  // (0.128 vs 0.010) rather than by hue.
+  --color-accent: oklch(46% 0.128 45deg);
+  --color-accent-hover: oklch(41% 0.113 45deg);
+  --color-accent-active: oklch(36% 0.099 45deg);
+  --color-accent-content: oklch(96% 0.008 65deg);
+  --color-accent-bg: oklch(93% 0.035 45deg);
+
+  // Semantics — functional hues, carried not branded; each ≥25deg from every
+  // brand hue and from each other.
+  --color-success: oklch(46% 0.127 148deg);
+  --color-success-hover: oklch(41% 0.113 148deg);
+  --color-success-active: oklch(36% 0.099 148deg);
+  --color-success-bg: oklch(93% 0.038 148deg);
+  --color-success-content: oklch(96% 0.008 65deg);
+
+  // Warning is the one light-based semantic — a bright amber cannot darken far
+  // enough to hold light ink without ceasing to read as amber, so it takes dark
+  // ink instead (Lc 66.9, over the Lc60 UI-text floor).
+  --color-warning: oklch(80% 0.157 82deg);
+  --color-warning-hover: oklch(74% 0.145 82deg);
+  --color-warning-active: oklch(68% 0.133 82deg);
+  --color-warning-bg: oklch(94% 0.048 82deg);
+  --color-warning-content: oklch(20% 0.035 82deg);
+
+  --color-error: oklch(48% 0.185 20deg);
+  --color-error-hover: oklch(43% 0.166 20deg);
+  --color-error-active: oklch(38% 0.147 20deg);
+  --color-error-bg: oklch(93% 0.032 20deg);
+  --color-error-content: oklch(96% 0.008 65deg);
+
+  --color-info: oklch(46% 0.090 232deg);
+  --color-info-hover: oklch(41% 0.080 232deg);
+  --color-info-active: oklch(36% 0.071 232deg);
+  --color-info-bg: oklch(93% 0.032 232deg);
+  --color-info-content: oklch(96% 0.008 65deg);
+
+  --focus-ring-color: oklch(44% 0.190 330deg / 0.40);
+
+  --color-header-bg: var(--color-base-100);
+
+  // ==========================================================================
+  // CLAY SHADOW SYSTEM — the theme's signature
+  // ==========================================================================
+  // One implied light source, fixed upper-left. Two families:
+  //
+  //   RAISED (sm…2xl) — highlight at negative offset (up-left, lighter than the
+  //   surface), contact shadow at positive offset (down-right, darker than the
+  //   surface), plus a hairline `inset` rim light on the top edge that reads as
+  //   the lit crown of a molded, radiused corner. Blur always exceeds offset:
+  //   silicone has no hard edge.
+  //
+  //   RECESSED (xs, inner) — genuine `inset`, with the polarity inverted: dark
+  //   at up-left because the lip nearest the light now casts *into* the well,
+  //   light at down-right where the far wall catches it. --shadow-xs is what
+  //   the house button-elevation mixin assigns to `:active` and what the
+  //   showcase Spec panel renders at rest, so a pressed control genuinely sinks
+  //   into the sheet and lifts back out to --shadow-sm.
+  //
+  // Both families tint from the 65deg surface hue — a lit silicone face is a
+  // paler version of its own pigment, and its shade is a deeper one. Neither is
+  // white-alpha or black-alpha.
+  --shadow-color:        oklch(70% 0.022 62deg / 0.55);
+  --shadow-color-strong: oklch(58% 0.028 60deg / 0.55);
+
+  --shadow-xs:
+    inset 2px 2px 5px var(--shadow-color),
+    inset -2px -2px 5px oklch(99% 0.006 65deg / 0.90);
+
+  --shadow-inner:
+    inset 4px 4px 9px oklch(66% 0.024 62deg / 0.62),
+    inset -4px -4px 9px oklch(99% 0.006 65deg / 0.95);
+
+  --shadow-sm:
+    -2px -2px 5px oklch(99% 0.006 65deg / 0.90),
+    2px 2px 5px var(--shadow-color),
+    inset 0 1px 1px oklch(99% 0.006 65deg / 0.55);
+
+  --shadow-md:
+    -4px -4px 10px oklch(99% 0.006 65deg / 0.92),
+    4px 4px 10px var(--shadow-color),
+    inset 0 1px 1px oklch(99% 0.006 65deg / 0.55);
+
+  --shadow-lg:
+    -7px -7px 17px oklch(99% 0.006 65deg / 0.94),
+    7px 7px 17px var(--shadow-color),
+    inset 0 1px 2px oklch(99% 0.006 65deg / 0.50);
+
+  --shadow-xl:
+    -10px -10px 25px oklch(99% 0.006 65deg / 0.95),
+    10px 10px 25px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(99% 0.006 65deg / 0.50);
+
+  --shadow-2xl:
+    -14px -14px 36px oklch(99% 0.006 65deg / 0.96),
+    14px 14px 36px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(99% 0.006 65deg / 0.45);
+
+  // Brand casts keep the dual-tone geometry; only the contact side takes the
+  // brand pigment, so a primary surface still reads as the same molded material
+  // rather than as a glow.
+  --shadow-primary:
+    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
+    5px 5px 15px oklch(44% 0.190 330deg / 0.34);
+  --shadow-accent:
+    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
+    5px 5px 15px oklch(46% 0.128 45deg / 0.34);
+  --shadow-error:
+    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
+    5px 5px 15px oklch(48% 0.185 20deg / 0.32);
+
+  // Radii are generous throughout — an injection-molded part has no sharp
+  // corner, and a tight radius would fight the diffuse shadow geometry above.
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
