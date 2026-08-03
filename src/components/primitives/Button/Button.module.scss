@@ -155,20 +155,22 @@
   --_btn-fg: var(--color-base-content);
   --_btn-border: var(--color-border);
 
-  // Reads as an etched outline, not a raised key — same reasoning as .ghost.
+  // Reads as an etched outline at rest, not a raised key — transparent, so
+  // there's nothing to cast a shadow. Hover/active fill it with a real
+  // background below, same as .ghost, so it can legitimately raise/sink then.
   box-shadow: none;
 
   &:hover:not(:disabled) {
     --_btn-bg: var(--color-base-100);
     --_btn-border: var(--color-border-hover);
 
-    box-shadow: none;
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &:active:not(:disabled) {
     --_btn-bg: var(--color-base-200);
 
-    box-shadow: none;
+    box-shadow: var(--button-shadow-active, none);
   }
 }
 
