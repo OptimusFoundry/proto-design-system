@@ -48,9 +48,7 @@ export type ThemeName =
 	| "regatta"
 	| "halftone"
 	| "konbini"
-	| "transit"
-	| "aurora"
-	| "espresso";
+	| "transit";
 
 export interface Theme {
 	name: ThemeName;
@@ -326,20 +324,6 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap",
-	},
-	aurora: {
-		name: "aurora",
-		label: "Aurora",
-		colorScheme: "dark",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,100..900;1,100..900&family=Overpass+Mono:wght@400;500;600;700&display=swap",
-	},
-	espresso: {
-		name: "espresso",
-		label: "Espresso",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=PT+Mono&display=swap",
 	},
 };
 
