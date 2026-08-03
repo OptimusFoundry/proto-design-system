@@ -24,7 +24,10 @@
   letter-spacing: var(--letter-spacing-normal);
   white-space: nowrap;
 
-  @include transition-colors;
+  // Resting elevation — opt-in per theme, defaults to no shadow.
+  box-shadow: var(--filtertabs-tab-shadow, none);
+
+  @include transition((background-color, border-color, color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover {
@@ -37,6 +40,10 @@
   background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-primary-content);
+
+  // The selected pill sinks into the sheet instead of sitting flush — same
+  // pressed convention as the theme's button :active state.
+  box-shadow: var(--filtertabs-active-shadow, none);
 
   &:hover {
     background-color: var(--color-primary-hover);

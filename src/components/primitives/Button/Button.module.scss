@@ -44,8 +44,12 @@
   user-select: none;
   white-space: nowrap;
 
+  // Resting elevation — opt-in per theme, defaults to no shadow so every
+  // theme but the ones that set --button-shadow* renders exactly as before.
+  box-shadow: var(--button-shadow, none);
+
   // Transitions
-  @include transition-colors;
+  @include transition((background-color, border-color, color, box-shadow), var(--duration-fast));
 
   // Focus state
   @include focus-ring;
@@ -53,6 +57,13 @@
   // Hover state
   &:hover:not(:disabled) {
     --_btn-bg: var(--color-base-300);
+
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
+  }
+
+  // Active/pressed state — sinks back down for themes with a pressed token.
+  &:active:not(:disabled) {
+    box-shadow: var(--button-shadow-active, none);
   }
 
   // Disabled state
@@ -121,12 +132,20 @@
   --_btn-fg: var(--color-base-content);
   --_btn-border: transparent;
 
+  // Flush with the sheet, never raised — a molded key needs a filled body to
+  // read as extruded; a transparent one would just float a shadow in air.
+  box-shadow: none;
+
   &:hover:not(:disabled) {
     --_btn-bg: var(--color-base-200);
+
+    box-shadow: none;
   }
 
   &:active:not(:disabled) {
     --_btn-bg: var(--color-base-300);
+
+    box-shadow: none;
   }
 }
 
@@ -135,13 +154,20 @@
   --_btn-fg: var(--color-base-content);
   --_btn-border: var(--color-border);
 
+  // Reads as an etched outline, not a raised key — same reasoning as .ghost.
+  box-shadow: none;
+
   &:hover:not(:disabled) {
     --_btn-bg: var(--color-base-100);
     --_btn-border: var(--color-border-hover);
+
+    box-shadow: none;
   }
 
   &:active:not(:disabled) {
     --_btn-bg: var(--color-base-200);
+
+    box-shadow: none;
   }
 }
 

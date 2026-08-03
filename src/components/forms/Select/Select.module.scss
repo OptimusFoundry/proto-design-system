@@ -50,11 +50,19 @@
   position: relative;
   width: 100%;
 
-  @include transition-colors;
+  // Resting elevation — opt-in per theme, defaults to no shadow. Unlike
+  // Button/FilterTabs this stacks with the focus ring below, so its fallback
+  // is a zero-effect shadow (not the bare `none` keyword, which can't sit in
+  // a comma-separated box-shadow list) rather than `none`.
+  box-shadow: var(--select-shadow, 0 0 0 0 transparent);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
 
   &:focus-within {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+    box-shadow:
+      var(--select-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-color);
   }
 }
 
@@ -164,7 +172,9 @@
 
   &:focus-within {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-error);
+    box-shadow:
+      var(--select-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-error);
   }
 }
 

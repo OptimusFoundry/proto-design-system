@@ -225,6 +225,30 @@
     -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
     5px 5px 15px oklch(48% 0.185 20deg / 0.32);
 
+  // ==========================================================================
+  // COMPONENT OPT-INS — Button, FilterTabs, Select
+  // ==========================================================================
+  // These custom properties don't exist in the token contract; the three
+  // consuming components read them with a no-op fallback (`none`, or a
+  // zero-effect shadow where they stack with a focus ring), so every other
+  // theme renders exactly as before. Only Clay sets them.
+  //
+  // Positive-space controls (Button, the idle FilterTabs pill) are raised
+  // keys that sink to --shadow-xs on press — the same pressed token the
+  // house button-elevation mixin already assigns to :active, so a clicked
+  // button and a selected filter tab settle to the identical depth. Negative-
+  // space controls (Select) are wells carved into the sheet at rest, using
+  // --shadow-inner rather than --shadow-xs so an input reads distinctly
+  // deeper than a mere press.
+  --button-shadow: var(--shadow-sm);
+  --button-shadow-hover: var(--shadow-md);
+  --button-shadow-active: var(--shadow-xs);
+
+  --filtertabs-tab-shadow: var(--shadow-sm);
+  --filtertabs-active-shadow: var(--shadow-xs);
+
+  --select-shadow: var(--shadow-inner);
+
   // Radii are generous throughout — an injection-molded part has no sharp
   // corner, and a tight radius would fight the diffuse shadow geometry above.
   --radius-xs: 6px;
