@@ -45,7 +45,6 @@ export type ThemeName =
 	| "pixel"
 	| "terminal"
 	| "whisper"
-	| "regatta"
 	| "halftone"
 	| "konbini"
 	| "transit";
@@ -296,13 +295,6 @@ export const themes: Record<ThemeName, Theme> = {
 		colorScheme: "light",
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono:ital@0;1&display=swap",
-	},
-	regatta: {
-		name: "regatta",
-		label: "Regatta",
-		colorScheme: "light",
-		googleFontsHref:
-			"https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Inconsolata:wght@400;500;600;700&display=swap",
 	},
 	halftone: {
 		name: "halftone",
