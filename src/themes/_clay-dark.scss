@@ -303,24 +303,16 @@
 // =============================================================================
 // AMBIENT POINTER LIGHT
 // =============================================================================
-// Same fixed, blended overlay device as _clay.scss's own ambient sheen (see
-// there for the full reasoning on why this can't be a plain background-
-// image on body). Opacity is lower here (0.28 vs 0.55) because
+// Same device as _clay.scss's own ambient sheen (see there for the full
+// reasoning) — the sheen opacity is lower here (0.22 vs 0.45) because
 // --shadow-highlight itself sits at a much lower absolute lightness on a
 // dark ground (~40% L vs ~98.5% L), so it needs less dilution to read as a
 // moonlit sheen rather than a washed-out patch.
 [data-theme="clay-dark"] body {
-  &::after {
-    background: radial-gradient(
-      900px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
-      oklch(from var(--shadow-highlight) l c h / 0.28),
-      transparent 55%
-    );
-    content: "";
-    inset: 0;
-    mix-blend-mode: soft-light;
-    pointer-events: none;
-    position: fixed;
-    z-index: 5;
-  }
+  background-image: radial-gradient(
+    900px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    oklch(from var(--shadow-highlight) l c h / 0.22),
+    transparent 55%
+  );
+  background-attachment: fixed;
 }
