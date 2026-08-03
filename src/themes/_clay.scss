@@ -173,57 +173,80 @@
   //   showcase Spec panel renders at rest, so a pressed control genuinely sinks
   //   into the sheet and lifts back out to --shadow-sm.
   //
-  // Both families tint from the 65deg surface hue — a lit silicone face is a
-  // paler version of its own pigment, and its shade is a deeper one. Neither is
-  // white-alpha or black-alpha.
-  --shadow-color:        oklch(70% 0.022 62deg / 0.55);
-  --shadow-color-strong: oklch(58% 0.028 60deg / 0.55);
+  // Refinement pass: the first cut had the highlight and shadow as exact
+  // mirrors of each other — same offset, same blur, opposite sign. Real
+  // light doesn't behave that way; a specular highlight is small and crisp,
+  // an ambient contact shadow is larger and softer. Every tier below now
+  // runs the highlight at roughly 60% of the shadow's own offset/blur, which
+  // is what actually sells "light source," not just "two shadows." The
+  // highlight color is also pulled out to --shadow-highlight instead of the
+  // six-times-repeated inline oklch(99% 0.006 65deg) literal that pass had —
+  // that value was so close to white it contradicted its own "never
+  // white-alpha" premise; --shadow-highlight now carries real, visible
+  // pigment (a warm cream, not a colorless tint) and every tier below
+  // derives its own alpha from it via oklch(from ...), so the one color can
+  // still be retuned in one place.
+  // Second refinement pass (independent design critique): at 97% L / 0.017 C
+  // over a 93% L background, the highlight was only a ~4-point lightness
+  // step — on screen it nearly vanished and raised tiers read as ordinary
+  // one-sided drop shadows. Brightened + slightly desaturated so it stays
+  // "warm cream," not "white," while actually being visible.
+  --shadow-highlight:        oklch(98.5% 0.012 68deg);
+  --shadow-color:            oklch(64% 0.030 62deg / 0.45);
+  --shadow-color-strong:     oklch(54% 0.032 59deg / 0.55);
 
   --shadow-xs:
-    inset 2px 2px 5px var(--shadow-color),
-    inset -2px -2px 5px oklch(99% 0.006 65deg / 0.90);
+    inset 2px 2px 4px var(--shadow-color),
+    inset -1px -1px 3px oklch(from var(--shadow-highlight) l c h / 0.88);
 
   --shadow-inner:
-    inset 4px 4px 9px oklch(66% 0.024 62deg / 0.62),
-    inset -4px -4px 9px oklch(99% 0.006 65deg / 0.95);
+    inset 4px 4px 8px oklch(from var(--shadow-color) l c h / 0.60),
+    inset -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.70);
 
+  // Contact blur widened from 6px (2.4x the offset — noticeably harder edge
+  // than every tier above it) to 8px (3.2x), matching md/lg's softness.
   --shadow-sm:
-    -2px -2px 5px oklch(99% 0.006 65deg / 0.90),
-    2px 2px 5px var(--shadow-color),
-    inset 0 1px 1px oklch(99% 0.006 65deg / 0.55);
+    -1.5px -1.5px 4px oklch(from var(--shadow-highlight) l c h / 0.85),
+    2.5px 2.5px 8px var(--shadow-color),
+    inset 0 1px 1px oklch(from var(--shadow-highlight) l c h / 0.50);
 
   --shadow-md:
-    -4px -4px 10px oklch(99% 0.006 65deg / 0.92),
-    4px 4px 10px var(--shadow-color),
-    inset 0 1px 1px oklch(99% 0.006 65deg / 0.55);
+    -3px -3px 8px oklch(from var(--shadow-highlight) l c h / 0.88),
+    5px 5px 12px var(--shadow-color),
+    inset 0 1px 1px oklch(from var(--shadow-highlight) l c h / 0.50);
 
   --shadow-lg:
-    -7px -7px 17px oklch(99% 0.006 65deg / 0.94),
-    7px 7px 17px var(--shadow-color),
-    inset 0 1px 2px oklch(99% 0.006 65deg / 0.50);
+    -5px -5px 13px oklch(from var(--shadow-highlight) l c h / 0.90),
+    8px 8px 20px var(--shadow-color),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.45);
 
   --shadow-xl:
-    -10px -10px 25px oklch(99% 0.006 65deg / 0.95),
-    10px 10px 25px var(--shadow-color-strong),
-    inset 0 1px 2px oklch(99% 0.006 65deg / 0.50);
+    -7px -7px 19px oklch(from var(--shadow-highlight) l c h / 0.92),
+    12px 12px 29px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.45);
 
   --shadow-2xl:
-    -14px -14px 36px oklch(99% 0.006 65deg / 0.96),
-    14px 14px 36px var(--shadow-color-strong),
-    inset 0 1px 2px oklch(99% 0.006 65deg / 0.45);
+    -10px -10px 26px oklch(from var(--shadow-highlight) l c h / 0.94),
+    16px 16px 42px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.40);
 
-  // Brand casts keep the dual-tone geometry; only the contact side takes the
-  // brand pigment, so a primary surface still reads as the same molded material
-  // rather than as a glow.
+  // Brand casts keep the same tightened-highlight / wider-shadow geometry;
+  // only the contact side takes the brand pigment, so a primary surface
+  // still reads as the same molded material rather than as a glow. The
+  // highlight layer is tighter and quieter here than the neutral tiers
+  // above (was -3px/8px/0.80) — a dark saturated fill (primary/accent/
+  // error) doesn't have the room a light putty surface does, and at the
+  // old size/opacity it rendered as a pale halo outlining the button
+  // rather than a light source.
   --shadow-primary:
-    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
-    5px 5px 15px oklch(44% 0.190 330deg / 0.34);
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.55),
+    6px 6px 16px oklch(44% 0.190 330deg / 0.36);
   --shadow-accent:
-    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
-    5px 5px 15px oklch(46% 0.128 45deg / 0.34);
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.55),
+    6px 6px 16px oklch(46% 0.128 45deg / 0.36);
   --shadow-error:
-    -4px -4px 10px oklch(99% 0.006 65deg / 0.85),
-    5px 5px 15px oklch(48% 0.185 20deg / 0.32);
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.55),
+    6px 6px 16px oklch(48% 0.185 20deg / 0.34);
 
   // ==========================================================================
   // COMPONENT OPT-INS
@@ -316,7 +339,10 @@
   // their own list gap, StatCard tiles sit in a Grid with gaps, StepIndicator
   // circles have gap in the step list. Lifts, same as Card/FilterTabs/
   // Button, not the push convention above.
-  --accordion-item-shadow-hover: var(--shadow-sm);
+  // Accordion items already carry a visible resting border, so --shadow-sm's
+  // lift was too close to the rest state to register as feedback — bumped a
+  // tier to --shadow-md.
+  --accordion-item-shadow-hover: var(--shadow-md);
   --statcard-shadow-hover: var(--shadow-sm);
   --stepindicator-shadow-hover: var(--shadow-sm);
 
