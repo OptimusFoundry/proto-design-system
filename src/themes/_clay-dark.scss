@@ -1,0 +1,291 @@
+// =============================================================================
+// CLAY DARK THEME (SOFT UI / NEUMORPHISM — NIGHT COLORWAY)
+// =============================================================================
+// Reference: the same molded-silicone material as _clay.scss, under
+// low ambient light instead of daylight — a dark-colorway silicone phone
+// case or keycap set, not a different premise. Every structural decision
+// _clay.scss documents (light from one fixed upper-left source; shape from
+// shadow, not color contrast; surfaces within ~2% of each other so
+// elevation reads as one continuous sheet; asymmetric highlight/shadow
+// geometry — a specular highlight is small and crisp, an ambient contact
+// shadow is larger and softer) carries over unchanged. What flips is only
+// what "lighter than the surface" and "darker than the surface" resolve to
+// once the surface itself is dark: the highlight becomes a lit warm-gray
+// sheen well above the base tone (not a near-black flourish), and the
+// contact shadow becomes genuinely deep, near-black ink rather than a
+// timid gray line — dark neumorphism has *more* dynamic range to work
+// with, not less, because the base sits so much lower on the lightness
+// scale.
+//
+// Same family, same hue anchor: base/surface stay on the light theme's
+// 65deg warm putty hue (a "graphite clay," not a cool blue-black), and
+// Quicksand + Sono carry over unchanged — same reasoning
+// forest/forest-light share Karla across their light/dark pair.
+//
+// Ramp direction note (house convention, not a Clay-specific decision):
+// in a dark theme --color-base-50 sits just *above* the background (still
+// dark) and --color-base-950 is the light end used for ink, mirroring how
+// _clay.scss's base-50 sits just above its light background and base-950
+// is the dark end used for ink. The neumorphic "surfaces stay within ~2%"
+// constraint applies to the same 50-300 cluster it did in the light theme;
+// it only opens up into real ink from 400 on.
+//
+// Every value below (background/base/content, border, brand, semantics,
+// shadow geometry) was computed against theme-contrast-check.mjs, not
+// eyeballed — see the inline Lc/WCAG notes.
+
+[data-theme="clay-dark"] {
+  color-scheme: dark;
+
+  --font-family-sans:    "Quicksand", "Geist", system-ui, sans-serif;
+  --font-family-mono:    "Sono", "Geist Mono", monospace;
+  --font-family-serif:   var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+
+  // Background — dark graphite putty. Mid-dark, not near-black, so the
+  // contact shadow still has room to go deeper and the highlight has real
+  // room to climb — the same "leave headroom on both sides" reasoning
+  // _clay.scss's background comment gives, just inverted.
+  --color-background: oklch(23% 0.014 65deg);
+
+  // Base ramp — 50 through 300 span the same tight ~6%-lightness cluster
+  // the light theme uses for its surface tiers (just ascending instead of
+  // descending), so adjacent steps still read as the same material. Opens
+  // up from 400 on, where it stops being surface and starts being ink.
+  --color-base-50:  oklch(25.5% 0.0135 65deg);
+  --color-base-100: oklch(24% 0.0135 65deg);
+  --color-base-200: oklch(21.5% 0.0145 64deg);
+  --color-base-300: oklch(18.5% 0.0150 63deg);
+  --color-base-400: oklch(33% 0.0190 62deg);
+  --color-base-500: oklch(47% 0.0230 61deg);
+  --color-base-600: oklch(59% 0.0230 60deg);
+  --color-base-700: oklch(70% 0.0200 60deg);
+  --color-base-800: oklch(80% 0.0160 60deg);
+  --color-base-900: oklch(88% 0.0110 60deg);
+  --color-base-950: oklch(94% 0.0070 60deg);
+
+  // Content ink — light, carries the putty hue at a comparable fraction of
+  // its ceiling to the light theme's dark ink, so text reads as the same
+  // pigment lifted onto a dark ground rather than generic light gray.
+  --color-base-content:           oklch(92% 0.026 65deg);  // Lc -88.4 / 13.21:1
+  --color-base-content-secondary: oklch(87% 0.022 65deg);  // Lc -78.8 / 11.38:1
+  --color-base-content-tertiary:  oklch(80% 0.019 65deg);  // Lc -65.6 / 9.04:1
+  --color-muted:                  oklch(80% 0.019 65deg);  // aliases tertiary
+  --color-text-disabled:          oklch(60% 0.018 65deg);  // non-content only — Lc -32.9 / 4.25:1
+
+  // Surfaces — within ~2% of the background, same "elevation is carried
+  // entirely by shadow" premise as the light theme.
+  --color-surface:          oklch(24.5% 0.0135 65deg);
+  --color-surface-elevated: oklch(27% 0.0125 65deg);
+  --color-surface-overlay:  oklch(8% 0.0200 62deg / 0.60);
+
+  // Border — same WCAG 1.4.11 constraint _clay.scss documents (inputs have
+  // no other boundary in this system), just lifted rather than lowered
+  // since it needs to separate from a dark ground now. Lc -30.2 / 3.92:1 —
+  // clears the 3:1 non-text floor with margin.
+  --color-border:       oklch(58% 0.0240 66deg);
+  --color-border-hover: oklch(68% 0.0260 64deg);
+
+  // Primary — pressed silicone rose. A bright-fill/dark-content structure
+  // (mirroring the light theme's own primary) turned out not to have
+  // enough dynamic range at these hues once verified against
+  // theme-contrast-check.mjs — a saturated ~60% L fill and near-black
+  // content only cleared Lc ~32-43, well under the Lc60 UI-text floor,
+  // because APCA weights real sRGB luminance, not OKLCH's perceptual L,
+  // and high-chroma mid-lightness colors carry less of that than the L
+  // number suggests. Flipped to the structure every other dark theme in
+  // this catalog already uses instead (dark.scss, forest.scss): a
+  // mid-dark saturated fill with light content ink. Hover lightens rather
+  // than darkens — a dark-mode fill reads as "more present" by catching
+  // more light, not less, same polarity flip every dark theme here
+  // carries. Lc -80.1 / 6.47:1. 50deg off error, 98deg off info, same hue
+  // spacing as the light theme.
+  --color-primary:         oklch(48% 0.190 330deg);
+  --color-primary-hover:   oklch(55% 0.175 330deg);
+  --color-primary-active:  oklch(41% 0.190 330deg);
+  --color-primary-content: oklch(96% 0.014 330deg);
+
+  // Secondary — molded teal, same chroma-poor hue as the light theme (this
+  // is genuinely as pigmented as 190deg gets in sRGB at any lightness) —
+  // chroma trimmed 0.090->0.072 after theme-contrast-check.mjs flagged the
+  // higher value as out-of-gamut at this L. Lc -75.7 / 5.20:1.
+  --color-secondary:         oklch(50% 0.072 190deg);
+  --color-secondary-hover:   oklch(57% 0.066 190deg);
+  --color-secondary-active:  oklch(43% 0.072 190deg);
+  --color-secondary-content: oklch(96% 0.012 190deg);
+
+  // Accent — fired terracotta, distinguished from the base ramp's own
+  // unfired putty by chroma, same device as the light theme. Lc -76.8 / 5.63:1.
+  --color-accent:         oklch(50% 0.140 45deg);
+  --color-accent-hover:   oklch(57% 0.128 45deg);
+  --color-accent-active:  oklch(43% 0.140 45deg);
+  --color-accent-content: oklch(96% 0.012 45deg);
+  --color-accent-bg:      oklch(24% 0.045 45deg);
+
+  // Semantics — functional hues, carried not branded; each >=25deg from
+  // every brand hue and from each other, same spacing as the light theme.
+  // success/info chroma trimmed after the same out-of-gamut flag secondary
+  // hit.
+  --color-success:         oklch(48% 0.120 148deg);  // Lc -77.2 / 5.55:1
+  --color-success-hover:   oklch(55% 0.108 148deg);
+  --color-success-active:  oklch(41% 0.120 148deg);
+  --color-success-bg:      oklch(22% 0.045 148deg);
+  --color-success-content: oklch(96% 0.012 148deg);
+
+  // Warning is the one bright-fill/dark-content semantic that DID clear
+  // its floor at the light theme's own structure — this hue's sRGB gamut
+  // peaks bright enough (~80% L) that dark content still has real range
+  // to work with. Lc 68.0 / 10.80:1.
+  --color-warning:         oklch(80% 0.155 82deg);
+  --color-warning-hover:   oklch(86% 0.145 82deg);
+  --color-warning-active:  oklch(74% 0.155 82deg);
+  --color-warning-bg:      oklch(22% 0.045 82deg);
+  --color-warning-content: oklch(11% 0.030 82deg);
+
+  --color-error:         oklch(50% 0.195 20deg);  // Lc -76.9 / 5.94:1
+  --color-error-hover:   oklch(57% 0.178 20deg);
+  --color-error-active:  oklch(43% 0.195 20deg);
+  --color-error-bg:      oklch(22% 0.045 20deg);
+  --color-error-content: oklch(96% 0.012 20deg);
+
+  --color-info:         oklch(48% 0.082 232deg);  // Lc -78.0 / 5.73:1
+  --color-info-hover:   oklch(55% 0.074 232deg);
+  --color-info-active:  oklch(41% 0.082 232deg);
+  --color-info-bg:      oklch(22% 0.040 232deg);
+  --color-info-content: oklch(96% 0.012 232deg);
+
+  --focus-ring-color: oklch(48% 0.190 330deg / 0.45);
+
+  --color-header-bg: var(--color-base-100);
+
+  // ==========================================================================
+  // CLAY DARK SHADOW SYSTEM
+  // ==========================================================================
+  // Same two-family structure as _clay.scss (RAISED sm...2xl with a
+  // tightened highlight + wider contact shadow + hairline inset rim;
+  // RECESSED xs/inner with the polarity inverted, genuinely inset). What's
+  // different here is dynamic range: at a 23% L background, the highlight
+  // can climb to a real, clearly-lit ~40% L sheen — not a washed-out near-
+  // white the way a light background forces a highlight to hug 98%+ — and
+  // the contact shadow can drop to genuinely near-black. Dark neumorphism
+  // isn't a constrained version of the light recipe; it has more headroom
+  // on both ends, and this pass uses it.
+  --shadow-highlight:    oklch(40% 0.024 68deg);
+  --shadow-color:        oklch(8% 0.020 62deg / 0.65);
+  --shadow-color-strong: oklch(4% 0.022 60deg / 0.70);
+
+  --shadow-xs:
+    inset 2px 2px 4px var(--shadow-color),
+    inset -1px -1px 3px oklch(from var(--shadow-highlight) l c h / 0.55);
+
+  --shadow-inner:
+    inset 4px 4px 8px oklch(from var(--shadow-color) l c h / 0.80),
+    inset -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.45);
+
+  --shadow-sm:
+    -1.5px -1.5px 4px oklch(from var(--shadow-highlight) l c h / 0.50),
+    2.5px 2.5px 8px var(--shadow-color),
+    inset 0 1px 1px oklch(from var(--shadow-highlight) l c h / 0.30);
+
+  --shadow-md:
+    -3px -3px 8px oklch(from var(--shadow-highlight) l c h / 0.55),
+    5px 5px 12px var(--shadow-color),
+    inset 0 1px 1px oklch(from var(--shadow-highlight) l c h / 0.30);
+
+  --shadow-lg:
+    -5px -5px 13px oklch(from var(--shadow-highlight) l c h / 0.58),
+    8px 8px 20px var(--shadow-color),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.28);
+
+  --shadow-xl:
+    -7px -7px 19px oklch(from var(--shadow-highlight) l c h / 0.60),
+    12px 12px 29px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.28);
+
+  --shadow-2xl:
+    -10px -10px 26px oklch(from var(--shadow-highlight) l c h / 0.62),
+    16px 16px 42px var(--shadow-color-strong),
+    inset 0 1px 2px oklch(from var(--shadow-highlight) l c h / 0.25);
+
+  // Brand casts — same tighter/quieter highlight the light theme's brand
+  // casts use, for the same reason: a saturated dark-mode fill doesn't
+  // have the room a putty surface does, and a full-size highlight would
+  // ring it like a halo instead of catching light on one edge.
+  --shadow-primary:
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.35),
+    6px 6px 16px oklch(48% 0.190 330deg / 0.45);
+  --shadow-accent:
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.35),
+    6px 6px 16px oklch(50% 0.140 45deg / 0.45);
+  --shadow-error:
+    -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.35),
+    6px 6px 16px oklch(50% 0.195 20deg / 0.42);
+
+  // ==========================================================================
+  // COMPONENT OPT-INS
+  // ==========================================================================
+  // Identical token set and reasoning to _clay.scss's own "COMPONENT
+  // OPT-INS" section (see there for the full per-component rationale) —
+  // every name below resolves against this file's own --shadow-* tokens
+  // above, so the same push/lift/well taxonomy carries over unchanged: a
+  // pressed control settles to --shadow-xs; a well is carved in at rest via
+  // --shadow-inner (or --shadow-xs at smaller physical scale); a flush,
+  // full-bleed row (DataGrid/Table/DataTable/List/CommandPalette) pushes in
+  // rather than lifting, since it has no gap around it for an outward
+  // shadow to render into; an isolated control with real surrounding
+  // whitespace (Button, FilterTabs, Sidebar items, Accordion, StatCard,
+  // StepIndicator) lifts instead.
+  --button-shadow: var(--shadow-sm);
+  --button-shadow-hover: var(--shadow-md);
+  --button-shadow-active: var(--shadow-xs);
+
+  --filtertabs-tab-shadow: var(--shadow-sm);
+  --filtertabs-active-shadow: var(--shadow-xs);
+
+  --tabs-pill-shadow: var(--shadow-sm);
+  --tabs-pill-active-shadow: var(--shadow-xs);
+
+  --select-shadow: var(--shadow-inner);
+  --input-shadow: var(--shadow-inner);
+  --textarea-shadow: var(--shadow-inner);
+  --datepicker-trigger-shadow: var(--shadow-inner);
+  --dropdown-trigger-shadow: var(--shadow-inner);
+  --multiselect-trigger-shadow: var(--shadow-inner);
+
+  --datagrid-header-shadow: var(--shadow-xs);
+  --datagrid-row-shadow-hover: var(--shadow-xs);
+  --datagrid-row-shadow-selected: var(--shadow-inner);
+
+  --commandpalette-item-shadow: var(--shadow-xs);
+
+  --table-header-shadow: var(--shadow-xs);
+  --table-row-shadow-hover: var(--shadow-xs);
+  --table-row-shadow-selected: var(--shadow-inner);
+  --datatable-header-shadow: var(--shadow-xs);
+  --datatable-row-shadow-hover: var(--shadow-xs);
+
+  --list-item-shadow-hover: var(--shadow-xs);
+  --list-item-shadow-selected: var(--shadow-inner);
+
+  --checkbox-shadow: var(--shadow-xs);
+  --radio-shadow: var(--shadow-xs);
+  --switch-track-shadow: var(--shadow-xs);
+  --slider-track-shadow: var(--shadow-xs);
+
+  --fileupload-dropzone-shadow: var(--shadow-inner);
+
+  --alert-shadow: var(--shadow-sm);
+  --banner-shadow: var(--shadow-sm);
+
+  --accordion-item-shadow-hover: var(--shadow-md);
+  --statcard-shadow-hover: var(--shadow-sm);
+  --stepindicator-shadow-hover: var(--shadow-sm);
+
+  // Radii — same generous injection-molded scale as the light theme; the
+  // physical part didn't change shape, only the lighting on it.
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
