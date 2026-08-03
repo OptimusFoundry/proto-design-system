@@ -305,6 +305,13 @@
   // hover like Select/Input's focus stacking, just a permanent rest state.
   --fileupload-dropzone-shadow: var(--shadow-inner);
 
+  // Alert/Banner are the same "notification card" family as Toast, which
+  // already floats for free via the generic --shadow-lg token — these get
+  // a lighter permanent rest lift (Toast is a floating overlay, these sit
+  // inline in the page flow, so a lower shadow tier reads as less detached).
+  --alert-shadow: var(--shadow-sm);
+  --banner-shadow: var(--shadow-sm);
+
   // Isolated chrome with real surrounding whitespace — Accordion items have
   // their own list gap, StatCard tiles sit in a Grid with gaps, StepIndicator
   // circles have gap in the step list. Lifts, same as Card/FilterTabs/

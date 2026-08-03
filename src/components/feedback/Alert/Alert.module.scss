@@ -17,6 +17,10 @@
   display: flex;
   gap: var(--space-3);
   padding: var(--space-4);
+
+  // Same "notification card" family as Toast, which already floats via
+  // --shadow-lg — opt-in per theme, defaults to none.
+  box-shadow: var(--alert-shadow, none);
 }
 
 // =============================================================================

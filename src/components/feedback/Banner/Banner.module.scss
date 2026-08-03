@@ -10,6 +10,11 @@
   min-height: var(--space-8);
   padding: var(--space-3) var(--space-4);
   width: 100%;
+
+  // Casts a shadow onto the content below, like a raised strip — opt-in
+  // per theme, defaults to none. .stroke stays flat below: its own premise
+  // is a flush bar with only a hairline, not a raised card.
+  box-shadow: var(--banner-shadow, none);
 }
 
 // =============================================================================
@@ -248,6 +253,7 @@
 .stroke {
   background-color: var(--color-surface);
   border-bottom: var(--border-width-sm) solid var(--color-border);
+  box-shadow: none;
 
   &.info .icon {
     color: var(--color-info);
