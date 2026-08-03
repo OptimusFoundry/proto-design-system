@@ -62,9 +62,11 @@
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
-  // Base scale — fluorescent-lit white steel shelving, h248 throughout.
-  --color-background: oklch(97.5% 0.010 248deg);
-  --color-base-50:  oklch(99% 0.004 248deg);
+  // Background/base-50 — flat pure white, matching neon's own undyed-canvas
+  // convention. Base scale from base-100 on: fluorescent-lit steel shelving,
+  // h248 throughout.
+  --color-background: oklch(100% 0 0deg);
+  --color-base-50:  oklch(100% 0 0deg);
   --color-base-100: oklch(96.5% 0.011 248deg);
   --color-base-200: oklch(93% 0.014 248deg);
   --color-base-300: oklch(88% 0.018 248deg);
@@ -86,8 +88,8 @@
 
   // Surfaces climb toward the tube's own white while keeping the cast —
   // shelf faces read brighter than the aisle, never warmer.
-  --color-surface:          oklch(99.2% 0.004 248deg);
-  --color-surface-elevated: oklch(99.8% 0.001 248deg);
+  --color-surface:          oklch(100% 0 0deg);
+  --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay:  oklch(20% 0.030 248deg / 0.55);
 
   // Border — a printed shelf rule, sized to clear WCAG 1.4.11's 3:1

@@ -57,11 +57,12 @@
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
-  // Background — glazed station tile, warm off-white
-  --color-background: oklch(97.4% 0.012 85deg);
+  // Background — flat pure white, matching neon's own undyed-canvas
+  // convention; the warm 85deg tile hue starts at base-100 instead.
+  --color-background: oklch(100% 0 0deg);
 
   // Base scale (tile / grout, warm throughout — the ink is the cool half)
-  --color-base-50: oklch(98.5% 0.008 85deg);
+  --color-base-50: oklch(100% 0 0deg);
   --color-base-100: oklch(96.5% 0.016 85deg);
   --color-base-200: oklch(93.5% 0.024 85deg);
   --color-base-300: oklch(89% 0.032 85deg);
@@ -81,8 +82,8 @@
   --color-text-disabled: oklch(72% 0.080 265deg);           // Lc 43.8 / 2.31:1
 
   // Surfaces — keep the canvas hue; a plate is glazed tile, not paper white
-  --color-surface: oklch(98.8% 0.011 85deg);
-  --color-surface-elevated: oklch(99.4% 0.006 85deg);
+  --color-surface: oklch(100% 0 0deg);
+  --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay: oklch(20% 0.060 265deg / 0.62);
 
   // Borders — a ruled edge, not a suggestion: 3.03:1 clears WCAG 1.4.11's

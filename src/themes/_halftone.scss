@@ -52,11 +52,12 @@
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
-  // Newsprint stock — warm groundwood, never pure white.
-  --color-background: oklch(98% 0.008 95deg);
+  // Background — flat pure white, matching neon's own undyed-canvas
+  // convention; the newsprint groundwood cast starts at base-100 instead.
+  --color-background: oklch(100% 0 0deg);
 
   // Key plate at rising dot coverage (ink hue, not paper hue — see header).
-  --color-base-50:  oklch(99.2% 0.003 262deg);
+  --color-base-50:  oklch(100% 0 0deg);
   --color-base-100: oklch(96%   0.008 262deg);
   --color-base-200: oklch(91%   0.014 262deg);
   --color-base-300: oklch(84%   0.024 262deg);
@@ -75,8 +76,8 @@
   --color-muted:                  oklch(48% 0.105 262deg); // aliases tertiary
   --color-text-disabled:          oklch(72% 0.065 262deg); // Lc  44.7 /  2.34:1
 
-  --color-surface:          oklch(99.4% 0.004 95deg);
-  --color-surface-elevated: oklch(99.8% 0.002 95deg);
+  --color-surface:          oklch(100% 0 0deg);
+  --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay:  oklch(14% 0.045 262deg / 0.55);
 
   // Keyline, not hairline-as-afterthought: Lc 62.9 / 3.75:1 clears WCAG

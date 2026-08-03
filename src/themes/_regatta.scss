@@ -41,14 +41,15 @@
   --font-family-serif:   var(--font-family-sans);
   --font-family-display: var(--font-family-sans);
 
-  // Background — sailcloth, not paper: a trace of 250deg cast at 71% of the
-  // in-gamut chroma available this close to white.
-  --color-background: oklch(98.3% 0.006 250deg);
+  // Background — flat pure white (no hue trace), matching neon's own
+  // undyed-canvas convention; the navy 250deg rigging hue carries the whole
+  // material story through base-100+ and the content ramp instead.
+  --color-background: oklch(100% 0 0deg);
 
   // Base scale — one navy-rigging hue (250deg) end to end. Chroma peaks in the
   // 600-900 band where the ramp does structural work and thins toward both
   // ends so near-white steps stay sailcloth and near-black stays rope, not ink.
-  --color-base-50:  oklch(99.5% 0.002 250deg);
+  --color-base-50:  oklch(100% 0 0deg);
   --color-base-100: oklch(97.5% 0.009 250deg);
   --color-base-200: oklch(94%   0.016 250deg);
   --color-base-300: oklch(89%   0.026 250deg);
@@ -72,8 +73,8 @@
 
   // Surfaces keep the background's cast — cards are cut from the same cloth,
   // separated by lightness only.
-  --color-surface:          oklch(99.2% 0.004 250deg);
-  --color-surface-elevated: oklch(99.6% 0.002 250deg);
+  --color-surface:          oklch(100% 0 0deg);
+  --color-surface-elevated: oklch(100% 0 0deg);
   --color-surface-overlay:  oklch(16%   0.050 255deg / 0.55);
 
   // Border — a scribed hairline, at half the ceiling so the line is visibly
