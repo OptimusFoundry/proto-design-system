@@ -268,6 +268,14 @@
   --dropdown-trigger-shadow: var(--shadow-inner);
   --multiselect-trigger-shadow: var(--shadow-inner);
 
+  // DataGrid header/rows are full-bleed inside an overflow:hidden wrapper —
+  // any outward shadow component would be clipped (by the wrapper edge or
+  // the adjacent row), so these reuse --shadow-xs/--shadow-inner, which in
+  // this theme are purely inset and therefore immune to that clipping.
+  --datagrid-header-shadow: var(--shadow-xs);
+  --datagrid-row-shadow-hover: var(--shadow-xs);
+  --datagrid-row-shadow-selected: var(--shadow-inner);
+
   --checkbox-shadow: var(--shadow-xs);
   --radio-shadow: var(--shadow-xs);
   --switch-track-shadow: var(--shadow-xs);

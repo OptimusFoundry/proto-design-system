@@ -35,7 +35,7 @@
   justify-content: center;
   min-width: var(--space-6);
 
-  @include transition-colors;
+  @include transition((background-color, border-color, color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:disabled {
@@ -57,12 +57,16 @@
   background-color: var(--color-base-100);
   color: var(--color-base-content);
 
+  // Opt-in per theme, defaults to none — lifts on hover, sinks in for the
+  // current page, same convention as Button/Sidebar's active item.
   &:hover:not(:disabled) {
     background-color: var(--color-base-100);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &.active {
     background-color: var(--color-primary);
+    box-shadow: var(--button-shadow-active, none);
     color: var(--color-primary-content);
   }
 }
@@ -72,14 +76,18 @@
   border: var(--border-width-sm) solid var(--color-border);
   color: var(--color-base-content);
 
+  // Transparent at rest — nothing to raise until hover fills it, same
+  // reasoning as Button's outline variant.
   &:hover:not(:disabled) {
     background-color: var(--color-base-100);
     border-color: var(--color-border-hover);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &.active {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
+    box-shadow: var(--button-shadow-active, none);
     color: var(--color-primary-content);
   }
 }
@@ -88,12 +96,15 @@
   background: transparent;
   color: var(--color-base-content);
 
+  // Transparent at rest — same reasoning as Button's ghost variant.
   &:hover:not(:disabled) {
     background-color: var(--color-base-100);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &.active {
     background-color: var(--color-primary);
+    box-shadow: var(--button-shadow-active, none);
     color: var(--color-primary-content);
   }
 }
