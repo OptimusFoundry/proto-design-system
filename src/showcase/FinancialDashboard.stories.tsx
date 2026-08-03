@@ -683,7 +683,7 @@ function SyncStatusPanel() {
 	const [showLoading, setShowLoading] = useState(false);
 
 	return (
-		<Card variant="outlined" padding="none">
+		<Card variant="elevated" padding="none">
 			<CardHeader>
 				<Stack
 					direction="row"
@@ -975,7 +975,7 @@ function DashboardContent() {
 									as="section"
 									aria-label="Budget tracking"
 								>
-									<Card variant="outlined" padding="none">
+									<Card variant="elevated" padding="none">
 										<CardHeader>
 											<Text as="h3" size="lg" weight="semibold">
 												Marketing budget
