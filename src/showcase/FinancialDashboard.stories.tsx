@@ -9,7 +9,6 @@ import {
 	ArrowRight,
 	BarChart3,
 	Bell,
-	Command,
 	Copy,
 	CreditCard,
 	Download,
@@ -507,7 +506,7 @@ function AddTransactionDrawer({
 			onClose={onClose}
 			title="Add transaction"
 			description="Record a manual ledger entry for reconciliation."
-			size="sm"
+			size="md"
 			footer={
 				<Stack direction="row" gap="sm" justify="end">
 					<Button variant="ghost" size="sm" onClick={onClose}>
@@ -919,7 +918,6 @@ function DashboardContent() {
 									<Button
 										variant="outline"
 										size="sm"
-										leftIcon={<Command size={14} />}
 										onClick={() => setCommandPaletteOpen(true)}
 										aria-label={NAV_COMMANDS_LABEL}
 									>
