@@ -106,8 +106,11 @@
 
     @include focus-ring;
 
+    // Isolated circle with real gap around it (the step list's own gap) —
+    // lifts, opt-in per theme, defaults to none.
     &:hover .indicator {
       border-color: var(--color-border-hover);
+      box-shadow: var(--stepindicator-shadow-hover, none);
     }
   }
 }
@@ -127,7 +130,7 @@
   font-weight: var(--font-weight-medium);
   justify-content: center;
 
-  @include transition-colors;
+  @include transition((background-color, border-color, color, box-shadow), var(--duration-fast));
 }
 
 .number {
@@ -162,6 +165,9 @@
   .indicator {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
+    // "You are here" reads as pressed — same convention as Sidebar/
+    // FilterTabs/Pagination/Tag's selected state.
+    box-shadow: var(--button-shadow-active, none);
     color: var(--color-primary-content);
   }
 

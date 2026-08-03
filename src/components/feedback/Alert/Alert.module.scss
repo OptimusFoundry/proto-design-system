@@ -116,11 +116,12 @@
   margin: calc(var(--space-1) * -1);
   padding: var(--space-1);
 
-  @include transition-colors;
+  @include transition((background-color, color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover {
     background-color: var(--color-base-200);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
     color: var(--color-base-content);
   }
 

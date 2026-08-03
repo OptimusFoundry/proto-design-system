@@ -26,6 +26,9 @@
   &.selected {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
+    // "You chose this" reads as pressed — same convention as Sidebar's
+    // active item, FilterTabs' active pill, and Pagination's current page.
+    box-shadow: var(--button-shadow-active, none);
     color: var(--color-primary-content);
 
     .removeButton {
@@ -176,10 +179,11 @@
   opacity: var(--opacity-loading);
   padding: var(--space-1);
 
-  @include transition-colors;
+  @include transition((background-color, opacity, box-shadow), var(--duration-fast));
 
   &:hover:not(:disabled) {
     background-color: var(--color-hover-overlay);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
     opacity: 1;
   }
 

@@ -52,9 +52,12 @@
   display: flex;
   gap: var(--space-3);
 
-  @include transition-colors;
+  @include transition((background-color, box-shadow), var(--duration-fast));
 }
 
+// Items sit flush against each other (bordered variants use border-bottom,
+// not a gap), same as DataGrid rows — opt-in per theme, must be purely
+// inset, defaults to none.
 .interactive {
   cursor: pointer;
 
@@ -62,14 +65,17 @@
 
   &:hover:not(.disabled) {
     background-color: var(--color-row-hover);
+    box-shadow: var(--list-item-shadow-hover, none);
   }
 }
 
 .selected {
   background-color: var(--color-overlay-primary);
+  box-shadow: var(--list-item-shadow-selected, none);
 
   &:hover:not(.disabled) {
     background-color: var(--color-overlay-primary-strong);
+    box-shadow: var(--list-item-shadow-selected, none);
   }
 }
 

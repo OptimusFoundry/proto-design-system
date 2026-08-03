@@ -18,11 +18,15 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
 
-  @include transition-colors;
+  @include transition((border-color, box-shadow), var(--duration-fast));
 
+  // Items have real gap between them (.accordion's own gap), unlike
+  // DataGrid/CommandPalette rows — isolated, so it lifts (opt-in, none by
+  // default).
   &:hover:not(.disabled),
   &:focus-within:not(.disabled) {
     border-color: var(--color-border-hover);
+    box-shadow: var(--accordion-item-shadow-hover, none);
   }
 
   &.disabled {

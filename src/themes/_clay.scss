@@ -282,10 +282,36 @@
 
   --commandpalette-item-shadow: var(--shadow-xs);
 
+  // data/Table (the separate "editorial flat" table) and DataTable
+  // (div-grid table) are structurally the same full-bleed-row shape as
+  // DataGrid — same purely-inset push convention.
+  --table-header-shadow: var(--shadow-xs);
+  --table-row-shadow-hover: var(--shadow-xs);
+  --table-row-shadow-selected: var(--shadow-inner);
+  --datatable-header-shadow: var(--shadow-xs);
+  --datatable-row-shadow-hover: var(--shadow-xs);
+
+  // List items sit flush (border-bottom between rows, no gap) — push, same
+  // reasoning.
+  --list-item-shadow-hover: var(--shadow-xs);
+  --list-item-shadow-selected: var(--shadow-inner);
+
   --checkbox-shadow: var(--shadow-xs);
   --radio-shadow: var(--shadow-xs);
   --switch-track-shadow: var(--shadow-xs);
   --slider-track-shadow: var(--shadow-xs);
+
+  // FileUpload's dropzone is a receptacle, always a well — not opt-in-on-
+  // hover like Select/Input's focus stacking, just a permanent rest state.
+  --fileupload-dropzone-shadow: var(--shadow-inner);
+
+  // Isolated chrome with real surrounding whitespace — Accordion items have
+  // their own list gap, StatCard tiles sit in a Grid with gaps, StepIndicator
+  // circles have gap in the step list. Lifts, same as Card/FilterTabs/
+  // Button, not the push convention above.
+  --accordion-item-shadow-hover: var(--shadow-sm);
+  --statcard-shadow-hover: var(--shadow-sm);
+  --stepindicator-shadow-hover: var(--shadow-sm);
 
   // Radii are generous throughout — an injection-molded part has no sharp
   // corner, and a tight radius would fight the diffuse shadow geometry above.

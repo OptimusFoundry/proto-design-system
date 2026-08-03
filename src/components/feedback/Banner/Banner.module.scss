@@ -82,7 +82,7 @@
   opacity: var(--opacity-loading);
   padding: var(--space-1);
 
-  @include transition-colors;
+  @include transition((background-color, opacity, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover {
@@ -125,6 +125,7 @@
 
   .dismissButton:hover {
     background-color: var(--color-hover-overlay-on-color);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 }
 
@@ -180,6 +181,7 @@
 
   .dismissButton:hover {
     background-color: var(--color-hover-overlay-strong);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 }
 
@@ -235,6 +237,7 @@
 
   .dismissButton:hover {
     background-color: var(--color-hover-overlay-strong);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 }
 
@@ -268,5 +271,6 @@
 
   .dismissButton:hover {
     background-color: var(--color-hover-overlay-strong);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 }

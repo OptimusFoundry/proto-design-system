@@ -24,11 +24,18 @@
 .headerRow {
   background-color: var(--color-header-bg);
   border-bottom: var(--border-width-sm, 1px) solid var(--color-border);
+
+  // Opt-in per theme, defaults to none. Must be purely inset — rows are
+  // full-bleed inside .table's overflow:hidden with no gap between
+  // siblings, same reasoning as DataGrid's header/rows.
+  box-shadow: var(--datatable-header-shadow, none);
 }
 
 .dataRow {
   border-bottom: var(--border-width-sm, 1px) solid var(--color-border);
-  transition: background-color var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 
   &:last-child {
     border-bottom: none;
@@ -36,6 +43,7 @@
 
   &:hover {
     background-color: var(--color-row-hover);
+    box-shadow: var(--datatable-row-shadow-hover, none);
   }
 }
 

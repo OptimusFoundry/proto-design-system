@@ -37,7 +37,11 @@
   padding: var(--space-6);
   width: 100%;
 
-  @include transition-colors;
+  // A drop target reads as a slot at rest, not just on interaction — opt-in
+  // per theme, defaults to none.
+  box-shadow: var(--fileupload-dropzone-shadow, none);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover:not(:disabled) {
@@ -108,11 +112,16 @@
   height: var(--space-7);
   padding: 0 var(--space-4);
 
-  @include transition-colors;
+  // A filled button hand-rolled outside the Button component — same rest/
+  // hover treatment, reusing the same tokens.
+  box-shadow: var(--button-shadow, none);
+
+  @include transition((background-color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover:not(:disabled) {
     background-color: var(--color-base-200);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   &.disabled {
@@ -231,11 +240,12 @@
   top: var(--space-1);
   width: var(--space-5);
 
-  @include transition-colors;
+  @include transition((background-color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover {
     background: oklch(from var(--color-error) l c h / 0.85);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
   }
 
   svg {
@@ -340,11 +350,12 @@
   justify-content: center;
   padding: var(--space-1);
 
-  @include transition-colors;
+  @include transition((background-color, color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover {
     background-color: var(--color-base-200);
+    box-shadow: var(--button-shadow-hover, var(--button-shadow, none));
     color: var(--color-error);
   }
 

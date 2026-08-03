@@ -74,6 +74,12 @@
 .header {
   // No background — sits on var(--color-surface) (target 2)
   border-bottom: var(--border-width-sm) solid var(--color-border);
+
+  // Opt-in per theme, defaults to none. Must be purely inset (like
+  // DataGrid's equivalent) — the header/rows below are full-bleed with no
+  // gap between adjacent rows, so an outward shadow would have nowhere to
+  // render against a flush neighbor.
+  box-shadow: var(--table-header-shadow, none);
 }
 
 // =============================================================================
@@ -103,23 +109,29 @@
 // =============================================================================
 
 .row {
-  transition: background-color var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
 }
 
-// Hover only on body rows, not header (target 4)
+// Hover only on body rows, not header (target 4). Same purely-inset
+// requirement as .header above.
 .body .row:hover {
   background-color: var(--color-row-hover);
+  box-shadow: var(--table-row-shadow-hover, none);
 }
 
 .selected {
   background-color: var(--color-overlay-primary);
+  box-shadow: var(--table-row-shadow-selected, none);
 
   &:hover {
     background-color: var(--color-overlay-primary-strong);
+    box-shadow: var(--table-row-shadow-selected, none);
   }
 }
 
@@ -132,6 +144,7 @@
 
 .expanded {
   background-color: var(--color-row-hover);
+  box-shadow: var(--table-row-shadow-selected, none);
 }
 
 // =============================================================================
