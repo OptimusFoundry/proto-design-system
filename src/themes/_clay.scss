@@ -268,13 +268,19 @@
   --dropdown-trigger-shadow: var(--shadow-inner);
   --multiselect-trigger-shadow: var(--shadow-inner);
 
-  // DataGrid header/rows are full-bleed inside an overflow:hidden wrapper —
-  // any outward shadow component would be clipped (by the wrapper edge or
-  // the adjacent row), so these reuse --shadow-xs/--shadow-inner, which in
-  // this theme are purely inset and therefore immune to that clipping.
+  // DataGrid header/rows and CommandPalette items are full-bleed with no
+  // gap between siblings — any outward shadow component would be clipped
+  // (by the wrapper edge, or simply have nowhere to render against a flush
+  // neighbor), so these reuse --shadow-xs/--shadow-inner, which in this
+  // theme are purely inset and therefore immune to that clipping. Push, not
+  // lift, is the cohesive convention for any flush-stacked row/list item —
+  // isolated controls with real surrounding whitespace (Button, FilterTabs,
+  // Sidebar items) lift instead.
   --datagrid-header-shadow: var(--shadow-xs);
   --datagrid-row-shadow-hover: var(--shadow-xs);
   --datagrid-row-shadow-selected: var(--shadow-inner);
+
+  --commandpalette-item-shadow: var(--shadow-xs);
 
   --checkbox-shadow: var(--shadow-xs);
   --radio-shadow: var(--shadow-xs);
