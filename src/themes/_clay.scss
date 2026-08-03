@@ -239,15 +239,18 @@
   // clicked button and a selected pill settle to the identical depth.
   //
   // Negative-space controls (Select, Input, TextArea, and the DatePicker/
-  // Dropdown trigger buttons — visually a filled input, not a button) are
-  // wells carved into the sheet at rest, using --shadow-inner rather than
-  // --shadow-xs so a field reads distinctly deeper than a mere press.
-  // Checkbox/Radio/the Switch and Slider tracks are the same well at a
-  // smaller physical scale, so they take the shallower --shadow-xs instead —
+  // Dropdown/MultiSelect trigger buttons — visually a filled input, not a
+  // button) are wells carved into the sheet at rest, using --shadow-inner
+  // rather than --shadow-xs so a field reads distinctly deeper than a mere
+  // press. Checkbox/Radio/the Switch and Slider tracks — plus the identical
+  // item-level checkbox DropdownMenu and MultiSelect each carry, which
+  // reuse --checkbox-shadow directly — are the same well at a smaller
+  // physical scale, so they take the shallower --shadow-xs instead —
   // --shadow-inner's larger offset/blur would read as muddy at 20px rather
-  // than carved. The DatePicker calendar and Dropdown menu panels need no
-  // opt-in at all: they already consume the generic --shadow-lg token, which
-  // this theme overrides globally, so they're raised for free.
+  // than carved. The DatePicker calendar and Dropdown/MultiSelect menu
+  // panels need no opt-in at all: they already consume the generic
+  // --shadow-lg token, which this theme overrides globally, so they're
+  // raised for free.
   --button-shadow: var(--shadow-sm);
   --button-shadow-hover: var(--shadow-md);
   --button-shadow-active: var(--shadow-xs);
@@ -263,6 +266,7 @@
   --textarea-shadow: var(--shadow-inner);
   --datepicker-trigger-shadow: var(--shadow-inner);
   --dropdown-trigger-shadow: var(--shadow-inner);
+  --multiselect-trigger-shadow: var(--shadow-inner);
 
   --checkbox-shadow: var(--shadow-xs);
   --radio-shadow: var(--shadow-xs);

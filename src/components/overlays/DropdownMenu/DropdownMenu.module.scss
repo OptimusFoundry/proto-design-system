@@ -141,6 +141,12 @@
   justify-content: center;
   width: var(--space-4);
 
+  // Same small-scale well as the standalone Checkbox component — reuses its
+  // token so both read as the identical material at rest.
+  box-shadow: var(--checkbox-shadow, none);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
+
   &.checked {
     background-color: var(--color-primary);
     border-color: var(--color-primary);

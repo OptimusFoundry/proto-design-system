@@ -119,6 +119,11 @@
   border: 1px solid var(--color-border);
   color: var(--color-base-content);
 
+  // Resting elevation — opt-in per theme, defaults to no shadow. Same call
+  // as Dropdown's .default: a filled, bordered trigger reads as a carved
+  // well; .outline stays flat.
+  box-shadow: var(--multiselect-trigger-shadow, none);
+
   &:hover:not(.disabled),
   &:focus:not(.disabled) {
     background-color: var(--color-base-100);
@@ -303,7 +308,11 @@
   justify-content: center;
   width: var(--space-4);
 
-  @include transition-colors;
+  // Same small-scale well as the standalone Checkbox component — reuses its
+  // token so both read as the identical material at rest.
+  box-shadow: var(--checkbox-shadow, none);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
 
   svg {
     height: 0.75em;
