@@ -86,24 +86,34 @@
   --color-border:       oklch(58% 0.0240 66deg);
   --color-border-hover: oklch(68% 0.0260 64deg);
 
-  // Primary — pressed silicone rose. A bright-fill/dark-content structure
-  // (mirroring the light theme's own primary) turned out not to have
-  // enough dynamic range at these hues once verified against
-  // theme-contrast-check.mjs — a saturated ~60% L fill and near-black
-  // content only cleared Lc ~32-43, well under the Lc60 UI-text floor,
-  // because APCA weights real sRGB luminance, not OKLCH's perceptual L,
-  // and high-chroma mid-lightness colors carry less of that than the L
-  // number suggests. Flipped to the structure every other dark theme in
-  // this catalog already uses instead (dark.scss, forest.scss): a
-  // mid-dark saturated fill with light content ink. Hover lightens rather
-  // than darkens — a dark-mode fill reads as "more present" by catching
-  // more light, not less, same polarity flip every dark theme here
-  // carries. Lc -80.1 / 6.47:1. 50deg off error, 98deg off info, same hue
-  // spacing as the light theme.
-  --color-primary:         oklch(48% 0.190 330deg);
-  --color-primary-hover:   oklch(55% 0.175 330deg);
-  --color-primary-active:  oklch(41% 0.190 330deg);
-  --color-primary-content: oklch(96% 0.014 330deg);
+  // Primary — pressed silicone, deep wine-crimson. The light theme's own
+  // 330deg rose was tried first for family continuity, but at the L this
+  // dark surface needs for contrast, 330deg reads as electric violet
+  // against the base ramp's warm 65deg chocolate-brown — a genuine clash,
+  // not a stylistic choice, and the kind of thing that only shows up once
+  // you actually look at the rendered pixels rather than the token math.
+  // Moved to 352deg: still clearly in the rose/crimson family (not merely
+  // "moved to red"), but warm enough to sit comfortably against the putty
+  // base instead of fighting it. 28deg off error (the tight side of this
+  // theme's >=25deg hue-spacing rule, not a violation of it), 98deg off
+  // info.
+  //
+  // Structure note: a bright-fill/dark-content pairing (mirroring the
+  // light theme's own primary) turned out not to have enough dynamic
+  // range at these hues once verified against theme-contrast-check.mjs —
+  // a saturated ~60% L fill and near-black content only cleared Lc
+  // ~32-43, well under the Lc60 UI-text floor, because APCA weights real
+  // sRGB luminance, not OKLCH's perceptual L, and high-chroma mid-
+  // lightness colors carry less of that than the L number suggests.
+  // Flipped to the structure every other dark theme in this catalog
+  // already uses instead (dark.scss, forest.scss): a mid-dark saturated
+  // fill with light content ink. Hover lightens rather than darkens — a
+  // dark-mode fill reads as "more present" by catching more light, not
+  // less, same polarity flip every dark theme here carries. Lc -79.8 / 6.43:1.
+  --color-primary:         oklch(48% 0.175 352deg);
+  --color-primary-hover:   oklch(55% 0.160 352deg);
+  --color-primary-active:  oklch(41% 0.175 352deg);
+  --color-primary-content: oklch(96% 0.012 352deg);
 
   // Secondary — molded teal, same chroma-poor hue as the light theme (this
   // is genuinely as pigmented as 190deg gets in sRGB at any lightness) —
@@ -154,7 +164,7 @@
   --color-info-bg:      oklch(22% 0.040 232deg);
   --color-info-content: oklch(96% 0.012 232deg);
 
-  --focus-ring-color: oklch(48% 0.190 330deg / 0.45);
+  --focus-ring-color: oklch(48% 0.175 352deg / 0.45);
 
   --color-header-bg: var(--color-base-100);
 
@@ -213,7 +223,7 @@
   // ring it like a halo instead of catching light on one edge.
   --shadow-primary:
     -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.35),
-    6px 6px 16px oklch(48% 0.190 330deg / 0.45);
+    6px 6px 16px oklch(48% 0.175 352deg / 0.45);
   --shadow-accent:
     -2px -2px 6px oklch(from var(--shadow-highlight) l c h / 0.35),
     6px 6px 16px oklch(50% 0.140 45deg / 0.45);
