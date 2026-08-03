@@ -46,7 +46,9 @@
   z-index: var(--z-raised);
 
   &:focus-visible + .radio {
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+    box-shadow:
+      var(--radio-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-color);
   }
 
   &:checked + .radio {
@@ -68,7 +70,11 @@
   justify-content: center;
   pointer-events: none;
 
-  @include transition-colors;
+  // Resting elevation — opt-in per theme, defaults to a zero-effect shadow
+  // since :focus-visible above stacks a focus ring on top of this.
+  box-shadow: var(--radio-shadow, 0 0 0 0 transparent);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
 }
 
 .dot {

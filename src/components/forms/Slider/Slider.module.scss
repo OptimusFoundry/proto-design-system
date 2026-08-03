@@ -80,10 +80,13 @@
   cursor: pointer;
   width: 100%;
 
-  // Track styles (WebKit)
+  // Track styles (WebKit) — the groove the thumb slides in. box-shadow is
+  // opt-in per theme (defaults to none); the thumb below already gets a
+  // raised shadow for free via the generic --shadow-sm token.
   &::-webkit-slider-runnable-track {
     background: var(--color-base-200);
     border-radius: var(--radius-full);
+    box-shadow: var(--slider-track-shadow, none);
     height: var(--space-2);
   }
 
@@ -91,6 +94,7 @@
   &::-moz-range-track {
     background: var(--color-base-200);
     border-radius: var(--radius-full);
+    box-shadow: var(--slider-track-shadow, none);
     height: var(--space-2);
   }
 

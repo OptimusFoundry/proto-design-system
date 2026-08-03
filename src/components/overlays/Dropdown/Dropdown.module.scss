@@ -86,6 +86,12 @@
   border: var(--border-width-sm) solid var(--color-border);
   color: var(--color-base-content);
 
+  // Resting elevation — opt-in per theme, defaults to no shadow. Only this
+  // filled variant gets it; .outline/.ghost stay flat, same call as Button's
+  // outline/ghost (a transparent or merely-bordered trigger can't read as a
+  // carved well the way a filled one can).
+  box-shadow: var(--dropdown-trigger-shadow, none);
+
   &:hover:not(:disabled) {
     background-color: var(--color-base-100);
     border-color: var(--color-border-hover);

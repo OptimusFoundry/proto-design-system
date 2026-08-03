@@ -226,20 +226,28 @@
     5px 5px 15px oklch(48% 0.185 20deg / 0.32);
 
   // ==========================================================================
-  // COMPONENT OPT-INS — Button, FilterTabs, Select
+  // COMPONENT OPT-INS
   // ==========================================================================
-  // These custom properties don't exist in the token contract; the three
-  // consuming components read them with a no-op fallback (`none`, or a
-  // zero-effect shadow where they stack with a focus ring), so every other
+  // None of these custom properties exist in the token contract; each
+  // consuming component reads its own with a no-op fallback (`none`, or a
+  // zero-effect shadow where it stacks with a focus ring), so every other
   // theme renders exactly as before. Only Clay sets them.
   //
-  // Positive-space controls (Button, the idle FilterTabs pill) are raised
-  // keys that sink to --shadow-xs on press — the same pressed token the
-  // house button-elevation mixin already assigns to :active, so a clicked
-  // button and a selected filter tab settle to the identical depth. Negative-
-  // space controls (Select) are wells carved into the sheet at rest, using
-  // --shadow-inner rather than --shadow-xs so an input reads distinctly
-  // deeper than a mere press.
+  // Positive-space controls (Button, idle FilterTabs/Tabs-pill pills) are
+  // raised keys that sink to --shadow-xs on press — the same pressed token
+  // the house button-elevation mixin already assigns to :active, so a
+  // clicked button and a selected pill settle to the identical depth.
+  //
+  // Negative-space controls (Select, Input, TextArea, and the DatePicker/
+  // Dropdown trigger buttons — visually a filled input, not a button) are
+  // wells carved into the sheet at rest, using --shadow-inner rather than
+  // --shadow-xs so a field reads distinctly deeper than a mere press.
+  // Checkbox/Radio/the Switch and Slider tracks are the same well at a
+  // smaller physical scale, so they take the shallower --shadow-xs instead —
+  // --shadow-inner's larger offset/blur would read as muddy at 20px rather
+  // than carved. The DatePicker calendar and Dropdown menu panels need no
+  // opt-in at all: they already consume the generic --shadow-lg token, which
+  // this theme overrides globally, so they're raised for free.
   --button-shadow: var(--shadow-sm);
   --button-shadow-hover: var(--shadow-md);
   --button-shadow-active: var(--shadow-xs);
@@ -247,7 +255,19 @@
   --filtertabs-tab-shadow: var(--shadow-sm);
   --filtertabs-active-shadow: var(--shadow-xs);
 
+  --tabs-pill-shadow: var(--shadow-sm);
+  --tabs-pill-active-shadow: var(--shadow-xs);
+
   --select-shadow: var(--shadow-inner);
+  --input-shadow: var(--shadow-inner);
+  --textarea-shadow: var(--shadow-inner);
+  --datepicker-trigger-shadow: var(--shadow-inner);
+  --dropdown-trigger-shadow: var(--shadow-inner);
+
+  --checkbox-shadow: var(--shadow-xs);
+  --radio-shadow: var(--shadow-xs);
+  --switch-track-shadow: var(--shadow-xs);
+  --slider-track-shadow: var(--shadow-xs);
 
   // Radii are generous throughout — an injection-molded part has no sharp
   // corner, and a tight radius would fight the diffuse shadow geometry above.

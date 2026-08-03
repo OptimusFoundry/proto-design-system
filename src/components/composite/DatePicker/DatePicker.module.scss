@@ -26,7 +26,12 @@
   text-align: left;
   width: 100%;
 
-  @include transition-colors;
+  // Resting elevation — opt-in per theme, defaults to no shadow. Same
+  // recessed-well treatment as Select/Input; the focus ring here is
+  // outline-based (@include focus-ring), so nothing to stack this against.
+  box-shadow: var(--datepicker-trigger-shadow, none);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
   @include focus-ring;
 
   &:hover:not(:disabled),

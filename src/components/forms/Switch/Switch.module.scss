@@ -40,7 +40,9 @@
   z-index: var(--z-raised);
 
   &:focus-visible + .track {
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+    box-shadow:
+      var(--switch-track-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-color);
   }
 
   &:checked + .track {
@@ -59,7 +61,13 @@
   padding: var(--space-1);
   pointer-events: none;
 
-  @include transition-colors;
+  // The groove the thumb slides in — opt-in per theme, defaults to a
+  // zero-effect shadow since :focus-visible above stacks a focus ring on it.
+  // The thumb itself already gets a raised shadow for free via the generic
+  // --shadow-sm token (see .thumb below), so only the track needs an opt-in.
+  box-shadow: var(--switch-track-shadow, 0 0 0 0 transparent);
+
+  @include transition((background-color, box-shadow), var(--duration-fast));
 }
 
 .thumb {

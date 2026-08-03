@@ -95,12 +95,15 @@
   }
 }
 
-// Pill variant tabs
+// Pill variant tabs — opt-in per theme, defaults to no shadow. Idle pills
+// raised, the active pill sinks in, same duality as FilterTabs.
 .pill .tab {
   border-radius: var(--radius-full);
+  box-shadow: var(--tabs-pill-shadow, none);
 
   &.active {
     background-color: var(--color-primary);
+    box-shadow: var(--tabs-pill-active-shadow, none);
     color: var(--color-primary-content);
   }
 }

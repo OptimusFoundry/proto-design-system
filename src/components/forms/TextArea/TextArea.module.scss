@@ -51,7 +51,11 @@
   outline: none;
   width: 100%;
 
-  @include transition-colors;
+  // Resting elevation — opt-in per theme, defaults to a zero-effect shadow
+  // (not the bare `none` keyword) because it stacks with the focus ring below.
+  box-shadow: var(--textarea-shadow, 0 0 0 0 transparent);
+
+  @include transition((background-color, border-color, box-shadow), var(--duration-fast));
 
   &::placeholder {
     color: var(--color-muted);
@@ -59,7 +63,9 @@
 
   &:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+    box-shadow:
+      var(--textarea-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-color);
   }
 }
 
@@ -111,7 +117,9 @@
 
   &:focus {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-error);
+    box-shadow:
+      var(--textarea-shadow, 0 0 0 0 transparent),
+      0 0 0 var(--focus-ring-width) var(--focus-ring-error);
   }
 }
 
