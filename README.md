@@ -10,7 +10,7 @@ The package ships **source** (TSX + SCSS); the consuming app's Vite and Sass com
 
 ```jsonc
 // package.json
-"@optimusfoundry/proto-design-system": "github:OptimusFoundry/proto-design-system#v1.0.0"
+"@optimusfoundry/proto-design-system": "git+https://github.com/OptimusFoundry/proto-design-system.git#v1.0.0"
 ```
 
 Point the existing `@/proto-design-system` alias at the package, ahead of the `@` alias, so no import changes:
@@ -32,7 +32,7 @@ optimizeDeps: { exclude: ["@optimusfoundry/proto-design-system"] },
 "@/*": ["./src/*"]
 ```
 
-Peers: `react`, `react-dom` (^19.2) and `lucide-react` (^1.8). CI in a consuming repo needs read access to this private repo before `npm install` (a token secret plus `git config url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"`).
+Peers: `react`, `react-dom` (^19.2) and `lucide-react` (^1.8). CI in a consuming repo needs read access to this private repo before `npm install`: a token secret plus `insteadOf` rewrites for both `https://github.com/` and `ssh://git@github.com/` (npm writes hosted git deps as `git+ssh` in the lockfile). Copy the step from saas-template's `.github/workflows/webapp.yml`.
 
 ## Develop
 
