@@ -121,6 +121,7 @@ export interface TableRowProps {
 	/** Click handler */
 	onClick?: () => void;
 	className?: string;
+	"data-testid"?: string;
 }
 
 export function TableRow({
@@ -130,9 +131,11 @@ export function TableRow({
 	expanded = false,
 	onClick,
 	className,
+	"data-testid": testId,
 }: TableRowProps) {
 	return (
 		<tr
+			data-testid={testId}
 			className={cn(
 				styles.row,
 				selected && styles.selected,

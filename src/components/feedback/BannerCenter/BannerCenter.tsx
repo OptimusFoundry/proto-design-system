@@ -31,6 +31,7 @@ export interface BannerItem {
 	action?: ReactNode;
 	/** Whether the banner can be dismissed */
 	dismissible?: boolean;
+	testId?: string;
 }
 
 interface BannerContextValue {
@@ -142,6 +143,7 @@ function BannerCenterDisplay({
 								description={banner.description}
 								icon={banner.icon}
 								action={banner.action}
+								testId={banner.testId}
 								dismissible={false}
 								animate
 							/>
@@ -162,6 +164,7 @@ function BannerCenterDisplay({
 							description={dismissibleBanners[0]!.description}
 							icon={dismissibleBanners[0]!.icon}
 							action={dismissibleBanners[0]!.action}
+							testId={dismissibleBanners[0]!.testId}
 							dismissible
 							onDismiss={() => onDismiss(dismissibleBanners[0]!.id)}
 							animate

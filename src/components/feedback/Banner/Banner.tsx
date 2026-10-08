@@ -48,6 +48,7 @@ export interface BannerProps {
 	animate?: boolean;
 	/** Additional className */
 	className?: string;
+	testId?: string;
 }
 
 const typeIcons: Record<BannerType, ReactNode> = {
@@ -82,6 +83,7 @@ export function Banner({
 	onDismiss,
 	animate = false,
 	className,
+	testId,
 }: BannerProps) {
 	const prefersReducedMotion = useReducedMotion();
 	const motionTokens = useMotionTokens();
@@ -103,6 +105,7 @@ export function Banner({
 		<motion.div
 			className={cn(styles.banner, styles[type], styles[variant], className)}
 			role="alert"
+			data-testid={testId}
 			variants={BANNER_VARIANTS}
 			initial={animate ? "hidden" : "visible"}
 			animate="visible"

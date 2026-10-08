@@ -11,6 +11,8 @@ export interface FilterTabItem {
 	count?: number;
 	/** Optional leading icon */
 	icon?: ReactNode;
+	/** Optional data-testid for the tab button */
+	testId?: string;
 }
 
 export type FilterTabsSize = "sm" | "md" | "lg";
@@ -63,6 +65,7 @@ export function FilterTabs({
 						type="button"
 						role="tab"
 						aria-selected={active}
+						data-testid={item.testId}
 						className={cn(styles.tab, active && styles.active)}
 						onClick={() => onChange(item.id)}
 					>
