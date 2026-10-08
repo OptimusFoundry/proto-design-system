@@ -32,7 +32,7 @@ optimizeDeps: { exclude: ["@optimusfoundry/proto-design-system"] },
 "@/*": ["./src/*"]
 ```
 
-Peers: `react`, `react-dom` (^19.2) and `lucide-react` (^1.8). CI in a consuming repo needs read access to this private repo before `npm install`: a token secret plus `insteadOf` rewrites for both `https://github.com/` and `ssh://git@github.com/` (npm writes hosted git deps as `git+ssh` in the lockfile). Copy the step from saas-template's `.github/workflows/webapp.yml`.
+Peers: `react`, `react-dom` (^19.2) and `lucide-react` (^1.8). The repo is public, so consumers need no credentials: npm fetches the pinned commit as a tarball from `codeload.github.com`.
 
 ## Develop
 
