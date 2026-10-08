@@ -1,0 +1,17 @@
+.canvas {
+	min-height: 100vh;
+	padding: var(--space-12);
+	background-color: var(--color-background);
+	font-family: var(--font-family-sans);
+	color: var(--color-base-content);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.canvasFullscreen {
+	min-height: 100vh;
+	background-color: var(--color-background);
+	font-family: var(--font-family-sans);
+	color: var(--color-base-content);
+}

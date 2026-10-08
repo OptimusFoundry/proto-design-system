@@ -1,0 +1,25 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 25.9.0
+          cache: npm
+      # `npm install` (not `npm ci`): Vite's rolldown integration has Linux-only
+      # optional binaries the macOS-generated lockfile doesn't capture.
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build-storybook

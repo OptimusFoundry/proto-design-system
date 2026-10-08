@@ -1,0 +1,56 @@
+{
+	"name": "@optimusfoundry/proto-design-system",
+	"version": "1.0.0",
+	"description": "Proto, the design system extracted from saas-template. Ships source; consumers compile it with Vite + Sass.",
+	"private": true,
+	"type": "module",
+	"license": "UNLICENSED",
+	"repository": "github:OptimusFoundry/proto-design-system",
+	"files": [
+		"src",
+		"docs"
+	],
+	"exports": {
+		"./*": "./src/*"
+	},
+	"sideEffects": [
+		"**/*.scss",
+		"**/*.css"
+	],
+	"scripts": {
+		"storybook": "storybook dev -p 6010",
+		"build-storybook": "storybook build",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"theme-contrast": "node scripts/theme-contrast-check.mjs"
+	},
+	"peerDependencies": {
+		"lucide-react": "^1.8.0",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0"
+	},
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"motion": "^12.38.0"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "^4.11.2",
+		"@biomejs/biome": "2.4.12",
+		"@playwright/test": "^1.59.1",
+		"@storybook/addon-docs": "^10.4.6",
+		"@storybook/addon-links": "^10.4.6",
+		"@storybook/react-vite": "10.4.6",
+		"@types/node": "^25.6.0",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react": "^6.0.1",
+		"lucide-react": "^1.8.0",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
+		"sass-embedded": "^1.99.0",
+		"storybook": "^10.4.6",
+		"typescript": "~6.0.3",
+		"vite": "^8.0.8"
+	}
+}
