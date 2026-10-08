@@ -1,6 +1,6 @@
 {
 	"name": "@optimusfoundry/proto-design-system",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Proto, the design system extracted from saas-template. Ships source; consumers compile it with Vite + Sass.",
 	"private": true,
 	"type": "module",

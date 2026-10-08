@@ -38,6 +38,7 @@ export type ThemeName =
 	| "forest"
 	| "forest-light"
 	| "lavender"
+	| "light"
 	| "midnight"
 	| "monochrome"
 	| "neon"
@@ -249,6 +250,8 @@ export const themes: Record<ThemeName, Theme> = {
 		googleFontsHref:
 			"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Kode+Mono:wght@400;500;600;700&display=swap",
 	},
+	// Restored in 1.1.0: AITravel and tickuptoks still ship it as their default.
+	light: { name: "light", label: "Light", colorScheme: "light" },
 	midnight: {
 		name: "midnight",
 		label: "Midnight",
